@@ -11,10 +11,12 @@ class NotificacionDAO
         $this->conexion = ConexionDB::conexion();
     }
 
-    public function getAllNotifsUser(): array
+    public function getAllNotifsUser(int $id_user): array
     {
         $notifs = [];
         $sql = "SELECT * FROM notificaciones; WHERE id_usuario = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_user);
         $resultado = $this->conexion->query($sql);
 
         while ($fila = $resultado->fetch_assoc()) {
