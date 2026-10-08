@@ -9,6 +9,20 @@ class Usuario
     private string $password;
     private Rol $role;
 
+    public function __construct(
+        string $nombre,
+        string $apellido,
+        string $username,
+        string $password,
+        Rol $role
+    ) {
+        $this->nombre = $nombre;
+        $this->apellido = $apellido;
+        $this->username = $username;
+        $this->password = $password;
+        $this->role = $role;
+    }
+
     /**
      * Get the value of nombre
      *

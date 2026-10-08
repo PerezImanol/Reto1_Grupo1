@@ -7,7 +7,22 @@ class Notificacion
     private string $descripcion;
     private DateTime $fecha_creacion;
     private Estado $estado;
-    private string $id_user;
+    private int $id_user;
+
+
+    public function __construct(
+        string $titulo,
+        string $descripcion,
+        DateTime $fecha_creacion,
+        Estado $estado,
+        int $id_user
+    ) {
+        $this->titulo = $titulo;
+        $this->descripcion = $descripcion;
+        $this->fecha_creacion = $fecha_creacion;
+        $this->estado = $estado;
+        $this->id_user = $id_user;
+    }
 
     /**
      * Get the value of titulo
@@ -104,9 +119,9 @@ class Notificacion
     /**
      * Get the value of id_user
      *
-     * @return string
+     * @return int
      */
-    public function getIdUser(): string
+    public function getIdUser(): int
     {
         return $this->id_user;
     }
@@ -114,11 +129,11 @@ class Notificacion
     /**
      * Set the value of id_user
      *
-     * @param string $id_user
+     * @param int $id_user
      *
      * @return self
      */
-    public function setIdUser(string $id_user): self
+    public function setIdUser(int $id_user): self
     {
         $this->id_user = $id_user;
         return $this;
