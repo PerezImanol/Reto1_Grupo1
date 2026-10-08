@@ -3,6 +3,7 @@
 require_once "Rol.php";
 class Usuario
 {
+    private int $id_usuario;
     private string $nombre;
     private string $apellido;
     private string $username;
@@ -10,17 +11,42 @@ class Usuario
     private Rol $role;
 
     public function __construct(
+        int $id_usuario,
         string $nombre,
         string $apellido,
         string $username,
         string $password,
         Rol $role
     ) {
+        $this->id_usuario = $id_usuario;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->username = $username;
         $this->password = $password;
         $this->role = $role;
+    }
+
+    /**
+     * Get the value of id_usuario
+     *
+     * @return int
+     */
+    public function getIdUsuario(): int
+    {
+        return $this->id_usuario;
+    }
+
+    /**
+     * Set the value of id_usuario
+     *
+     * @param int $id_usuario
+     *
+     * @return self
+     */
+    public function setIdUsuario(int $id_usuario): self
+    {
+        $this->id_usuario = $id_usuario;
+        return $this;
     }
 
     /**

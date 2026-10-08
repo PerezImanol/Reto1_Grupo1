@@ -11,119 +11,146 @@ class UsuarioDAO
         $this->conexion = ConexionDB::conexion();
     }
 
-    public function buscarTodos(): array
+    public function login(string $username, string $password)
     {
-        $equipamientos = array();
+        $sql = "SELECT *
+                    FROM usuarios
+                    WHERE nombre_usuario = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $username);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $user = $resultado->fetch_assoc();
+
+        if ($user && password_verify($password, $user["password_hash"])) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
+
+    public function getAllUsers(): array
+    {
+        $users = [];
         $sql = "SELECT * 
-                    FROM equipamientos";
+                    FROM usuarios";
         $resultado = $this->conexion->query($sql);
 
         while ($fila = $resultado->fetch_assoc()) {
-            $equipamiento = new Usuario(
-                $fila["id_equipamiento"],
+            $user = new Usuario(
+                $fila["id_usuario"],
                 $fila["nombre"],
-                $fila["descripcion"],
-                $fila["marca"],
-                $fila["modelo"],
-                $fila["categoria"],
-                $fila["id_ubicacion_actual"]
+                $fila["apellidos"],
+                $fila["nombre_usuario"],
+                $fila["password_hash"],
+                $fila["rol"]
             );
 
-            $equipamientos[] = $equipamiento;
+            $users[] = $user;
         }
-        return $equipamientos;
+        return $users;
     }
 
-    public function buscarPorId(int $idEquipamiento): ?Equipamiento
+    public function buscarPorId(int $idUser): ?Usuario
     {
         $sql = "SELECT *
-                    FROM equipamientos
-                    WHERE id_equipamiento = ?";
+                    FROM usuarios
+                    WHERE id_usuario = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idEquipamiento);
+        $stmt->bind_param("i", $idUser);
         $stmt->execute();
         $resultado = $stmt->get_result();
         if ($fila = $resultado->fetch_assoc()) {
-            $equipamiento = new Usuario(
-                $fila["id_equipamiento"],
+            $user = new Usuario(
+                $fila["id_usuario"],
                 $fila["nombre"],
-                $fila["descripcion"],
-                $fila["marca"],
-                $fila["modelo"],
-                $fila["categoria"],
-                $fila["id_ubicacion_actual"]
+                $fila["apellidos"],
+                $fila["nombre_usuario"],
+                $fila["password_hash"],
+                $fila["rol"]
             );
-            return $equipamiento;
+            return $user;
         } else {
             return null;
         }
 
     }
 
-    public function insertar(Usuario $equipamiento): bool
+    public function insertar(Usuario $user): bool
     {
-        $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
+        $sql = "INSERT INTO usuarios (nombre, apellidos, nombre_usuario, password_hash, rol)
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
-        $nombre = $equipamiento->getNombre();
-        $descripcion = $equipamiento->getDescripcion();
-        $marca = $equipamiento->getMarca();
-        $modelo = $equipamiento->getModelo();
-        $categoria = $equipamiento->getCategoria();
-        $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+        $nombre = $user->getNombre();
+        $apellido = $user->getApellido();
+        $username = $user->getUsername();
+        $password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+        $role = $user->getRole();
 
         $stmt->bind_param(
-            "sssssi",
+            "sssss",
             $nombre,
-            $descripcion,
-            $marca,
-            $modelo,
-            $categoria,
-            $idUbicacionActual
+            $apellido,
+            $username,
+            $password,
+            $role
         );
         return $stmt->execute();
     }
 
-    public function actualizar(Usuario $equipamiento): bool
+    public function actualizar(Usuario $user): bool
     {
-        $sql = "UPDATE equipamnientos
+        $sql = "UPDATE usuarios
                     SET nombre = ?,
-                        descripcion = ?,
-                        marca = ?,
-                        modelo = ?,
-                        categoria = ?,
-                        id_ubicacion_actual = ?;
-                    WHERE id = ?";
+                    apellidos = ?,
+                    nombre_usuario = ?,
+                    rol = ?;
+                    WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
-        $nombre = $equipamiento->getNombre();
-        $descripcion = $equipamiento->getDescripcion();
-        $marca = $equipamiento->getMarca();
-        $modelo = $equipamiento->getModelo();
-        $categoria = $equipamiento->getCategoria();
-        $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+        $nombre = $user->getNombre();
+        $apellido = $user->getApellido();
+        $username = $user->getUsername();
+        $role = $user->getRole();
+        $id = $user->getIdUsuario();
 
         $stmt->bind_param(
-            "sssssi",
+            "ssssi",
             $nombre,
-            $descripcion,
-            $marca,
-            $modelo,
-            $categoria,
-            $idUbicacionActual
+            $apellido,
+            $username,
+            $role,
+            $id
+        );
+        return $stmt->execute();
+    }
+
+    public function actualizar_password(Usuario $user): bool
+    {
+        $hashed_password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+        $sql = "UPDATE usuarios
+                    SET password_hash = ?;
+                    WHERE id_usuario = ?";
+
+        $stmt = $this->conexion->prepare($sql);
+        $password = $user->getPassword();
+        $id = $user->getIdUsuario();
+
+        $stmt->bind_param(
+            "si",
+            $password,
+            $id
         );
         return $stmt->execute();
     }
     // ELIMINAR
-    public function eliminar(int $idEquipamiento): bool
+    public function eliminar(int $idUser): bool
     {
-        $sql = "DELETE FROM equipamientos
-                    WHERE id = ?";
+        $sql = "DELETE FROM usuarios
+                    WHERE id_usuario = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idEquipamiento);
+        $stmt->bind_param("i", $idUser);
         return $stmt->execute();
     }
 }
-
-
 ?>

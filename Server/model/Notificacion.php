@@ -3,6 +3,7 @@
 require_once "Estado.php";
 class Notificacion
 {
+    private int $id_notificacion;
     private string $titulo;
     private string $descripcion;
     private DateTime $fecha_creacion;
@@ -11,6 +12,7 @@ class Notificacion
 
 
     public function __construct(
+        int $id_notificacion,
         string $titulo,
         string $descripcion,
         DateTime $fecha_creacion,
@@ -22,6 +24,29 @@ class Notificacion
         $this->fecha_creacion = $fecha_creacion;
         $this->estado = $estado;
         $this->id_user = $id_user;
+    }
+
+    /**
+     * Get the value of id_notificacion
+     *
+     * @return int
+     */
+    public function getIdNotificacion(): int
+    {
+        return $this->id_notificacion;
+    }
+
+    /**
+     * Set the value of id_notificacion
+     *
+     * @param int $id_notificacion
+     *
+     * @return self
+     */
+    public function setIdNotificacion(int $id_notificacion): self
+    {
+        $this->id_notificacion = $id_notificacion;
+        return $this;
     }
 
     /**
