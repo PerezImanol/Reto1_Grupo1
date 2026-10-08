@@ -1,7 +1,7 @@
 <?php
 
-require_once "model/Usuario.php";
-require_once "dao/ConexionDB.php";
+require_once ("../model/Usuario.php");
+require_once ("../dao/ConexionDB.php");
 
 class UsuarioDAO
 {
@@ -37,13 +37,15 @@ class UsuarioDAO
         $resultado = $this->conexion->query($sql);
 
         while ($fila = $resultado->fetch_assoc()) {
+            $role = $fila["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
+
             $user = new Usuario(
                 $fila["id_usuario"],
                 $fila["nombre"],
                 $fila["apellidos"],
                 $fila["nombre_usuario"],
                 $fila["password_hash"],
-                $fila["rol"]
+                $role
             );
 
             $users[] = $user;
@@ -61,13 +63,15 @@ class UsuarioDAO
         $stmt->execute();
         $resultado = $stmt->get_result();
         if ($fila = $resultado->fetch_assoc()) {
+            $role = $fila["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
+
             $user = new Usuario(
                 $fila["id_usuario"],
                 $fila["nombre"],
                 $fila["apellidos"],
                 $fila["nombre_usuario"],
                 $fila["password_hash"],
-                $fila["rol"]
+                $role
             );
             return $user;
         } else {

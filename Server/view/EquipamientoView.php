@@ -37,15 +37,13 @@ $equipamientos = $controlador->listar();
 
             <td><?= $equipamiento->getNombre() ?></td>
 
-            <td><?= $equipamiento->getIdUbicacion() ?></td>
-
             <td><?= $equipamiento->getDescripcion() ?></td>
 
             <td><?= $equipamiento->getMarca() ?></td>
 
             <td><?= $equipamiento->getModelo() ?></td>
 
-            <td><?= $equipamiento->getCategoria() ?></td>
+            <td><?= $equipamiento->getCategoria()->name ?></td>
 
             <td><?= $equipamiento->getIdUbicacionActual() ?></td>
         </tr>

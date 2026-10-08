@@ -1,7 +1,7 @@
 <?php
 
-require_once "model/Notificacion.php";
-require_once "dao/ConexionDB.php";
+require_once ("../model/Notificacion.php");
+require_once ("../dao/ConexionDB.php");
 
 class NotificacionDAO
 {
@@ -12,27 +12,39 @@ class NotificacionDAO
     }
 
     public function getAllNotifsUser(int $id_user): array
-    {
-        $notifs = [];
-        $sql = "SELECT * FROM notificaciones; WHERE id_usuario = ?";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $id_user);
-        $resultado = $this->conexion->query($sql);
+{
+    $notifs = [];
 
-        while ($fila = $resultado->fetch_assoc()) {
-            $notif = new Notificacion(
-                $fila["id_notificacion"],
-                $fila["titulo"],
-                $fila["descripcion"],
-                $fila["fecha_creacion"],
-                $fila["estado"],
-                $fila["id_usuario"]
-            );
+    $sql = "SELECT * FROM notificaciones WHERE id_usuario = ?";
 
-            $notifs[] = $notif;
-        }
-        return $notifs;
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->bind_param("i", $id_user);
+    $stmt->execute();
+
+    $resultado = $stmt->get_result();
+
+    while ($fila = $resultado->fetch_assoc()) {
+
+        $estado = match ($fila["estado"]) {
+            "PENDIENTE" => Estado::PENDIENTE,
+            "EN_PROCESO" => Estado::EN_PROCESO,
+            "REALIZADA" => Estado::REALIZADA
+        };
+
+        $notif = new Notificacion(
+            $fila["id_notificacion"],
+            $fila["titulo"],
+            $fila["descripcion"],
+            new DateTime($fila["fecha_creacion"]),
+            $estado,
+            $fila["id_usuario"]
+        );
+
+        $notifs[] = $notif;
     }
+
+    return $notifs;
+}
 
     public function buscarPorId(int $idUser): ?Notificacion
     {
@@ -44,12 +56,18 @@ class NotificacionDAO
         $stmt->execute();
         $resultado = $stmt->get_result();
         if ($fila = $resultado->fetch_assoc()) {
+            $estado = match ($fila["estado"]) {
+                "PENDIENTE" => Estado::PENDIENTE,
+                "EN_PROCESO" => Estado::EN_PROCESO,
+                "REALIZADA" => Estado::REALIZADA
+            };
+
             $notif = new Notificacion(
                 $fila["id_notificacion"],
                 $fila["titulo"],
                 $fila["descripcion"],
                 $fila["fecha_creacion"],
-                $fila["estado"],
+                $estado,
                 $fila["id_usuario"]
             );
             return $notif;

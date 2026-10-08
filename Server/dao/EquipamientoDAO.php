@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Equipamiento;
+use App\Enums\EnumCategoria;
 
     require_once("../model/Equipamiento.php");
-    require_once("../model/ConexionDB.php");
+    require_once("../dao/ConexionDB.php");
+    require_once("../model/EnumCategoria.php");
 
     class EquipamientoDAO{
         private mysqli $conexion;
@@ -19,13 +21,21 @@ use App\Models\Equipamiento;
             $resultado = $this->conexion->query($sql);
 
             while ($fila = $resultado->fetch_assoc()) {
+                $categoria = match ($fila["categoria"]) {
+                    "PORTATIL" => EnumCategoria::PORTATIL,
+                    "SOBREMESA" => EnumCategoria::SOBREMESA,
+                    "PERIFERICO" => EnumCategoria::PERIFERICO,
+                    "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
+                    "OTROS" => EnumCategoria::OTROS
+                };
+
                 $equipamiento = new Equipamiento(
                     $fila["id_equipamiento"], 
                     $fila["nombre"],
                     $fila["descripcion"],
                     $fila["marca"],
                     $fila["modelo"],
-                    $fila["categoria"],
+                    $categoria,
                     $fila["id_ubicacion_actual"]
                 );
                 
@@ -44,13 +54,21 @@ use App\Models\Equipamiento;
             $stmt->execute();
             $resultado = $stmt->get_result();
             if ($fila = $resultado->fetch_assoc()) {
+                $categoria = match ($fila["categoria"]) {
+                    "PORTATIL" => EnumCategoria::PORTATIL,
+                    "SOBREMESA" => EnumCategoria::SOBREMESA,
+                    "PERIFERICO" => EnumCategoria::PERIFERICO,
+                    "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
+                    "OTROS" => EnumCategoria::OTROS
+                };
+
                 $equipamiento = new Equipamiento(
                     $fila["id_equipamiento"], 
                     $fila["nombre"],
                     $fila["descripcion"],
                     $fila["marca"],
                     $fila["modelo"],
-                    $fila["categoria"],
+                    $categoria,
                     $fila["id_ubicacion_actual"]
                 );
                 return $equipamiento;
@@ -63,7 +81,7 @@ use App\Models\Equipamiento;
          public function insertar(Equipamiento $equipamiento): bool
         {
             $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->conexion->prepare($sql);
             $nombre = $equipamiento->getNombre();
             $descripcion = $equipamiento->getDescripcion();

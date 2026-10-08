@@ -1,7 +1,7 @@
 <?php
-require_once '../dao/ConexionDB.php';
-require_once '../model/UsuarioDAO.php';
 
+require_once ("../dao/ConexionDB.php");
+require_once ("../dao/UsuarioDAO.php");
 
 class controller
 {

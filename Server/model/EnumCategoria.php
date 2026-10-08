@@ -1,7 +1,11 @@
 <?php
 namespace App\Enums;
 enum EnumCategoria{
-    case Herramientas;
+    case PORTATIL;
+    case SOBREMESA;
+    case PERIFERICO;
+    case AUDIOVISUAL;
+    case OTROS;
 }
 
 ?>

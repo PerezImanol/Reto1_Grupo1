@@ -19,6 +19,7 @@ class Notificacion
         Estado $estado,
         int $id_user
     ) {
+        $this->id_notificacion = $id_notificacion;
         $this->titulo = $titulo;
         $this->descripcion = $descripcion;
         $this->fecha_creacion = $fecha_creacion;
