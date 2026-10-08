@@ -1,4 +1,6 @@
 <?php
+
+require_once "Estado.php";
 class Notificacion
 {
     private string $titulo;

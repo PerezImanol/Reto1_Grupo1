@@ -1,4 +1,6 @@
 <?php
+
+require_once "Rol.php";
 class Usuario
 {
     private string $nombre;
