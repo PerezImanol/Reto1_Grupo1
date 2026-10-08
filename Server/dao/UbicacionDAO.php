@@ -2,8 +2,8 @@
 
 use App\Models\Ubicacion;
 
-require_once("model/Ubicacion.php");
-require_once("dao/ConexionDB.php");
+require_once("../model/Ubicacion.php");
+require_once("../dao/ConexionDB.php");
 
 class UbicacionDAO
 {

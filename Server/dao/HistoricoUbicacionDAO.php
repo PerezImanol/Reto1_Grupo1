@@ -2,8 +2,8 @@
 
 use App\Models\HistoricoUbicaciones;
 
-require_once("model/HistoricoUbicaciones.php");
-require_once("dao/ConexionDB.php");
+require_once("../model/HistoricoUbicaciones.php");
+require_once("../dao/ConexionDB.php");
 
 class HistoricoUbicacionesDAO
 {
