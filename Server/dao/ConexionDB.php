@@ -7,7 +7,7 @@
                 "localhost",
                 "root",
                 "",
-                "patronmvc"
+                "reto_2daw"
             );
             // Indicamos que utilizaremos UTF-8.
             // Permite trabajar correctamente con caracteres como á, é, ñ...

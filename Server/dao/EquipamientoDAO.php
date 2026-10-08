@@ -2,8 +2,8 @@
 
 use App\Models\Equipamiento;
 
-    require_once("model/Equipamiento.php");
-    require_once("dao/ConexionDB.php");
+    require_once("../model/Equipamiento.php");
+    require_once("../model/ConexionDB.php");
 
     class EquipamientoDAO{
         private mysqli $conexion;
@@ -73,7 +73,7 @@ use App\Models\Equipamiento;
             $idUbicacionActual = $equipamiento->getIdUbicacionActual();
 
             $stmt->bind_param(
-                "sssssi",
+                "ssssei",
                 $nombre,
                 $descripcion,
                 $marca,
@@ -102,15 +102,17 @@ use App\Models\Equipamiento;
             $modelo = $equipamiento->getModelo();
             $categoria = $equipamiento->getCategoria();
             $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+            $id = $equipamiento-> getIdEquipamiento();
 
             $stmt->bind_param(
-                "sssssi",
+                "sssssii",
                 $nombre,
                 $descripcion,
                 $marca,
                 $modelo,
                 $categoria,
-                $idUbicacionActual
+                $idUbicacionActual,
+                $id
             );
             return $stmt->execute();
         }
