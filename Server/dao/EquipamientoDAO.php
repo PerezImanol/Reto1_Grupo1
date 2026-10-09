@@ -3,146 +3,154 @@
 use App\Models\Equipamiento;
 use App\Enums\EnumCategoria;
 
-    require_once("../model/Equipamiento.php");
-    require_once("../dao/ConexionDB.php");
-    require_once("../model/EnumCategoria.php");
+require_once("../model/Equipamiento.php");
+require_once("../dao/ConexionDB.php");
+require_once("../model/EnumCategoria.php");
+require_once("../dao/EquipamientoDAO.php");
 
-    class EquipamientoDAO{
-        private mysqli $conexion;
-        public function __construct()
-        {
-            $this->conexion = ConexionDB::conexion();
-        }
+class EquipamientoDAO
+{
+    private mysqli $conexion;
+    public function __construct()
+    {
+        $this->conexion = ConexionDB::conexion();
+    }
 
-        public function buscarTodos(): array {
-            $equipamientos = array();
-            $sql = "SELECT * 
+    public function buscarTodos(): array
+    {
+        $equipamientos = array();
+        $sql = "SELECT * 
                     FROM equipamientos";
-            $resultado = $this->conexion->query($sql);
+        $resultado = $this->conexion->query($sql);
 
-            while ($fila = $resultado->fetch_assoc()) {
-                $categoria = match ($fila["categoria"]) {
-                    "PORTATIL" => EnumCategoria::PORTATIL,
-                    "SOBREMESA" => EnumCategoria::SOBREMESA,
-                    "PERIFERICO" => EnumCategoria::PERIFERICO,
-                    "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
-                    "OTROS" => EnumCategoria::OTROS
-                };
+        while ($fila = $resultado->fetch_assoc()) {
+            $categoria = match ($fila["categoria"]) {
+                "PORTATIL" => EnumCategoria::PORTATIL,
+                "SOBREMESA" => EnumCategoria::SOBREMESA,
+                "PERIFERICO" => EnumCategoria::PERIFERICO,
+                "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
+                "OTROS" => EnumCategoria::OTROS
+            };
 
-                $equipamiento = new Equipamiento(
-                    $fila["id_equipamiento"], 
-                    $fila["nombre"],
-                    $fila["descripcion"],
-                    $fila["marca"],
-                    $fila["modelo"],
-                    $categoria,
-                    $fila["id_ubicacion_actual"]
-                );
-                
-                $equipamientos[] = $equipamiento;
-            }
-            return $equipamientos;
+            $equipamiento = new Equipamiento(
+                $fila["id_equipamiento"],
+                $fila["nombre"],
+                $fila["descripcion"],
+                $fila["marca"],
+                $fila["modelo"],
+                $categoria,
+                $fila["id_ubicacion_actual"]
+            );
+
+            $equipamientos[] = $equipamiento;
         }
+        return $equipamientos;
+    }
 
-        public function buscarPorId(int $idEquipamiento): ?Equipamiento
-        {
-            $sql = "SELECT *
+    public function buscarPorId(int $idEquipamiento): ?Equipamiento
+    {
+        $sql = "SELECT *
                     FROM equipamientos
                     WHERE id_equipamiento = ?";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("i", $idEquipamiento);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-            if ($fila = $resultado->fetch_assoc()) {
-                $categoria = match ($fila["categoria"]) {
-                    "PORTATIL" => EnumCategoria::PORTATIL,
-                    "SOBREMESA" => EnumCategoria::SOBREMESA,
-                    "PERIFERICO" => EnumCategoria::PERIFERICO,
-                    "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
-                    "OTROS" => EnumCategoria::OTROS
-                };
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $idEquipamiento);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        if ($fila = $resultado->fetch_assoc()) {
+            $categoria = match ($fila["categoria"]) {
+                "PORTATIL" => EnumCategoria::PORTATIL,
+                "SOBREMESA" => EnumCategoria::SOBREMESA,
+                "PERIFERICO" => EnumCategoria::PERIFERICO,
+                "AUDIOVISUAL" => EnumCategoria::AUDIOVISUAL,
+                "OTROS" => EnumCategoria::OTROS
+            };
 
-                $equipamiento = new Equipamiento(
-                    $fila["id_equipamiento"], 
-                    $fila["nombre"],
-                    $fila["descripcion"],
-                    $fila["marca"],
-                    $fila["modelo"],
-                    $categoria,
-                    $fila["id_ubicacion_actual"]
-                );
-                return $equipamiento;
-            }else{
-                return null;
-            }
-            
-        }
-
-         public function insertar(Equipamiento $equipamiento): bool
-        {
-            $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
-                    VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conexion->prepare($sql);
-            $nombre = $equipamiento->getNombre();
-            $descripcion = $equipamiento->getDescripcion();
-            $marca = $equipamiento->getMarca();
-            $modelo = $equipamiento->getModelo();
-            $categoria = $equipamiento->getCategoria();
-            $idUbicacionActual = $equipamiento->getIdUbicacionActual();
-
-            $stmt->bind_param(
-                "ssssei",
-                $nombre,
-                $descripcion,
-                $marca,
-                $modelo,
+            $equipamiento = new Equipamiento(
+                $fila["id_equipamiento"],
+                $fila["nombre"],
+                $fila["descripcion"],
+                $fila["marca"],
+                $fila["modelo"],
                 $categoria,
-                $idUbicacionActual
+                $fila["id_ubicacion_actual"]
             );
-            return $stmt->execute();
-        }
-
-        public function actualizar(Equipamiento $equipamiento): bool
-        {
-            $sql = "UPDATE equipamnientos
-                    SET nombre = ?,
-                        descripcion = ?,
-                        marca = ?,
-                        modelo = ?,
-                        categoria = ?,
-                        id_ubicacion_actual = ?;
-                    WHERE id = ?";
-
-            $stmt = $this->conexion->prepare($sql);
-            $nombre = $equipamiento->getNombre();
-            $descripcion = $equipamiento->getDescripcion();
-            $marca = $equipamiento->getMarca();
-            $modelo = $equipamiento->getModelo();
-            $categoria = $equipamiento->getCategoria();
-            $idUbicacionActual = $equipamiento->getIdUbicacionActual();
-            $id = $equipamiento-> getIdEquipamiento();
-
-            $stmt->bind_param(
-                "sssssii",
-                $nombre,
-                $descripcion,
-                $marca,
-                $modelo,
-                $categoria,
-                $idUbicacionActual,
-                $id
-            );
-            return $stmt->execute();
-        }
-        // ELIMINAR
-        public function eliminar(int $idEquipamiento): bool
-        {
-            $sql = "DELETE FROM equipamientos
-                    WHERE id = ?";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("i", $idEquipamiento);
-            return $stmt->execute();
+            return $equipamiento;
+        } else {
+            return null;
         }
     }
-    
-?>
+
+    public function insertar(Equipamiento $equipamiento): bool
+    {
+        $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
+                    VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($sql);
+        $nombre = $equipamiento->getNombre();
+        $descripcion = $equipamiento->getDescripcion();
+        $marca = $equipamiento->getMarca();
+        $modelo = $equipamiento->getModelo();
+        $enumCategoria = $equipamiento->getCategoria();
+        $categoria = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
+        $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+
+        $stmt->bind_param(
+            "sssssi",
+            $nombre,
+            $descripcion,
+            $marca,
+            $modelo,
+            $categoria,
+            $idUbicacionActual
+        );
+        return $stmt->execute();
+    }
+
+public function actualizar(Equipamiento $equipamiento): bool
+{
+    // 1. Corrección del nombre de la tabla (equipamientos)
+    $sql = "UPDATE equipamientos
+                SET nombre = ?,
+                    descripcion = ?,
+                    marca = ?,
+                    modelo = ?,
+                    categoria = ?,
+                    id_ubicacion_actual = ?
+                WHERE id_equipamiento = ?";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $nombre = $equipamiento->getNombre();
+    $descripcion = $equipamiento->getDescripcion();
+    $marca = $equipamiento->getMarca();
+    $modelo = $equipamiento->getModelo();
+
+    // 2. Extraer el valor escalar string del Enum
+    $enumCategoria = $equipamiento->getCategoria();
+    $categoriaStr = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
+
+    $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+    $id = $equipamiento->getIdEquipamiento();
+
+    $stmt->bind_param(
+        "sssssii",
+        $nombre,
+        $descripcion,
+        $marca,
+        $modelo,
+        $categoriaStr, // <-- Pasar la cadena convertida, no el Enum directo
+        $idUbicacionActual,
+        $id
+    );
+
+    return $stmt->execute();
+}
+    // ELIMINAR
+    public function eliminar(int $idEquipamiento): bool
+    {
+        $sql = "DELETE FROM equipamientos
+                    WHERE id_equipamiento = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $idEquipamiento);
+        return $stmt->execute();
+    }
+}

@@ -1,14 +1,17 @@
 <?php
 namespace App\Models;
+
 use App\Enums\EnumCategoria;
-class Equipamiento
+use JsonSerializable;
+
+class Equipamiento implements JsonSerializable
 {
     private int $id_equipamiento;
     private string $nombre;
     private string $descripcion;
     private string $marca;
     private string $modelo;
-    private EnumCategoria $categoria; //Cambiar mas adelante a Enum cuando se haga el enumerado
+    private EnumCategoria $categoria;
     private int $id_ubicacion_actual;
 
     public function __construct(
@@ -27,6 +30,22 @@ class Equipamiento
         $this->modelo = $modelo;
         $this->categoria = $categoria;
         $this->id_ubicacion_actual = $id_ubicacion_actual;
+    }
+
+    /**
+     * Define la representación JSON del objeto para json_encode()
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_equipamiento'     => $this->id_equipamiento,
+            'nombre'              => $this->nombre,
+            'descripcion'         => $this->descripcion,
+            'marca'               => $this->marca,
+            'modelo'              => $this->modelo,
+            'categoria'           => isset($this->categoria->value) ? $this->categoria->value : $this->categoria->name,
+            'id_ubicacion_actual' => $this->id_ubicacion_actual
+        ];
     }
 
     /**
