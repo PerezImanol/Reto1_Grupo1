@@ -3,6 +3,51 @@
 require_once("../dao/ConexionDB.php");
 require_once("../dao/UsuarioDAO.php");
 
+class UsuarioController
+{
+    private UsuarioDAO $UsuarioDAO;
+
+    public function __construct()
+    {
+        $this->UsuarioDAO = new UsuarioDAO();
+    }
+
+    public function getAllUsers()
+    {
+        return $this->UsuarioDAO->getAllUsers();
+    }
+
+    public function buscarPorId(int $idUser)
+    {
+        return $this->UsuarioDAO->buscarPorId($idUser);
+    }
+
+    public function insertar(Usuario $user)
+    {
+        return $this->UsuarioDAO->insertar($user);
+    }
+
+    public function actualizar(Usuario $user)
+    {
+        return $this->UsuarioDAO->actualizar($user);
+    }
+
+    public function actualizar_password(Usuario $user)
+    {
+        return $this->UsuarioDAO->actualizar_password($user);
+    }
+
+    public function eliminar(int $idUser)
+    {
+        return $this->UsuarioDAO->eliminar($idUser);
+    }
+
+    public function login(string $username, string $password)
+    {
+        return $this->UsuarioDAO->login($username, $password);
+    }
+}
+
 header('Content-Type: application/json; charset=utf-8');
 
 header('Access-Control-Allow-Origin: *');
@@ -12,51 +57,6 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 ini_set('display_errors', 0);
-
-class UsuarioController
-{
-    private $NotificacionDAO;
-
-    public function __construct()
-    {
-        $this->NotificacionDAO = new UsuarioDAO();
-    }
-
-    public function getAllUsers()
-    {
-        return $this->NotificacionDAO->getAllUsers();
-    }
-
-    public function buscarPorId(int $idUser)
-    {
-        return $this->NotificacionDAO->buscarPorId($idUser);
-    }
-
-    public function insertar(Usuario $user)
-    {
-        return $this->NotificacionDAO->insertar($user);
-    }
-
-    public function actualizar(Usuario $user)
-    {
-        return $this->NotificacionDAO->actualizar($user);
-    }
-
-    public function actualizar_password(Usuario $user)
-    {
-        return $this->NotificacionDAO->actualizar_password($user);
-    }
-
-    public function eliminar(int $idUser)
-    {
-        return $this->NotificacionDAO->eliminar($idUser);
-    }
-
-    public function login(string $username, string $password)
-    {
-        return $this->NotificacionDAO->login($username, $password);
-    }
-}
 
 $controller = new UsuarioController();
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -71,7 +71,7 @@ function obtenerRol(?string $strRol): Rol
 
 switch ($metodo) {
     case 'GET':
-        if (isset($_GET['userId'])) {
+        if (isset($_GET['notifId'])) {
             $resultado = $controller->buscarPorId((int) $_GET['notifId']);
         } else {
             $resultado = $controller->getAllUsers();
@@ -85,7 +85,7 @@ switch ($metodo) {
 
         $rol = obtenerRol($datos['categoria'] ?? null);
         $exito = $controller->insertar(new Usuario(
-            (int) ($datos['userId'] ?? 0),
+            (int) ($datos['id'] ?? 0),
             $datos['nombre'] ?? '',
             $datos['apellidos'] ?? '',
             $datos['username'] ?? '',
@@ -109,7 +109,7 @@ switch ($metodo) {
 
         if (isset($datos['password'])) {
             $exito = $controller->actualizar_password(new Usuario(
-                (int) ($datos['userId'] ?? 0),
+                (int) ($datos['id'] ?? 0),
                 $datos['nombre'] ?? '',
                 $datos['apellidos'] ?? '',
                 $datos['username'] ?? '',
@@ -119,7 +119,7 @@ switch ($metodo) {
 
             if ($exito) {
                 $exito = $controller->actualizar(new Usuario(
-                    (int) ($datos['userId'] ?? 0),
+                    (int) ($datos['id'] ?? 0),
                     $datos['nombre'] ?? '',
                     $datos['apellidos'] ?? '',
                     $datos['username'] ?? '',
@@ -140,7 +140,7 @@ switch ($metodo) {
             }
         } else {
             $exito = $controller->actualizar(new Usuario(
-                (int) ($datos['userId'] ?? 0),
+                (int) ($datos['id'] ?? 0),
                 $datos['nombre'] ?? '',
                 $datos['apellidos'] ?? '',
                 $datos['username'] ?? '',

@@ -1,7 +1,7 @@
 <?php
 
 require_once "Rol.php";
-class Usuario
+class Usuario implements JsonSerializable
 {
     private int $id_usuario;
     private string $nombre;
@@ -24,6 +24,18 @@ class Usuario
         $this->username = $username;
         $this->password = $password;
         $this->role = $role;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_usuario' => $this->id_usuario,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'username' => $this->username,
+            'password' => $this->password,
+            'role' => isset($this->role->value) ? $this->role->value : $this->role->name
+        ];
     }
 
     /**

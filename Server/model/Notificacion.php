@@ -1,7 +1,7 @@
 <?php
 
 require_once "Estado.php";
-class Notificacion
+class Notificacion implements JsonSerializable
 {
     private int $id_notificacion;
     private string $titulo;
@@ -9,7 +9,6 @@ class Notificacion
     private DateTime $fecha_creacion;
     private Estado $estado;
     private int $id_user;
-
 
     public function __construct(
         int $id_notificacion,
@@ -25,6 +24,18 @@ class Notificacion
         $this->fecha_creacion = $fecha_creacion;
         $this->estado = $estado;
         $this->id_user = $id_user;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_notificacion' => $this->id_notificacion,
+            'titulo' => $this->titulo,
+            'descripcion' => $this->descripcion,
+            'fecha_creacion' => $this->fecha_creacion,
+            'estado' => isset($this->estado->value) ? $this->estado->value : $this->estado->name,
+            'id_user' => $this->id_user
+        ];
     }
 
     /**
