@@ -118,23 +118,21 @@ switch ($metodo) {
             ));
 
             if ($exito) {
-                if ($exito) {
-                    $exito = $controller->actualizar(new Usuario(
-                        (int) ($datos['userId'] ?? 0),
-                        $datos['nombre'] ?? '',
-                        $datos['apellidos'] ?? '',
-                        $datos['username'] ?? '',
-                        $datos['password'] ?? '',
-                        $rol,
-                    ));
+                $exito = $controller->actualizar(new Usuario(
+                    (int) ($datos['userId'] ?? 0),
+                    $datos['nombre'] ?? '',
+                    $datos['apellidos'] ?? '',
+                    $datos['username'] ?? '',
+                    $datos['password'] ?? '',
+                    $rol,
+                ));
 
-                    if ($exito) {
-                        http_response_code(201);
-                        echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
-                    } else {
-                        http_response_code(500);
-                        echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el usuario en la base de datos."]);
-                    }
+                if ($exito) {
+                    http_response_code(201);
+                    echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el usuario en la base de datos."]);
                 }
             } else {
                 http_response_code(400);
