@@ -1,9 +1,19 @@
 <?php
 
-require_once ("../dao/ConexionDB.php");
-require_once ("../dao/NotificacionDAO.php");
+require_once("../dao/ConexionDB.php");
+require_once("../dao/NotificacionDAO.php");
 
-class controller
+header('Content-Type: application/json; charset=utf-8');
+
+header('Access-Control-Allow-Origin: *');
+
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+ini_set('display_errors', 0);
+
+class NotificacionController
 {
     private $NotificacionDAO;
 
@@ -37,5 +47,9 @@ class controller
         return $this->NotificacionDAO->eliminar($idUser);
     }
 }
+
+$controller = new NotificacionController();
+$metodo = $_SERVER['REQUEST_METHOD'];
+
 
 ?>
