@@ -88,7 +88,8 @@ $controller = new EquipamientoController();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
 // Función auxiliar para obtener el Enum desde una cadena de texto
-function obtenerEnumCategoria(?string $strCategoria): EnumCategoria {
+function obtenerRol(?string $strCategoria): EnumCategoria
+{
     return match (strtoupper($strCategoria ?? '')) {
         "PORTATIL" => EnumCategoria::PORTATIL,
         "SOBREMESA" => EnumCategoria::SOBREMESA,
@@ -101,7 +102,7 @@ function obtenerEnumCategoria(?string $strCategoria): EnumCategoria {
 switch ($metodo) {
     case 'GET':
         if (isset($_GET['id'])) {
-            $resultado = $controller->buscarPorId((int)$_GET['id']);
+            $resultado = $controller->buscarPorId((int) $_GET['id']);
         } else {
             $resultado = $controller->listar();
         }
@@ -111,7 +112,7 @@ switch ($metodo) {
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $categoriaEnum = obtenerEnumCategoria($datos['categoria'] ?? null);
+        $categoriaEnum = obtenerRol($datos['categoria'] ?? null);
 
         $exito = $controller->insertar(
             $datos['nombre'] ?? '',
@@ -119,7 +120,7 @@ switch ($metodo) {
             $datos['marca'] ?? '',
             $datos['modelo'] ?? '',
             $categoriaEnum,
-            (int)($datos['id_ubicacion_actual'] ?? 0)
+            (int) ($datos['id_ubicacion_actual'] ?? 0)
         );
 
         if ($exito) {
@@ -134,16 +135,16 @@ switch ($metodo) {
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $categoriaEnum = obtenerEnumCategoria($datos['categoria'] ?? null);
+        $categoriaEnum = obtenerRol($datos['categoria'] ?? null);
 
         $exito = $controller->actualizar(
-            (int)($datos['id'] ?? $datos['id_equipamiento'] ?? 0),
+            (int) ($datos['id'] ?? $datos['id_equipamiento'] ?? 0),
             $datos['nombre'] ?? '',
             $datos['descripcion'] ?? '',
             $datos['marca'] ?? '',
             $datos['modelo'] ?? '',
             $categoriaEnum,
-            (int)($datos['id_ubicacion_actual'] ?? 0)
+            (int) ($datos['id_ubicacion_actual'] ?? 0)
         );
 
         if ($exito) {
@@ -157,7 +158,7 @@ switch ($metodo) {
     case 'DELETE':
         $id = $_GET['id'] ?? null;
 
-        if ($id && $controller->eliminar((int)$id)) {
+        if ($id && $controller->eliminar((int) $id)) {
             echo json_encode(["status" => "success", "mensaje" => "Equipamiento eliminado correctamente"]);
         } else {
             http_response_code(400);
