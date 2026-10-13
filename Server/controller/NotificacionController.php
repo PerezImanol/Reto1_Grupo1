@@ -15,7 +15,7 @@ ini_set('display_errors', 0);
 
 class NotificacionController
 {
-    private $NotificacionDAO;
+    private NotificacionDAO $NotificacionDAO;
 
     public function __construct()
     {
