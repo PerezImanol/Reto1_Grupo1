@@ -7,7 +7,7 @@ class ConexionDB
             $conexion = new mysqli(
                 "localhost",
                 "root",
-                "abcd*1234",
+                "",
                 "reto_2daw"
             );
             $conexion->query("SET NAMES 'utf8'");

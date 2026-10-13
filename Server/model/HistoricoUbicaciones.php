@@ -3,7 +3,10 @@ namespace App\Models;
 
 use DateTime;
 
-class HistoricoUbicaciones
+use JsonSerializable;
+use Override;
+
+class HistoricoUbicaciones implements JsonSerializable
 {
     private int $id_historico;
     private int $id_equipamiento;
@@ -23,6 +26,18 @@ class HistoricoUbicaciones
         $this->id_ubicacion = $id_ubicacion;
         $this->fecha_inicio = $fecha_inicio;
         $this->fecha_fin = $fecha_fin;
+    }
+
+    #[Override]
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_historico' => $this->id_historico,
+            'id_equipamiento' => $this->id_equipamiento,
+            'id_ubicacion' => $this->id_ubicacion,
+            'fecha_inicio' => $this->fecha_inicio,
+            'fecha_fin' => $this->fecha_fin,
+        ];
     }
 
     public function getIdHistorico(): int
