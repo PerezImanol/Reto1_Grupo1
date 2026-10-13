@@ -2,7 +2,7 @@
 
 require_once("../controller/UsuarioController.php");
 
-$controller = new controller();
+$controller = new UsuarioController();
 
 $usuarios = $controller->getAllUsers();
 
@@ -18,52 +18,53 @@ $usuarios = $controller->getAllUsers();
 
 <body>
 
-<h1>Lista de usuarios</h1>
+    <h1>Lista de usuarios</h1>
 
-<table border="1">
-
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Rol</th>
-    </tr>
-
-    <?php foreach ($usuarios as $usuario): ?>
+    <table border="1">
 
         <tr>
-
-            <td>
-                <?= $usuario->getIdUsuario() ?>
-            </td>
-
-            <td>
-                <?= $usuario->getNombre() ?>
-            </td>
-
-            <td>
-                <?= $usuario->getApellido() ?>
-            </td>
-
-            <td>
-                <?= $usuario->getUsername() ?>
-            </td>
-
-            <td>
-                <?= $usuario->getPassword() ?>
-            </td>
-
-            <td>
-                <?= $usuario->getRole()->name ?>
-            </td>
-
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Rol</th>
         </tr>
 
-    <?php endforeach; ?>
+        <?php foreach ($usuarios as $usuario): ?>
 
-</table>
+            <tr>
+
+                <td>
+                    <?= $usuario->getIdUsuario() ?>
+                </td>
+
+                <td>
+                    <?= $usuario->getNombre() ?>
+                </td>
+
+                <td>
+                    <?= $usuario->getApellido() ?>
+                </td>
+
+                <td>
+                    <?= $usuario->getUsername() ?>
+                </td>
+
+                <td>
+                    <?= $usuario->getPassword() ?>
+                </td>
+
+                <td>
+                    <?= $usuario->getRole()->name ?>
+                </td>
+
+            </tr>
+
+        <?php endforeach; ?>
+
+    </table>
 
 </body>
+
 </html>
