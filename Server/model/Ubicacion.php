@@ -1,7 +1,9 @@
 <?php
 namespace App\Models;
 
-class Ubicacion
+use JsonSerializable;
+
+class Ubicacion implements JsonSerializable
 {
     private int $id_ubicacion;
     private string $nombre;
@@ -17,7 +19,15 @@ class Ubicacion
         $this->descripcion = $descripcion;
     }
 
-
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_ubicacion' => $this->id_ubicacion,
+            'nombre'       => $this->nombre,
+            'descripcion'  => $this->descripcion
+        ];
+    }
+    
     public function getIdUbicacion(): int
     {
         return $this->id_ubicacion;
