@@ -1,9 +1,9 @@
 <?php
 
-require_once ("../dao/ConexionDB.php");
-require_once ("../dao/NotificacionDAO.php");
+require_once("../dao/ConexionDB.php");
+require_once("../dao/NotificacionDAO.php");
 
-class controller
+class NotificacionController
 {
     private $NotificacionDAO;
 
