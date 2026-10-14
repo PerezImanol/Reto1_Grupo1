@@ -57,6 +57,10 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+ini_set('log_errors', 1);
+ini_set('error_log', 'php_error.log');
 
 $controller = new UsuarioController();
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -71,8 +75,8 @@ function obtenerRol(?string $strRol): Rol
 
 switch ($metodo) {
     case 'GET':
-        if (isset($_GET['notifId'])) {
-            $resultado = $controller->buscarPorId((int) $_GET['notifId']);
+        if (isset($_GET['id'])) {
+            $resultado = $controller->buscarPorId((int) $_GET['id']);
         } else {
             $resultado = $controller->getAllUsers();
         }
@@ -83,7 +87,7 @@ switch ($metodo) {
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $rol = obtenerRol($datos['categoria'] ?? null);
+        $rol = obtenerRol($datos['role'] ?? null);
         $exito = $controller->insertar(new Usuario(
             (int) ($datos['id'] ?? 0),
             $datos['nombre'] ?? '',
@@ -98,27 +102,18 @@ switch ($metodo) {
             echo json_encode(["status" => "success", "mensaje" => "Usuario creado con éxito."]);
         } else {
             http_response_code(500);
-            echo json_encode(["status" => "error", "mensaje" => "No se pudo insertar el usuario en la base de datos."]);
+            echo json_encode(["status" => "error", "mensaje" => "No se pudo insertar el usuario en la base de datos, puede que el nombre de usuario este cogido."]);
         }
         exit;
 
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
-
-        $rol = obtenerRol($datos['categoria'] ?? null);
+        $rol = obtenerRol($datos['role'] ?? null);
 
         if (isset($datos['password'])) {
-            $exito = $controller->actualizar_password(new Usuario(
-                (int) ($datos['id'] ?? 0),
-                $datos['nombre'] ?? '',
-                $datos['apellidos'] ?? '',
-                $datos['username'] ?? '',
-                $datos['password'] ?? '',
-                $rol,
-            ));
-
-            if ($exito) {
-                $exito = $controller->actualizar(new Usuario(
+            $passCheck = $controller->login($datos['username'] ?? '', $datos['password'] ?? '');
+            if ($passCheck) {
+                $exito = $controller->actualizar_password(new Usuario(
                     (int) ($datos['id'] ?? 0),
                     $datos['nombre'] ?? '',
                     $datos['apellidos'] ?? '',
@@ -128,15 +123,26 @@ switch ($metodo) {
                 ));
 
                 if ($exito) {
-                    http_response_code(201);
-                    echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el usuario en la base de datos."]);
+                    $exito = $controller->actualizar(new Usuario(
+                        (int) ($datos['id'] ?? 0),
+                        $datos['nombre'] ?? '',
+                        $datos['apellidos'] ?? '',
+                        $datos['username'] ?? '',
+                        $datos['password'] ?? '',
+                        $rol,
+                    ));
+
+                    if ($exito) {
+                        http_response_code(201);
+                        echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el usuario en la base de datos."]);
+                    }
                 }
             } else {
                 http_response_code(400);
-                echo json_encode(["status" => "error", "mensaje" => "La contraseña introducida es incorrecta, o hubo un problema al actualizar la contraseña."]);
+                echo json_encode(["status" => "error", "mensaje" => "La contraseña introducida es incorrecta."]);
             }
         } else {
             $exito = $controller->actualizar(new Usuario(

@@ -62,8 +62,8 @@ function obtenerRol(?string $strEstado): Estado
 
 switch ($metodo) {
     case 'GET':
-        if (isset($_GET['notifId']) && isset($_GET['userId'])) {
-            $resultado = $controller->buscarPorId((int) $_GET['notifId']);
+        if (isset($_GET['id']) && isset($_GET['userId'])) {
+            $resultado = $controller->buscarPorId((int) $_GET['id']);
         } else if (isset($_GET['userId'])) {
             $resultado = $controller->getAllNotifsUser((int) $_GET['userId']);
         }

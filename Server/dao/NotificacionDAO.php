@@ -1,7 +1,7 @@
 <?php
 
-require_once ("../model/Notificacion.php");
-require_once ("../dao/ConexionDB.php");
+require_once("../model/Notificacion.php");
+require_once("../dao/ConexionDB.php");
 
 class NotificacionDAO
 {
@@ -12,39 +12,39 @@ class NotificacionDAO
     }
 
     public function getAllNotifsUser(int $id_user): array
-{
-    $notifs = [];
+    {
+        $notifs = [];
 
-    $sql = "SELECT * FROM notificaciones WHERE id_usuario = ?";
+        $sql = "SELECT * FROM notificaciones WHERE id_usuario = ?";
 
-    $stmt = $this->conexion->prepare($sql);
-    $stmt->bind_param("i", $id_user);
-    $stmt->execute();
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_user);
+        $stmt->execute();
 
-    $resultado = $stmt->get_result();
+        $resultado = $stmt->get_result();
 
-    while ($fila = $resultado->fetch_assoc()) {
+        while ($fila = $resultado->fetch_assoc()) {
 
-        $estado = match ($fila["estado"]) {
-            "PENDIENTE" => Estado::PENDIENTE,
-            "EN_PROCESO" => Estado::EN_PROCESO,
-            "REALIZADA" => Estado::REALIZADA
-        };
+            $estado = match ($fila["estado"]) {
+                "PENDIENTE" => Estado::PENDIENTE,
+                "EN_PROCESO" => Estado::EN_PROCESO,
+                "REALIZADA" => Estado::REALIZADA
+            };
 
-        $notif = new Notificacion(
-            $fila["id_notificacion"],
-            $fila["titulo"],
-            $fila["descripcion"],
-            new DateTime($fila["fecha_creacion"]),
-            $estado,
-            $fila["id_usuario"]
-        );
+            $notif = new Notificacion(
+                $fila["id_notificacion"],
+                $fila["titulo"],
+                $fila["descripcion"],
+                new DateTime($fila["fecha_creacion"]),
+                $estado,
+                $fila["id_usuario"]
+            );
 
-        $notifs[] = $notif;
+            $notifs[] = $notif;
+        }
+
+        return $notifs;
     }
-
-    return $notifs;
-}
 
     public function buscarPorId(int $idUser): ?Notificacion
     {
@@ -85,7 +85,8 @@ class NotificacionDAO
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
         $fecha_creacion = $notif->getFechaCreacion();
-        $estado = $notif->getEstado();
+        $estadoEnum = $notif->getEstado();
+        $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id_usuario = $notif->getIdUser();
 
         $stmt->bind_param(
@@ -112,7 +113,8 @@ class NotificacionDAO
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
         $fecha_creacion = $notif->getFechaCreacion();
-        $estado = $notif->getEstado();
+        $estadoEnum = $notif->getEstado();
+        $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id = $notif->getIdNotificacion();
 
         $stmt->bind_param(

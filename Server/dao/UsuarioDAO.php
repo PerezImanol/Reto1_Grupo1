@@ -83,13 +83,15 @@ class UsuarioDAO
     public function insertar(Usuario $user): bool
     {
         $sql = "INSERT INTO usuarios (nombre, apellidos, nombre_usuario, password_hash, rol)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         $nombre = $user->getNombre();
         $apellido = $user->getApellido();
         $username = $user->getUsername();
         $password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
-        $role = $user->getRole();
+        $roleEnum = $user->getRole();
+        $role = isset($enumCategoria->value) ? $roleEnum->value : $roleEnum->name;
+
 
         $stmt->bind_param(
             "sssss",
@@ -115,7 +117,8 @@ class UsuarioDAO
         $nombre = $user->getNombre();
         $apellido = $user->getApellido();
         $username = $user->getUsername();
-        $role = $user->getRole();
+        $roleEnum = $user->getRole();
+        $role = isset($enumCategoria->value) ? $roleEnum->value : $roleEnum->name;
         $id = $user->getIdUsuario();
 
         $stmt->bind_param(
@@ -131,18 +134,17 @@ class UsuarioDAO
 
     public function actualizar_password(Usuario $user): bool
     {
-        $hashed_password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
         $sql = "UPDATE usuarios
                     SET password_hash = ?;
                     WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
-        $password = $user->getPassword();
+        $hashed_password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
         $id = $user->getIdUsuario();
 
         $stmt->bind_param(
             "si",
-            $password,
+            $hashed_password,
             $id
         );
         return $stmt->execute();
