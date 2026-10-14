@@ -137,5 +137,3 @@ switch ($metodo) {
         echo json_encode(["mensaje" => "Método no permitido"]);
         exit;
 }
-
-?>
