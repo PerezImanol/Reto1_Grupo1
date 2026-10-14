@@ -17,13 +17,22 @@ class UsuarioDAO
                     FROM usuarios
                     WHERE nombre_usuario = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $username);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $resultado = $stmt->get_result();
-        $user = $resultado->fetch_assoc();
+        $row = $resultado->fetch_assoc();
 
-        if ($user && password_verify($password, $user["password_hash"])) {
-            return $user;
+        $role = $row["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
+
+        if ($row && password_verify($password, $row["password_hash"])) {
+            return new Usuario(
+                $row["id_usuario"],
+                $row["nombre"],
+                $row["apellidos"],
+                $row["nombre_usuario"],
+                $row["password_hash"],
+                $role
+            );
         } else {
             return null;
         }
@@ -110,7 +119,7 @@ class UsuarioDAO
                     SET nombre = ?,
                     apellidos = ?,
                     nombre_usuario = ?,
-                    rol = ?;
+                    rol = ?
                     WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
@@ -135,7 +144,7 @@ class UsuarioDAO
     public function actualizar_password(Usuario $user): bool
     {
         $sql = "UPDATE usuarios
-                    SET password_hash = ?;
+                    SET password_hash = ?
                     WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);

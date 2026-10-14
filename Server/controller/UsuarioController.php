@@ -57,10 +57,6 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 ini_set('display_errors', 0);
-error_reporting(E_ALL);
-
-ini_set('log_errors', 1);
-ini_set('error_log', 'php_error.log');
 
 $controller = new UsuarioController();
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -81,6 +77,7 @@ switch ($metodo) {
             $resultado = $controller->getAllUsers();
         }
 
+        http_response_code(200);
         echo json_encode($resultado);
         exit;
 
@@ -91,7 +88,7 @@ switch ($metodo) {
         $exito = $controller->insertar(new Usuario(
             (int) ($datos['id'] ?? 0),
             $datos['nombre'] ?? '',
-            $datos['apellidos'] ?? '',
+            $datos['apellido'] ?? '',
             $datos['username'] ?? '',
             $datos['password'] ?? '',
             $rol,
@@ -110,15 +107,15 @@ switch ($metodo) {
         $datos = json_decode(file_get_contents('php://input'), true);
         $rol = obtenerRol($datos['role'] ?? null);
 
-        if (isset($datos['password'])) {
+        if (isset($datos['password']) && isset($datos['newPassword'])) {
             $passCheck = $controller->login($datos['username'] ?? '', $datos['password'] ?? '');
-            if ($passCheck) {
+            if (isset($passCheck)) {
                 $exito = $controller->actualizar_password(new Usuario(
                     (int) ($datos['id'] ?? 0),
                     $datos['nombre'] ?? '',
-                    $datos['apellidos'] ?? '',
+                    $datos['apellido'] ?? '',
                     $datos['username'] ?? '',
-                    $datos['password'] ?? '',
+                    $datos['newPassword'] ?? '',
                     $rol,
                 ));
 
@@ -126,14 +123,14 @@ switch ($metodo) {
                     $exito = $controller->actualizar(new Usuario(
                         (int) ($datos['id'] ?? 0),
                         $datos['nombre'] ?? '',
-                        $datos['apellidos'] ?? '',
+                        $datos['apellido'] ?? '',
                         $datos['username'] ?? '',
-                        $datos['password'] ?? '',
+                        $datos['newPassword'] ?? '',
                         $rol,
                     ));
 
                     if ($exito) {
-                        http_response_code(201);
+                        http_response_code(200);
                         echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
                     } else {
                         http_response_code(500);
@@ -144,19 +141,25 @@ switch ($metodo) {
                 http_response_code(400);
                 echo json_encode(["status" => "error", "mensaje" => "La contraseña introducida es incorrecta."]);
             }
+        } else if (
+            isset($datos['password']) && !isset($datos['newPassword'])
+            || !isset($datos['password']) && isset($datos['newPassword'])
+        ) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "mensaje" => "Comprueba que hayas introducido las constraseñas bien."]);
         } else {
             $exito = $controller->actualizar(new Usuario(
                 (int) ($datos['id'] ?? 0),
                 $datos['nombre'] ?? '',
-                $datos['apellidos'] ?? '',
+                $datos['apellido'] ?? '',
                 $datos['username'] ?? '',
                 $datos['password'] ?? '',
                 $rol,
             ));
 
             if ($exito) {
-                http_response_code(201);
-                echo json_encode(["status" => "success", "mensaje" => "Usuario creado con éxito."]);
+                http_response_code(200);
+                echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
             } else {
                 http_response_code(500);
                 echo json_encode(["status" => "error", "mensaje" => "No se pudo insertar el usuario en la base de datos."]);
