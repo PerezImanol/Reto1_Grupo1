@@ -49,7 +49,7 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 ini_set('log_errors', 1);
@@ -58,7 +58,7 @@ ini_set('error_log', 'php_error.log');
 $controller = new NotificacionController();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
-function obtenerRol(?string $strEstado): Estado
+function obtenerEstado(?string $strEstado): Estado
 {
     return match (strtoupper($strEstado ?? '')) {
         "EN_PROCESO" => Estado::EN_PROCESO,
@@ -66,6 +66,7 @@ function obtenerRol(?string $strEstado): Estado
         "REALIZADA" => Estado::REALIZADA
     };
 }
+
 
 switch ($metodo) {
     case 'GET':
@@ -85,14 +86,13 @@ switch ($metodo) {
 
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
-
-        $estado = obtenerRol($datos['estado'] ?? null);
+        $estado = obtenerEstado($datos['estado'] ?? null);
 
         $exito = $controller->insertar(new Notificacion(
             (int) ($datos['id'] ?? 0),
             $datos['titulo'] ?? '',
             $datos['descripcion'] ?? '',
-            new DateTime($datos['date']),
+            new DateTime($datos['fecha_creacion']),
             $estado,
             (int) ($datos['id_user'] ?? 0)
         ));
@@ -109,7 +109,7 @@ switch ($metodo) {
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $estado = obtenerRol($datos['estado'] ?? null);
+        $estado = obtenerEstado($datos['estado'] ?? null);
 
         $exito = $controller->actualizar(new Notificacion(
             (int) ($datos['id'] ?? 0),

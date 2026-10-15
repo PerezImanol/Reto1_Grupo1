@@ -46,13 +46,13 @@ class NotificacionDAO
         return $notifs;
     }
 
-    public function buscarPorId(int $idUser): ?Notificacion
+    public function buscarPorId(int $idNotif): ?Notificacion
     {
         $sql = "SELECT *
                     FROM notificaciones
                     WHERE id_notificacion = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idUser);
+        $stmt->bind_param("i", $idNotif);
         $stmt->execute();
         $resultado = $stmt->get_result();
         if ($fila = $resultado->fetch_assoc()) {
@@ -106,24 +106,26 @@ class NotificacionDAO
                     SET titulo = ?,
                     descripcion = ?,
                     fecha_creacion = ?,
-                    estado = ?;
-                    WHERE id_notificacion = ?";
+                    estado = ?
+                    WHERE id_notificacion = ? AND id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
-        $fecha_creacion = $notif->getFechaCreacion();
+        $fecha_creacion = $notif->getFechaCreacion()->format('Y-m-d H:i:s');
         $estadoEnum = $notif->getEstado();
         $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id = $notif->getIdNotificacion();
+        $id_user = $notif->getIdUser();
 
         $stmt->bind_param(
-            "ssssi",
+            "ssssii",
             $titulo,
             $descripcion,
             $fecha_creacion,
             $estado,
-            $id
+            $id,
+            $id_user
         );
         return $stmt->execute();
     }
@@ -132,7 +134,7 @@ class NotificacionDAO
     public function eliminar(int $idNotif, int $idUser): bool
     {
         $sql = "DELETE FROM notificaciones
-                    WHERE id_notificacion = ? AND id_user = ?";
+                    WHERE id_notificacion = ? AND id_usuario = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("ii", $idNotif, $idUser);
         return $stmt->execute();
