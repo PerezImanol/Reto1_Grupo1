@@ -3,16 +3,6 @@
 require_once("../dao/ConexionDB.php");
 require_once("../dao/NotificacionDAO.php");
 
-header('Content-Type: application/json; charset=utf-8');
-
-header('Access-Control-Allow-Origin: *');
-
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-
-ini_set('display_errors', 0);
-
 class NotificacionController
 {
     private NotificacionDAO $NotificacionDAO;
@@ -42,11 +32,25 @@ class NotificacionController
         return $this->NotificacionDAO->actualizar($notif);
     }
 
-    public function eliminar(int $idUser)
+    public function eliminar(int $idNotif, int $idUser)
     {
-        return $this->NotificacionDAO->eliminar($idUser);
+        return $this->NotificacionDAO->eliminar($idNotif, $idUser);
     }
 }
+
+header('Content-Type: application/json; charset=utf-8');
+
+header('Access-Control-Allow-Origin: *');
+
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+ini_set('log_errors', 1);
+ini_set('error_log', 'php_error.log');
 
 $controller = new NotificacionController();
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -62,10 +66,10 @@ function obtenerRol(?string $strEstado): Estado
 
 switch ($metodo) {
     case 'GET':
-        if (isset($_GET['id']) && isset($_GET['userId'])) {
+        if (isset($_GET['id']) && isset($_GET['id_user'])) {
             $resultado = $controller->buscarPorId((int) $_GET['id']);
-        } else if (isset($_GET['userId'])) {
-            $resultado = $controller->getAllNotifsUser((int) $_GET['userId']);
+        } else if (isset($_GET['id_user'])) {
+            $resultado = $controller->getAllNotifsUser((int) $_GET['id_user']);
         }
 
         if (isset($resultado)) {
@@ -79,15 +83,15 @@ switch ($metodo) {
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $estado = obtenerRol($datos['categoria'] ?? null);
+        $estado = obtenerRol($datos['estado'] ?? null);
 
         $exito = $controller->insertar(new Notificacion(
-            (int) ($datos['notifId'] ?? 0),
+            (int) ($datos['id'] ?? 0),
             $datos['titulo'] ?? '',
             $datos['descripcion'] ?? '',
-            $datos['fecha_creacion'] ?? '',
+            new DateTime($datos['date']),
             $estado,
-            (int) ($datos['userId'] ?? 0)
+            (int) ($datos['id_user'] ?? 0)
         ));
 
         if ($exito) {
@@ -102,18 +106,19 @@ switch ($metodo) {
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
-        $estado = obtenerRol($datos['categoria'] ?? null);
+        $estado = obtenerRol($datos['estado'] ?? null);
 
         $exito = $controller->actualizar(new Notificacion(
-            (int) ($datos['notifId'] ?? 0),
+            (int) ($datos['id'] ?? 0),
             $datos['titulo'] ?? '',
             $datos['descripcion'] ?? '',
-            $datos['fecha_creacion'] ?? '',
+            new DateTime($datos['fecha_creacion']),
             $estado,
-            (int) ($datos['userId'] ?? 0)
+            (int) ($datos['id_user'] ?? 0)
         ));
 
         if ($exito) {
+            http_response_code(200);
             echo json_encode(["status" => "success", "mensaje" => "Notificacion actualizada con éxito"]);
         } else {
             http_response_code(500);
@@ -123,8 +128,9 @@ switch ($metodo) {
 
     case 'DELETE':
         $id = $_GET['id'] ?? null;
+        $id_user = $_GET['id_user'] ?? null;
 
-        if ($id && $controller->eliminar((int) $id)) {
+        if ($id && $controller->eliminar((int) $id, (int) $id_user)) {
             echo json_encode(["status" => "success", "mensaje" => "Notificacion eliminada correctamente"]);
         } else {
             http_response_code(400);

@@ -66,7 +66,7 @@ class NotificacionDAO
                 $fila["id_notificacion"],
                 $fila["titulo"],
                 $fila["descripcion"],
-                $fila["fecha_creacion"],
+                new DateTime($fila["fecha_creacion"]),
                 $estado,
                 $fila["id_usuario"]
             );
@@ -129,12 +129,12 @@ class NotificacionDAO
     }
 
     // ELIMINAR
-    public function eliminar(int $idNotif): bool
+    public function eliminar(int $idNotif, int $idUser): bool
     {
         $sql = "DELETE FROM notificaciones
-                    WHERE id_notificacion = ?";
+                    WHERE id_notificacion = ? AND id_user = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idNotif);
+        $stmt->bind_param("ii", $idNotif, $idUser);
         return $stmt->execute();
     }
 }
