@@ -1,5 +1,7 @@
 <?php
-
+/*
+http://localhost/Server/Controller/UbicacionController.php
+*/
 use App\Models\Ubicacion;
 
 require_once("../dao/UbicacionDAO.php");

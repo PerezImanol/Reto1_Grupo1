@@ -80,11 +80,11 @@ class NotificacionDAO
     public function insertar(Notificacion $notif): bool
     {
         $sql = "INSERT INTO notificaciones (titulo, descripcion, fecha_creacion, estado, id_usuario)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
-        $fecha_creacion = $notif->getFechaCreacion();
+        $fecha_creacion = $notif->getFechaCreacion()->format('Y-m-d H:i:s');
         $estadoEnum = $notif->getEstado();
         $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id_usuario = $notif->getIdUser();

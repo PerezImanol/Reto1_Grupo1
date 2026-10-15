@@ -1,5 +1,7 @@
 <?php
-
+/*
+http://localhost/Server/Controller/HistoricoUbicacionController.php
+*/
 use App\Models\HistoricoUbicaciones;
 
 require_once("../dao/HistoricoUbicacionDAO.php");

@@ -1,5 +1,7 @@
 <?php
-
+/*
+http://localhost/Server/Controller/EquipamientoController.php
+*/
 use App\Enums\EnumCategoria;
 use App\Models\Equipamiento;
 
