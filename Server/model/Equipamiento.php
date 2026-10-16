@@ -6,14 +6,28 @@ use JsonSerializable;
 
 class Equipamiento implements JsonSerializable
 {
+    //El ID del equipamiento.
     private int $id_equipamiento;
+
+    //El nombre del equipamiento.
     private string $nombre;
+
+    //La descripcion del equipamiento.
     private string $descripcion;
+
+    //La marca del equipamiento.
     private string $marca;
+
+    //El modelo del equipamiento.
     private string $modelo;
+
+    //La categoria del equipamiento.
     private EnumCategoria $categoria;
+
+    //El ID de la ubicacion actual.
     private int $id_ubicacion_actual;
 
+    //El constructor de clase.
     public function __construct(
         int $id_equipamiento,
         string $nombre,
@@ -32,24 +46,24 @@ class Equipamiento implements JsonSerializable
         $this->id_ubicacion_actual = $id_ubicacion_actual;
     }
 
-    /**
-     * Define la representación JSON del objeto para json_encode()
-     */
+    //Metodo implementado de JsonSerializable, necesario para poder usar postman y el enrutador.
     public function jsonSerialize(): mixed
     {
         return [
-            'id_equipamiento'     => $this->id_equipamiento,
-            'nombre'              => $this->nombre,
-            'descripcion'         => $this->descripcion,
-            'marca'               => $this->marca,
-            'modelo'              => $this->modelo,
-            'categoria'           => isset($this->categoria->value) ? $this->categoria->value : $this->categoria->name,
+            'id_equipamiento' => $this->id_equipamiento,
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'marca' => $this->marca,
+            'modelo' => $this->modelo,
+            'categoria' => isset($this->categoria->value) ? $this->categoria->value : $this->categoria->name,
             'id_ubicacion_actual' => $this->id_ubicacion_actual
         ];
     }
 
     /**
-     * Get the value of id_equipamiento
+     * Devuelve el ID del equipamiento.
+     * 
+     * @return int
      */
     public function getIdEquipamiento(): int
     {
@@ -57,7 +71,10 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of id_equipamiento
+     * Cambia el ID del equipamiento.
+     * @param int $id_equipamiento
+     *
+     * @return self
      */
     public function setIdEquipamiento(int $id_equipamiento): self
     {
@@ -67,7 +84,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of nombre
+     * Devuelve el nombre del equipamiento.
+     * 
+     * @return string
      */
     public function getNombre(): string
     {
@@ -75,7 +94,10 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of nombre
+     * Cambia el nombre del equipamiento.
+     * @param string $nombre
+     *
+     * @return self
      */
     public function setNombre(string $nombre): self
     {
@@ -85,7 +107,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of descripcion
+     * Devuelve la descripcion del equipamiento.
+     *
+     * @return string
      */
     public function getDescripcion(): string
     {
@@ -93,7 +117,11 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of descripcion
+     * Cambia la descripcion del equipamiento.
+     * 
+     * @param string $descripcion
+     *
+     * @return self
      */
     public function setDescripcion(string $descripcion): self
     {
@@ -103,7 +131,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of marca
+     * Devuelve la marca del equipamiento.
+     * 
+     * @return string
      */
     public function getMarca(): string
     {
@@ -111,7 +141,11 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of marca
+     * Cambia la marca del equipamiento.
+     * 
+     * @param string $marca
+     *
+     * @return self
      */
     public function setMarca(string $marca): self
     {
@@ -121,7 +155,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of modelo
+     * Devuelve el modelo del equipamiento.
+     * 
+     * @return string
      */
     public function getModelo(): string
     {
@@ -129,7 +165,11 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of modelo
+     * Cambia el modelo del equipamiento.
+     * 
+     * @param string $modelo
+     *
+     * @return self
      */
     public function setModelo(string $modelo): self
     {
@@ -139,7 +179,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of categoria
+     * Devuelve la categora del equipamiento.
+     * 
+     * @return EnumCategoria
      */
     public function getCategoria(): EnumCategoria
     {
@@ -147,7 +189,11 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of categoria
+     * Devuelve la categoria del equipamiento.
+     * 
+     * @param EnumCategoria $categoria
+     *
+     * @return self
      */
     public function setCategoria(EnumCategoria $categoria): self
     {
@@ -157,7 +203,9 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Get the value of id_ubicacion_actual
+     * Devuelve la ID de la ubicacion actual del equipamiento.
+     * 
+     * @return int
      */
     public function getIdUbicacionActual(): int
     {
@@ -165,7 +213,11 @@ class Equipamiento implements JsonSerializable
     }
 
     /**
-     * Set the value of id_ubicacion_actual
+     * Devuelve la ID de la ubicacion actual del equipamiento.
+     * 
+     * @param int $id_ubicacion_actual
+     *
+     * @return self
      */
     public function setIdUbicacionActual(int $id_ubicacion_actual): self
     {
