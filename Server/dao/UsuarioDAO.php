@@ -5,12 +5,16 @@ require_once "../dao/ConexionDB.php";
 
 class UsuarioDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
+
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Inicia la sesion en la base de datos, o denega el acceso si los credenciales son incorrectos.
     public function login(string $username, string $password)
     {
         $sql = "SELECT *
@@ -38,6 +42,7 @@ class UsuarioDAO
         }
     }
 
+    //Devuelve todos los usuarios en la base de datos.
     public function getAllUsers(): array
     {
         $users = [];
@@ -62,6 +67,7 @@ class UsuarioDAO
         return $users;
     }
 
+    //Busca un usuario en concreto por ID en la base de datos y la devuelve.
     public function buscarPorId(int $idUser): ?Usuario
     {
         $sql = "SELECT *
@@ -89,6 +95,7 @@ class UsuarioDAO
 
     }
 
+    //Inserta un nuevo usuario a la base de datos.
     public function insertar(Usuario $user): bool
     {
         $sql = "INSERT INTO usuarios (nombre, apellidos, nombre_usuario, password_hash, rol)
@@ -113,6 +120,7 @@ class UsuarioDAO
         return $stmt->execute();
     }
 
+    //Actualiza un usuario en la base de datos.
     public function actualizar(Usuario $user): bool
     {
         $sql = "UPDATE usuarios
@@ -141,6 +149,7 @@ class UsuarioDAO
         return $stmt->execute();
     }
 
+    //Actualiza la contraseña de un usuario en la base de datos.
     public function actualizar_password(Usuario $user): bool
     {
         $sql = "UPDATE usuarios
@@ -158,7 +167,8 @@ class UsuarioDAO
         );
         return $stmt->execute();
     }
-    // ELIMINAR
+
+    // Elimina un usuario en la base de datos.
     public function eliminar(int $idUser): bool
     {
         $sql = "DELETE FROM usuarios

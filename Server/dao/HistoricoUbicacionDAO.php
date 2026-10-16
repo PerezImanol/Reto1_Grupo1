@@ -7,13 +7,16 @@ require_once("../dao/ConexionDB.php");
 
 class HistoricoUbicacionesDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
 
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Devuelve todos los historiales en la base de datos.
     public function buscarHistoricos(): array
     {
         $historicos = array();
@@ -37,6 +40,7 @@ class HistoricoUbicacionesDAO
         return $historicos;
     }
 
+    //Busca un historial en concreto por ID en la base de datos y la devuelve.
     public function buscarHistoricoPorId(int $id): ?HistoricoUbicaciones
     {
         $sql = "SELECT * FROM historico_ubicaciones WHERE id_historico = ?";
@@ -68,6 +72,7 @@ class HistoricoUbicacionesDAO
         return null;
     }
 
+    //Inserta un nuevo historial a la base de datos.
     public function insertarHistorico(HistoricoUbicaciones $historico): bool
     {
         $sql = "INSERT INTO historico_ubicaciones
@@ -97,6 +102,7 @@ class HistoricoUbicacionesDAO
         return $stmt->execute();
     }
 
+    //Actualiza un historial en la base de datos.
     public function actualizarHistorico(HistoricoUbicaciones $historico): bool
     {
         $sql = "UPDATE historico_ubicaciones
@@ -132,6 +138,7 @@ class HistoricoUbicacionesDAO
         return $stmt->execute();
     }
 
+    // Elimina un historial en la base de datos.
     public function eliminarHistorico(int $id): bool
     {
         $sql = "DELETE FROM historico_ubicaciones WHERE id_historico = ?";

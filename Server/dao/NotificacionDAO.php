@@ -5,12 +5,16 @@ require_once("../dao/ConexionDB.php");
 
 class NotificacionDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
+
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Devuelve todas las notificaciones de un usuario en concreto en la base de datos.
     public function getAllNotifsUser(int $id_user): array
     {
         $notifs = [];
@@ -46,6 +50,7 @@ class NotificacionDAO
         return $notifs;
     }
 
+    //Devuelve una notificacion de un usuario en concreto en la base de datos.
     public function buscarPorId(int $idNotif): ?Notificacion
     {
         $sql = "SELECT *
@@ -77,6 +82,7 @@ class NotificacionDAO
 
     }
 
+    //Inserta una nueva notificacion a la base de datos.
     public function insertar(Notificacion $notif): bool
     {
         $sql = "INSERT INTO notificaciones (titulo, descripcion, fecha_creacion, estado, id_usuario)
@@ -99,6 +105,8 @@ class NotificacionDAO
         );
         return $stmt->execute();
     }
+
+    //Actualiza una notificacion a la base de datos.
     public function actualizar(Notificacion $notif): bool
     {
         $sql = "UPDATE notificaciones
@@ -137,7 +145,7 @@ class NotificacionDAO
         return $stmt->affected_rows > 0;
     }
 
-    // ELIMINAR
+    // Elimina una notificacion en la base de datos.
     public function eliminar(int $idNotif, int $idUser): bool
     {
         $sql = "DELETE FROM notificaciones

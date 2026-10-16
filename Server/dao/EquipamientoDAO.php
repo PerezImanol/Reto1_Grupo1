@@ -10,12 +10,16 @@ require_once("../dao/EquipamientoDAO.php");
 
 class EquipamientoDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
+
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Devuelve todos los equipamientos en la base de datos.
     public function buscarTodos(): array
     {
         $equipamientos = array();
@@ -47,6 +51,7 @@ class EquipamientoDAO
         return $equipamientos;
     }
 
+    //Busca un equipamiento en concreto por ID en la base de datos y la devuelve.
     public function buscarPorId(int $idEquipamiento): ?Equipamiento
     {
         $sql = "SELECT *
@@ -80,6 +85,7 @@ class EquipamientoDAO
         }
     }
 
+    //Inserta un nuevo equipamiento a la base de datos.
     public function insertar(Equipamiento $equipamiento): bool
     {
         $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
@@ -105,10 +111,11 @@ class EquipamientoDAO
         return $stmt->execute();
     }
 
-public function actualizar(Equipamiento $equipamiento): bool
-{
-    // 1. Corrección del nombre de la tabla (equipamientos)
-    $sql = "UPDATE equipamientos
+    //Actualiza un equipamiento en la base de datos.
+    public function actualizar(Equipamiento $equipamiento): bool
+    {
+        // 1. Corrección del nombre de la tabla (equipamientos)
+        $sql = "UPDATE equipamientos
                 SET nombre = ?,
                     descripcion = ?,
                     marca = ?,
@@ -117,34 +124,35 @@ public function actualizar(Equipamiento $equipamiento): bool
                     id_ubicacion_actual = ?
                 WHERE id_equipamiento = ?";
 
-    $stmt = $this->conexion->prepare($sql);
+        $stmt = $this->conexion->prepare($sql);
 
-    $nombre = $equipamiento->getNombre();
-    $descripcion = $equipamiento->getDescripcion();
-    $marca = $equipamiento->getMarca();
-    $modelo = $equipamiento->getModelo();
+        $nombre = $equipamiento->getNombre();
+        $descripcion = $equipamiento->getDescripcion();
+        $marca = $equipamiento->getMarca();
+        $modelo = $equipamiento->getModelo();
 
-    // 2. Extraer el valor escalar string del Enum
-    $enumCategoria = $equipamiento->getCategoria();
-    $categoriaStr = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
+        // 2. Extraer el valor escalar string del Enum
+        $enumCategoria = $equipamiento->getCategoria();
+        $categoriaStr = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
 
-    $idUbicacionActual = $equipamiento->getIdUbicacionActual();
-    $id = $equipamiento->getIdEquipamiento();
+        $idUbicacionActual = $equipamiento->getIdUbicacionActual();
+        $id = $equipamiento->getIdEquipamiento();
 
-    $stmt->bind_param(
-        "sssssii",
-        $nombre,
-        $descripcion,
-        $marca,
-        $modelo,
-        $categoriaStr, // <-- Pasar la cadena convertida, no el Enum directo
-        $idUbicacionActual,
-        $id
-    );
+        $stmt->bind_param(
+            "sssssii",
+            $nombre,
+            $descripcion,
+            $marca,
+            $modelo,
+            $categoriaStr, // <-- Pasar la cadena convertida, no el Enum directo
+            $idUbicacionActual,
+            $id
+        );
 
-    return $stmt->execute();
-}
-    // ELIMINAR
+        return $stmt->execute();
+    }
+
+    // Elimina un equipamiento en la base de datos.
     public function eliminar(int $idEquipamiento): bool
     {
         $sql = "DELETE FROM equipamientos

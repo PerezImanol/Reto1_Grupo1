@@ -1,6 +1,7 @@
 <?php
 class ConexionDB
 {
+    //Inicializa la conexion a la base de datos.
     public static function conexion(): mysqli
     {
         try {

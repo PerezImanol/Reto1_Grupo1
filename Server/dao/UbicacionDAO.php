@@ -7,13 +7,16 @@ require_once("../dao/ConexionDB.php");
 
 class UbicacionDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
 
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Devuelve todas las ubicaciones en la base de datos.
     public function buscarUbicaciones(): array
     {
         $ubicaciones = array();
@@ -35,6 +38,7 @@ class UbicacionDAO
         return $ubicaciones;
     }
 
+    //Busca una ubicacion en concreto por ID en la base de datos y la devuelve.
     public function buscarUbicacionPorId(int $id): ?Ubicacion
     {
         $sql = "SELECT * FROM ubicaciones WHERE id_ubicacion = ?";
@@ -56,6 +60,7 @@ class UbicacionDAO
         return null;
     }
 
+    //Inserta una nueva ubicacion a la base de datos.
     public function insertarUbicacion(Ubicacion $ubicacion): bool
     {
         $sql = "INSERT INTO ubicaciones (nombre, descripcion) VALUES (?, ?)";
@@ -70,6 +75,7 @@ class UbicacionDAO
         return $stmt->execute();
     }
 
+    //Actualiza una ubicacion en la base de datos.
     public function actualizarUbicacion(Ubicacion $ubicacion): bool
     {
         $sql = "UPDATE ubicaciones 
@@ -87,6 +93,7 @@ class UbicacionDAO
         return $stmt->execute();
     }
 
+    // Elimina una ubicacion en la base de datos.
     public function eliminarUbicacion(int $id): bool
     {
         $sql = "DELETE FROM ubicaciones WHERE id_ubicacion = ?";
