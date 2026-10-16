@@ -22,11 +22,14 @@ class EquipamientoDAO
     //Devuelve todos los equipamientos en la base de datos.
     public function buscarTodos(): array
     {
-        $equipamientos = array();
+        //Preparacion de query
         $sql = "SELECT * 
                     FROM equipamientos";
-        $resultado = $this->conexion->query($sql);
 
+        $resultado = $this->conexion->query($sql);
+        $equipamientos = [];
+
+        //Resultados de query
         while ($fila = $resultado->fetch_assoc()) {
             $categoria = match ($fila["categoria"]) {
                 "PORTATIL" => EnumCategoria::PORTATIL,
@@ -54,13 +57,17 @@ class EquipamientoDAO
     //Busca un equipamiento en concreto por ID en la base de datos y la devuelve.
     public function buscarPorId(int $idEquipamiento): ?Equipamiento
     {
+        //Preparacion de query
         $sql = "SELECT *
                     FROM equipamientos
                     WHERE id_equipamiento = ?";
+
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $idEquipamiento);
         $stmt->execute();
         $resultado = $stmt->get_result();
+
+        //Resultados de query
         if ($fila = $resultado->fetch_assoc()) {
             $categoria = match ($fila["categoria"]) {
                 "PORTATIL" => EnumCategoria::PORTATIL,
@@ -88,8 +95,10 @@ class EquipamientoDAO
     //Inserta un nuevo equipamiento a la base de datos.
     public function insertar(Equipamiento $equipamiento): bool
     {
+        //Preparacion de query
         $sql = "INSERT INTO equipamientos (nombre, descripcion, marca, modelo, categoria, id_ubicacion_actual)
                     VALUES (?, ?, ?, ?, ?, ?)";
+
         $stmt = $this->conexion->prepare($sql);
         $nombre = $equipamiento->getNombre();
         $descripcion = $equipamiento->getDescripcion();
@@ -98,7 +107,6 @@ class EquipamientoDAO
         $enumCategoria = $equipamiento->getCategoria();
         $categoria = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
         $idUbicacionActual = $equipamiento->getIdUbicacionActual();
-
         $stmt->bind_param(
             "sssssi",
             $nombre,
@@ -108,13 +116,15 @@ class EquipamientoDAO
             $categoria,
             $idUbicacionActual
         );
+
+        //Resultados de query
         return $stmt->execute();
     }
 
     //Actualiza un equipamiento en la base de datos.
     public function actualizar(Equipamiento $equipamiento): bool
     {
-        // 1. Corrección del nombre de la tabla (equipamientos)
+        //Preparacion de query
         $sql = "UPDATE equipamientos
                 SET nombre = ?,
                     descripcion = ?,
@@ -125,16 +135,12 @@ class EquipamientoDAO
                 WHERE id_equipamiento = ?";
 
         $stmt = $this->conexion->prepare($sql);
-
         $nombre = $equipamiento->getNombre();
         $descripcion = $equipamiento->getDescripcion();
         $marca = $equipamiento->getMarca();
         $modelo = $equipamiento->getModelo();
-
-        // 2. Extraer el valor escalar string del Enum
         $enumCategoria = $equipamiento->getCategoria();
         $categoriaStr = isset($enumCategoria->value) ? $enumCategoria->value : $enumCategoria->name;
-
         $idUbicacionActual = $equipamiento->getIdUbicacionActual();
         $id = $equipamiento->getIdEquipamiento();
 
@@ -144,21 +150,26 @@ class EquipamientoDAO
             $descripcion,
             $marca,
             $modelo,
-            $categoriaStr, // <-- Pasar la cadena convertida, no el Enum directo
+            $categoriaStr,
             $idUbicacionActual,
             $id
         );
 
+        //Resultados de query
         return $stmt->execute();
     }
 
     // Elimina un equipamiento en la base de datos.
     public function eliminar(int $idEquipamiento): bool
     {
+        //Preparacion de query
         $sql = "DELETE FROM equipamientos
                     WHERE id_equipamiento = ?";
+
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $idEquipamiento);
+
+        //Resultados de query
         return $stmt->execute();
     }
 }
