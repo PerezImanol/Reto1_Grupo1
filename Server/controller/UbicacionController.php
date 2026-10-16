@@ -1,6 +1,24 @@
 <?php
 /*
+GET
 http://localhost/Server/Controller/UbicacionController.php
+
+
+POST
+{
+    "nombre": "PRUEBA",
+    "descripcion": "PRUEBA"
+}
+
+PUT
+{
+    "id_ubicacion": 12,
+    "nombre": "PRUEBA EDITADA",
+    "descripcion": "PRUEBA EDITED"
+}
+
+DELETE
+http://localhost/Server/Controller/UbicacionController.php?id=12
 */
 use App\Models\Ubicacion;
 

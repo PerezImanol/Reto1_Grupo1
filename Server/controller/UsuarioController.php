@@ -1,6 +1,43 @@
 <?php
 /*
+GET
 http://localhost/Server/Controller/UsuarioController.php
+
+POST !!!! el user es unico
+{
+    "nombre": "Jihann",
+    "apellido": "Prueba",
+    "username": "jihanP",
+    "password": "password",
+    "role": "USER"
+    
+}
+
+PUT !! hay dos formas , o sin cambiar la contraseña:
+{
+    "id": 10,
+    "nombre": "Jihannnn",
+    "apellido": "Pruebiiiiiiiita",
+    "username": "jihanP",
+    "role": "USER"
+}
+
+PUT CAMBIANDO LA CONTRASEÑA: // el problema esq deberiamos saber 
+cual es la contraseña actual NO HASHEADA para poder cambiarla
+
+{
+    "id": 10,
+    "nombre": "Jihann",
+    "apellido": "Prueba",
+    "username": "jihanP",
+    "role": "USER",
+    "password": "password",
+    "newPassword": "MiPasswordNueva456"
+}
+
+
+DELETE
+http://localhost/Server/Controller/UsuarioController.php?id=8
 */
 require_once("../dao/ConexionDB.php");
 require_once("../dao/UsuarioDAO.php");
@@ -105,69 +142,94 @@ switch ($metodo) {
         }
         exit;
 
+    
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
+
+        if (!is_array($datos)) {
+            http_response_code(400);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "JSON inválido"
+            ]);
+            exit;
+        }
+
+        $id = (int) ($datos['id'] ?? 0);
         $rol = obtenerRol($datos['role'] ?? null);
 
-        if (isset($datos['password']) && isset($datos['newPassword'])) {
-            $passCheck = $controller->login($datos['username'] ?? '', $datos['password'] ?? '');
-            if (isset($passCheck)) {
-                $exito = $controller->actualizar_password(new Usuario(
-                    (int) ($datos['id'] ?? 0),
-                    $datos['nombre'] ?? '',
-                    $datos['apellido'] ?? '',
-                    $datos['username'] ?? '',
-                    $datos['newPassword'] ?? '',
-                    $rol,
-                ));
-
-                if ($exito) {
-                    $exito = $controller->actualizar(new Usuario(
-                        (int) ($datos['id'] ?? 0),
-                        $datos['nombre'] ?? '',
-                        $datos['apellido'] ?? '',
-                        $datos['username'] ?? '',
-                        $datos['newPassword'] ?? '',
-                        $rol,
-                    ));
-
-                    if ($exito) {
-                        http_response_code(200);
-                        echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
-                    } else {
-                        http_response_code(500);
-                        echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el usuario en la base de datos."]);
-                    }
-                }
-            } else {
-                http_response_code(400);
-                echo json_encode(["status" => "error", "mensaje" => "La contraseña introducida es incorrecta."]);
-            }
-        } else if (
-            isset($datos['password']) && !isset($datos['newPassword'])
-            || !isset($datos['password']) && isset($datos['newPassword'])
-        ) {
+        if ($id <= 0) {
             http_response_code(400);
-            echo json_encode(["status" => "error", "mensaje" => "Comprueba que hayas introducido las constraseñas bien."]);
-        } else {
-            $exito = $controller->actualizar(new Usuario(
-                (int) ($datos['id'] ?? 0),
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "ID de usuario inválido"
+            ]);
+            exit;
+        }
+
+        // Cambiar contraseña
+        if (isset($datos['password']) && isset($datos['newPassword'])) {
+
+            $passCheck = $controller->login(
+                $datos['username'] ?? '',
+                $datos['password']
+            );
+
+            if (!$passCheck) {
+                http_response_code(400);
+                echo json_encode([
+                    "status" => "error",
+                    "mensaje" => "La contraseña actual es incorrecta"
+                ]);
+                exit;
+            }
+
+            $exito = $controller->actualizar_password(new Usuario(
+                $id,
                 $datos['nombre'] ?? '',
                 $datos['apellido'] ?? '',
                 $datos['username'] ?? '',
-                $datos['password'] ?? '',
-                $rol,
+                $datos['newPassword'],
+                $rol
             ));
 
-            if ($exito) {
-                http_response_code(200);
-                echo json_encode(["status" => "success", "mensaje" => "Usuario actualizado con éxito."]);
-            } else {
-                http_response_code(500);
-                echo json_encode(["status" => "error", "mensaje" => "No se pudo insertar el usuario en la base de datos."]);
-            }
+        // Si solo se envía una de las dos contraseñas, hay un error
+        } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
+            http_response_code(400);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva"
+            ]);
+            exit;
+
+        // Editar los datos sin cambiar la contraseña
+        } else {
+            $exito = $controller->actualizar(new Usuario(
+                $id,
+                $datos['nombre'] ?? '',
+                $datos['apellido'] ?? '',
+                $datos['username'] ?? '',
+                '',
+                $rol
+            ));
         }
+
+        if ($exito) {
+            http_response_code(200);
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Usuario actualizado con éxito"
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "No se pudo actualizar el usuario"
+            ]);
+        }
+
         exit;
+
 
     case 'DELETE':
         $id = $_GET['id'] ?? null;

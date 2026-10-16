@@ -1,6 +1,31 @@
 <?php
 /*
+GET
 http://localhost/Server/Controller/NotificacionController.php?id_user=2
+
+
+POST
+{
+    "titulo": "PRUEBA",
+    "descripcion": "PRUEBA",
+    "fecha_creacion": "2026-09-19 08:45:00.000000",
+    "estado": "PENDIENTE",
+    "id_user": 2
+}
+
+
+PUT 
+{
+    "id": 6,
+    "titulo": "PRUEBAAAAAA",
+    "descripcion": "PRUEBA",
+    "fecha_creacion": "2026-10-16 11:00:00",
+    "estado": "PENDIENTE",
+    "id_user": 2
+}
+
+DELETE
+http://localhost/Server/Controller/NotificacionController.php?id_user=2&id=6
 */
 
 require_once("../dao/ConexionDB.php");

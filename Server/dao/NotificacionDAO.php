@@ -99,22 +99,26 @@ class NotificacionDAO
         );
         return $stmt->execute();
     }
-
     public function actualizar(Notificacion $notif): bool
     {
         $sql = "UPDATE notificaciones
-                    SET titulo = ?,
+                SET titulo = ?,
                     descripcion = ?,
                     fecha_creacion = ?,
                     estado = ?
-                    WHERE id_notificacion = ? AND id_usuario = ?";
+                WHERE id_notificacion = ? AND id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
+
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
         $fecha_creacion = $notif->getFechaCreacion()->format('Y-m-d H:i:s');
+
         $estadoEnum = $notif->getEstado();
-        $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
+        $estado = isset($estadoEnum->value)
+            ? $estadoEnum->value
+            : $estadoEnum->name;
+
         $id = $notif->getIdNotificacion();
         $id_user = $notif->getIdUser();
 
@@ -127,7 +131,10 @@ class NotificacionDAO
             $id,
             $id_user
         );
-        return $stmt->execute();
+
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
     }
 
     // ELIMINAR

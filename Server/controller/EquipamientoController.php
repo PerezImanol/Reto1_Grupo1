@@ -1,7 +1,35 @@
 <?php
 /*
+GET
 http://localhost/Server/Controller/EquipamientoController.php
+
+POST
+{
+    "nombre": "PRUEBA",
+    "descripcion": "PRUEBA",
+    "marca": "Varios",
+    "modelo": "Lote 01",
+    "categoria": "OTROS",
+    "id_ubicacion_actual": 1
+}
+
+PUT
+{
+    "id_equipamiento": 15,
+    "nombre": "PRUEBA EDITADA",
+    "descripcion": "PRUEBITA",
+    "marca": "Logitech",
+    "modelo": "Lote 01",
+    "categoria": "PERIFERICO",
+    "id_ubicacion_actual": 8
+}
+
+DELETE
+http://localhost/Server/Controller/EquipamientoController.php?id=15
 */
+
+
+
 use App\Enums\EnumCategoria;
 use App\Models\Equipamiento;
 

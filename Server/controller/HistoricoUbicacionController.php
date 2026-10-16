@@ -1,7 +1,32 @@
 <?php
 /*
+
+GET
 http://localhost/Server/Controller/HistoricoUbicacionController.php
+
+POST
+{
+    "id_equipamiento": 10,
+    "id_ubicacion": 1,
+    "fecha_inicio": "2026-10-16 09:18:08",
+    "fecha_fin": "2026-10-18 09:18:08"
+}
+
+PUT
+{
+    "id_historico": 37,
+    "id_equipamiento": 1,
+    "id_ubicacion": 2,
+    "fecha_inicio": "2026-10-16 09:18:08",
+    "fecha_fin": null
+}
+
+DELETE
+http://localhost/Server/Controller/HistoricoUbicacionController.php?id=37
 */
+
+
+
 use App\Models\HistoricoUbicaciones;
 
 require_once("../dao/HistoricoUbicacionDAO.php");
@@ -98,6 +123,7 @@ switch ($metodo) {
         echo json_encode($resultado);
         exit;
 
+    
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
 
@@ -111,10 +137,12 @@ switch ($metodo) {
         }
 
         try {
-            $fechaInicio = new DateTime($datos['fechaInicio'] ?? '');
-            $fechaFin = !empty($datos['fechaFin'])
-                ? new DateTime($datos['fechaFin'])
+            $fechaInicio = new DateTime($datos['fecha_inicio'] ?? '');
+
+            $fechaFin = !empty($datos['fecha_fin'])
+                ? new DateTime($datos['fecha_fin'])
                 : null;
+
         } catch (Exception $e) {
             http_response_code(400);
             echo json_encode([
@@ -125,8 +153,8 @@ switch ($metodo) {
         }
 
         $exito = $controller->insertar(
-            (int) ($datos['idEquipamiento'] ?? 0),
-            (int) ($datos['idUbicacion'] ?? 0),
+            (int) ($datos['id_equipamiento'] ?? 0),
+            (int) ($datos['id_ubicacion'] ?? 0),
             $fechaInicio,
             $fechaFin
         );
@@ -144,8 +172,11 @@ switch ($metodo) {
                 "mensaje" => "No se pudo insertar el histórico en la base de datos"
             ]);
         }
+
         exit;
 
+
+    
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
@@ -158,10 +189,25 @@ switch ($metodo) {
             exit;
         }
 
+        $idHistorico = (int) ($datos['id_historico'] ?? 0);
+        $idEquipamiento = (int) ($datos['id_equipamiento'] ?? 0);
+        $idUbicacion = (int) ($datos['id_ubicacion'] ?? 0);
+
+        if ($idHistorico <= 0 || $idEquipamiento <= 0 || $idUbicacion <= 0
+            || empty($datos['fecha_inicio'])) {
+            http_response_code(400);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Faltan datos obligatorios o algún ID no es válido"
+            ]);
+            exit;
+        }
+
         try {
-            $fechaInicio = new DateTime($datos['fechaInicio'] ?? '');
-            $fechaFin = !empty($datos['fechaFin'])
-                ? new DateTime($datos['fechaFin'])
+            $fechaInicio = new DateTime($datos['fecha_inicio']);
+
+            $fechaFin = !empty($datos['fecha_fin'])
+                ? new DateTime($datos['fecha_fin'])
                 : null;
         } catch (Exception $e) {
             http_response_code(400);
@@ -173,9 +219,9 @@ switch ($metodo) {
         }
 
         $exito = $controller->actualizar(
-            (int) ($datos['id'] ?? $datos['idHistorico'] ?? 0),
-            (int) ($datos['idEquipamiento'] ?? 0),
-            (int) ($datos['idUbicacion'] ?? 0),
+            $idHistorico,
+            $idEquipamiento,
+            $idUbicacion,
             $fechaInicio,
             $fechaFin
         );
@@ -183,7 +229,7 @@ switch ($metodo) {
         if ($exito) {
             echo json_encode([
                 "status" => "success",
-                "mensaje" => "Histórico de ubicación actualizado con éxito"
+                "mensaje" => "Histórico de ubicación actualizado correctamente"
             ]);
         } else {
             http_response_code(500);
@@ -192,10 +238,12 @@ switch ($metodo) {
                 "mensaje" => "No se pudo actualizar el histórico en la base de datos"
             ]);
         }
+
         exit;
 
+
     case 'DELETE':
-        $id = $_GET['id'] ?? $_GET['idHistorico'] ?? null;
+        $id = $_GET['id'] ?? $_GET['id'] ?? null;
 
         if (
             $id !== null &&
