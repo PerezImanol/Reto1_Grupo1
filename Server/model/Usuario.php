@@ -46,7 +46,6 @@ class Usuario implements JsonSerializable
             'nombre' => $this->nombre,
             'apellido' => $this->apellido,
             'username' => $this->username,
-            'password' => $this->password,
             'role' => isset($this->role->value) ? $this->role->value : $this->role->name
         ];
     }

@@ -28,20 +28,21 @@ class UsuarioDAO
         $resultado = $stmt->get_result();
         $row = $resultado->fetch_assoc();
 
-        //Resultados de query
-        $role = $row["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
-        if ($row && password_verify($password, $row["password_hash"])) {
-            return new Usuario(
-                $row["id_usuario"],
-                $row["nombre"],
-                $row["apellidos"],
-                $row["nombre_usuario"],
-                $row["password_hash"],
-                $role
-            );
-        } else {
+        // comprueba primero q el usuario existe antes de leer su rol
+        if (!$row || !password_verify($password, $row["password_hash"])) {
             return null;
         }
+
+        $role = $row["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
+
+        return new Usuario(
+            $row["id_usuario"],
+            $row["nombre"],
+            $row["apellidos"],
+            $row["nombre_usuario"],
+            $row["password_hash"],
+            $role
+        );
     }
 
     //Devuelve todos los usuarios en la base de datos.
