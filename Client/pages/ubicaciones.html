@@ -8,6 +8,7 @@
 
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/ubicaciones.css">
 
     <script src="../js/ubicaciones.js" defer></script>
 </head>
@@ -63,9 +64,11 @@
         </div>
     </header>
     <main>
-        <h1>Ubicaciones</h1>
-        <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
-        <p>Actualizado</p>
+        <section>
+            <h1>Ubicaciones</h1>
+            <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
+            <p>Actualizado</p>
+        </section>
         <div>
             <table>
                 <thead>
@@ -94,8 +97,8 @@
     </main>
     <section>
         <div>
-            <button>Guardar cambios</button>
-            <button>Borrar ubicacion</button>
+            <button class="btnSave">Guardar cambios</button>
+            <button class="btnDelete">Borrar ubicacion</button>
         </div>
         <label for="name">Nombre</label>
         <input type="text" id="name" name="name"><br />

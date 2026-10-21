@@ -1,0 +1,26 @@
+:root {
+  --fondo-menu: #fffbea;
+  --verde-oscuro: #293820;
+  --verde-texto: #59663b;
+  --borde-menu: #e5a04e;
+}
+
+button {
+  cursor: pointer;
+}
+
+.btnSave {
+  background: var(--verde-texto);
+  color: #fffbea;
+  border: none;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.btnDelete {
+  background: var(--fondo-menu);
+  color: var(--borde-menu);
+  border: 2px solid var(--borde-menu);
+  padding: 20px;
+  border-radius: 5px;
+}
