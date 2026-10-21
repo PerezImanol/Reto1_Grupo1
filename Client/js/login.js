@@ -13,8 +13,8 @@ formulario.addEventListener("submit", async function (event) {
 
     try {
         await auth.login(username, password);
-
-        window.location.href = "dashboard.html";
+        window.location.href = "../pages/equipamientos.html";
+        
     } catch (error) {
         mensaje.textContent = error.message;
     } finally {

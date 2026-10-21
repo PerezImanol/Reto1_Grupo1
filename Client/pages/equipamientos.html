@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CentroGestor - Equipamiento</title>
+
+    <link rel="icon" href="../img/icon.png">
+    <link rel="stylesheet" href="../css/menu.css">
+    
+    <script src="../js/equipamientos.js" defer></script>
+</head>
+
+<body>
+    <header class="menu">
+
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <img src="../img/icon.png" alt="Logo CentroGestor">
+            <span>CentroGestor</span>
+        </a>
+
+        <!-- Navegación -->
+        <nav class="navegacion">
+
+            <button id="btnEquip" class="nav-item activo">
+                <img src="../img/equipamiento.png" >
+                <span>Equipamiento</span>
+            </button>
+
+            <button id="btnUbicacion" class="nav-item">
+                <img src="../img/ubicacion.png">
+                <span>Ubicación</span>
+            </button>
+
+            <button id="btnPanel" class="nav-item">
+                <img src="../img/usuarios.png">
+                <span>Panel Usuarios</span>
+            </button>
+
+        </nav>
+
+        <!-- Acciones de la derecha -->
+        <div class="acciones">
+
+            <button id="btnNotificaciones" class="btn-notificaciones" aria-label="Notificaciones">
+                <img src="../img/notificaciones.png">
+            </button>
+
+            <div class="separador"></div>
+
+            <button id="btnPerfil" class="perfil">
+                <img src="../img/usuario.png" class="avatar">
+
+                <span class="datos-perfil">
+                    <strong>Ana García</strong>
+                    <small>Administradora</small>
+                </span>
+
+                <img src="../img/flecha.png" class="flecha">
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <label for="search">Buscar</label>
+        <input type="text" id="search" name="search">
+
+        <select name="filter" id="filter">
+            <option value="PH">PH</option>
+        </select>
+
+        <button>Buscar</button>
+        <button>+</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Categoría</th>
+                    <th>Ubicación actual</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td colspan="6">Tabla sin contenido</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <label for="PH"></label>
+        <input type="text" id="PH" name="PH">
+        <button>Eliminar</button>
+    </footer>
+
+</body>
+</html>
