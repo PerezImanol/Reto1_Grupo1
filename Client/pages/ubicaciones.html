@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
 
     <script src="../js/ubicaciones.js" defer></script>
 </head>
+
 <body>
     <header class="menu">
 
@@ -23,7 +25,7 @@
         <nav class="navegacion">
 
             <button id="btnEquip" class="nav-item activo">
-                <img src="../img/equipamiento.png" >
+                <img src="../img/equipamiento.png">
                 <span>Equipamiento</span>
             </button>
 
@@ -60,5 +62,44 @@
             </button>
         </div>
     </header>
+    <main>
+        <h1>Ubicaciones</h1>
+        <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
+        <p>Actualizado</p>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th id="total">Todas las ubicaciones</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3">Tabla sin contenido</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <section>
+        <div>
+            <button>Guardar cambios</button>
+            <button>Borrar ubicacion</button>
+        </div>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name"><br />
+        <label for="desc">Descripcion</label>
+        <input type="text" id="desc" name="desc">
+    </section>
+    <footer>
+        <p>CentroGestor · Gestion de activos</p>
+        <p>Centro de ayuda</p> <!-- Necesita icono-->
+    </footer>
 </body>
+
 </html>
