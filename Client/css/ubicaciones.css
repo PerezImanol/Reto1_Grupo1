@@ -32,10 +32,10 @@ h1 {
 }
 
 table,
-td,
-th {
+tr {
   border: 1px solid var(--borde-menu);
   text-align: left;
+  border-collapse: collapse;
 }
 
 .right {
