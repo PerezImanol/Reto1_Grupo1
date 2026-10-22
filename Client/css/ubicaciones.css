@@ -46,6 +46,11 @@ table {
   width: 100%;
 }
 
+td,
+th {
+  padding: 10px;
+}
+
 .borderInput {
   border: 1px solid var(--borde-menu);
   border-radius: 5px;
