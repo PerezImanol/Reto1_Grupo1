@@ -64,21 +64,21 @@
         </div>
     </header>
     <main>
-        <section>
-            <h1>Ubicaciones</h1>
+        <h1>Ubicaciones</h1>
+        <section class="info">
             <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
             <p>Actualizado</p>
         </section>
-        <div>
+        <div class="tableView">
             <table>
                 <thead>
                     <tr>
-                        <th id="total">Todas las ubicaciones</th>
+                        <th id="total" colspan="3">Todas las ubicaciones</th>
                     </tr>
                     <tr>
                         <th>Nombre</th>
                         <th>Descripcion</th>
-                        <th>Acciones</th>
+                        <th class="right">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,24 +88,26 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>Mostrando</td>
-                        <td>seleccionada</td>
+                        <td colspan="2">Mostrando</td>
+                        <td class="right">seleccionada</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </main>
-    <section>
-        <div>
-            <button class="btnSave">Guardar cambios</button>
-            <button class="btnDelete">Borrar ubicacion</button>
+    <section class="border">
+        <div class="buttons">
+            <button id="btnSave">Guardar cambios</button>
+            <button id="btnDelete">Borrar ubicacion</button>
         </div>
-        <label for="name">Nombre</label>
-        <input type="text" id="name" name="name"><br />
-        <label for="desc">Descripcion</label>
-        <input type="text" id="desc" name="desc">
+        <div id="text">
+            <label for="name">Nombre</label><br />
+            <input type="text" id="name" name="name" class="borderInput"><br />
+            <label for="desc">Descripcion</label><br />
+            <input type="text" id="desc" name="desc" class="borderInput">
+        </div>
     </section>
-    <footer>
+    <footer class="info">
         <p>CentroGestor · Gestion de activos</p>
         <p>Centro de ayuda</p> <!-- Necesita icono-->
     </footer>
