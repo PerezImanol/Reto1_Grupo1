@@ -1,4 +1,3 @@
-
 <?php
 /*
 GET
@@ -50,7 +49,11 @@ switch ($metodo) {
             $resultado = $controller->listar();
         }
 
-        echo json_encode($resultado);
+        echo json_encode([
+            'result' => $resultado,
+            'status' => http_response_code(200),
+            'exito' => true
+        ], JSON_UNESCAPED_UNICODE);
         exit;
 
     case 'POST':
