@@ -88,12 +88,12 @@ function renderLocations(locations) {
     const pencil = document.createElement("img");
     pencil.src = "../img/pencil.svg";
     pencil.className = "svg";
-    pencil.id = pencil;
+    pencil.id = "pencil";
 
     const trash = document.createElement("img");
     trash.src = "../img/trash.svg";
     trash.className = "svg";
-    trash.id = trash;
+    trash.id = "trash";
 
     const pencilSpan = document.createElement("span");
     pencilSpan.textContent = "Editar";

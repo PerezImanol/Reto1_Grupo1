@@ -97,14 +97,6 @@ button {
   height: auto;
 }
 
-#pencil {
-  color: var(--verde-texto);
-}
-
-#trash {
-  color: red;
-}
-
 #text {
   display: flex;
   flex-direction: column;
