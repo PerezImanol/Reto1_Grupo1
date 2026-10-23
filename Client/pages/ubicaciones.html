@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,11 @@
 
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/ubicaciones.css">
 
     <script src="../js/ubicaciones.js" defer></script>
 </head>
+
 <body>
     <header class="menu">
 
@@ -22,12 +25,12 @@
         <!-- Navegación -->
         <nav class="navegacion">
 
-            <button id="btnEquip" class="nav-item activo">
-                <img src="../img/equipamiento.png" >
+            <button id="btnEquip" class="nav-item">
+                <img src="../img/equipamiento.png">
                 <span>Equipamiento</span>
             </button>
 
-            <button id="btnUbicacion" class="nav-item">
+            <button id="btnUbicacion" class="nav-item activo">
                 <img src="../img/ubicacion.png">
                 <span>Ubicación</span>
             </button>
@@ -60,5 +63,54 @@
             </button>
         </div>
     </header>
+    <main>
+        <h1>Ubicaciones</h1>
+        <section class="info">
+            <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
+            <p>Actualizado</p>
+        </section>
+        <div class="tableView">
+            <table id="tableLocations">
+                <thead>
+                    <tr>
+                        <th id="total" colspan="3">Todas las ubicaciones</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th class="right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3">Tabla sin contenido</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" id="show">Mostrando 0 de 0 ubicaciones</td>
+                        <td class="right" id="select">Selecciona una ubicacion</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </main>
+    <section class="border">
+        <div class="buttons">
+            <button id="btnSave">Guardar cambios</button>
+            <button id="btnDelete">Borrar ubicacion</button>
+        </div>
+        <div id="text">
+            <label for="name">Nombre</label><br />
+            <input type="text" id="name" name="name" class="borderInput"><br />
+            <label for="desc">Descripcion</label><br />
+            <input type="text" id="desc" name="desc" class="borderInput">
+        </div>
+    </section>
+    <footer class="info">
+        <p>CentroGestor · Gestion de activos</p>
+        <p>Centro de ayuda</p> <!-- Necesita icono-->
+    </footer>
 </body>
+
 </html>
