@@ -84,6 +84,27 @@ button {
   border: 2px solid var(--borde-menu);
 }
 
+.btnEdit {
+  color: var(--verde-texto);
+}
+
+.btnDelete {
+  color: red;
+}
+
+.svg {
+  width: 10%;
+  height: auto;
+}
+
+#pencil {
+  color: var(--verde-texto);
+}
+
+#trash {
+  color: red;
+}
+
 #text {
   display: flex;
   flex-direction: column;

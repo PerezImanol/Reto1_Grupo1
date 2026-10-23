@@ -87,9 +87,13 @@ function renderLocations(locations) {
     //good god the svg shit looks inefficient asf but it works
     const pencil = document.createElement("img");
     pencil.src = "../img/pencil.svg";
+    pencil.className = "svg";
+    pencil.id = pencil;
 
     const trash = document.createElement("img");
     trash.src = "../img/trash.svg";
+    trash.className = "svg";
+    trash.id = trash;
 
     const pencilSpan = document.createElement("span");
     pencilSpan.textContent = "Editar";
