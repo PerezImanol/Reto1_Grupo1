@@ -53,6 +53,7 @@ function renderLocations(locations) {
   const tbody = document.getElementById("tableLocations");
   const selectedLocationTable = document.getElementById("select");
   const showLocations = document.getElementById("show");
+  let count = 0;
 
   if (!tbody) return;
 
@@ -83,24 +84,49 @@ function renderLocations(locations) {
     const btnEdit = document.createElement("button");
     const btnDelete = document.createElement("button");
 
+    //good god the svg shit looks inefficient asf but it works
+    const pencil = document.createElement("img");
+    pencil.src = "../img/pencil.svg";
+
+    const trash = document.createElement("img");
+    trash.src = "../img/trash.svg";
+
+    const pencilSpan = document.createElement("span");
+    pencilSpan.textContent = "Editar";
+
+    const trashSpan = document.createElement("span");
+    trashSpan.textContent = "Borrar";
+
     const { nombre, descripcion } = location;
     nameTd.textContent = descripcion ?? "";
     descTd.textContent = nombre ?? "";
 
     btnEdit.className = "btnEdit";
     btnEdit.onclick = function () {
-      //PH
+      //Edit stuff goes here
+
+      if (selectedLocation == location) {
+        pencilSpan.textContent = "Editando";
+      } else {
+        pencilSpan.textContent = "Editar";
+      }
     };
+    btnEdit.appendChild(pencil);
+    btnEdit.appendChild(pencilSpan);
     buttonsTd.appendChild(btnEdit);
 
     btnDelete.className = "btnDelete";
     btnDelete.onclick = function () {
-      //PH
+      //Delete stuff goes here
     };
+
+    btnDelete.appendChild(trash);
+    btnDelete.appendChild(trashSpan);
     buttonsTd.appendChild(btnDelete);
 
     row.appendChild(nameTd);
     row.appendChild(descTd);
+    buttonsTd.className = "right";
     row.appendChild(buttonsTd);
 
     row.addEventListener("click", () => {
@@ -113,9 +139,11 @@ function renderLocations(locations) {
     });
 
     tbody.appendChild(row);
+    count++;
   });
 
   if (showLocations) {
-    showLocations.textContent = "Mostrando 0 de " + count + " ubicaciones";
+    showLocations.textContent =
+      "Mostrando " + count + " de " + count + " ubicaciones";
   }
 }
