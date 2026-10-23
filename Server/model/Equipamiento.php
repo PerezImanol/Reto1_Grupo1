@@ -27,6 +27,8 @@ class Equipamiento implements JsonSerializable
     //El ID de la ubicacion actual.
     private int $id_ubicacion_actual;
 
+    private ?string $nombreUbicacion = null;    
+
     //El constructor de clase.
     public function __construct(
         int $id_equipamiento,
@@ -56,7 +58,8 @@ class Equipamiento implements JsonSerializable
             'marca' => $this->marca,
             'modelo' => $this->modelo,
             'categoria' => isset($this->categoria->value) ? $this->categoria->value : $this->categoria->name,
-            'id_ubicacion_actual' => $this->id_ubicacion_actual
+            'id_ubicacion_actual' => $this->id_ubicacion_actual,
+            'nombreUbicacion' => $this->nombreUbicacion
         ];
     }
 
@@ -224,5 +227,15 @@ class Equipamiento implements JsonSerializable
         $this->id_ubicacion_actual = $id_ubicacion_actual;
 
         return $this;
+    }
+
+    public function getNombreUbicacion(): ?string
+    {
+        return $this->nombreUbicacion;
+    }
+
+    public function setNombreUbicacion(?string $nombreUbicacion): void
+    {
+        $this->nombreUbicacion = $nombreUbicacion;
     }
 }

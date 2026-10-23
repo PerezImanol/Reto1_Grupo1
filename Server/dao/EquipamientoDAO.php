@@ -23,12 +23,14 @@ class EquipamientoDAO
     public function buscarTodos(): array
     {
         //Preparacion de query
-        $sql = "SELECT * 
-                    FROM equipamientos";
+        $sql = "SELECT e.*, u.nombre AS nombre_ubicacion
+            FROM equipamientos e
+            LEFT JOIN ubicaciones u
+            ON e.id_ubicacion_actual = u.id_ubicacion";
 
         $resultado = $this->conexion->query($sql);
         $equipamientos = [];
-
+        
         //Resultados de query
         while ($fila = $resultado->fetch_assoc()) {
             $categoria = match ($fila["categoria"]) {
@@ -48,7 +50,8 @@ class EquipamientoDAO
                 $categoria,
                 $fila["id_ubicacion_actual"]
             );
-
+            $equipamiento->setNombreUbicacion($fila["nombre_ubicacion"]);
+            
             $equipamientos[] = $equipamiento;
         }
         return $equipamientos;

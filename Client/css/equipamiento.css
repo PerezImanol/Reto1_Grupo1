@@ -1,0 +1,195 @@
+
+/* Contenido principal */
+.contenido {
+    padding: 36px 40px;
+    font-size: 17px;
+}
+
+/* Buscador, filtro y añadir */
+.barra-herramientas {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+/* Buscador */
+.buscador {
+    display: flex;
+    align-items: center;
+    width: 420px;
+    height: 50px;
+    border: 1px solid #d8dccb;
+    border-radius: 9px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.buscador input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 16px;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 17px;
+}
+
+.buscador input::placeholder {
+    color: #858879;
+}
+.filtro-columna {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.filtro-columna select {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filtro-columna img {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 8px;
+    border: none;
+    border-radius: 9px;
+    background-color: #293820;
+}
+/* Selector de categoría */
+.barra-herramientas select {
+    min-width: 220px;
+    height: 50px;
+    padding: 0 14px;
+    border: 1px solid #d8dccb;
+    border-radius: 8px;
+    background-color: #fffbea;
+    color: #293820;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Botones con imágenes */
+.boton-icono {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 8px;
+    border: none;
+    border-radius: 9px;
+    background-color: #293820;
+    cursor: pointer;
+}
+
+.boton-icono img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.boton-icono:hover {
+    background-color: #465538;
+}
+
+/* Botón de buscar dentro del buscador */
+.buscador .boton-icono {
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-size: 16px;
+}
+
+thead {
+    background-color: #fffbea;
+}
+
+th,
+td {
+    padding: 19px 20px;
+    border-bottom: 1px solid #e5e5dc;
+    text-align: left;
+}
+
+th {
+    color: #293820;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+td {
+    font-size: 16px;
+}
+
+.tabla-vacia {
+    padding: 42px 20px;
+    color: #777b68;
+    text-align: center;
+    font-size: 17px;
+}
+
+/* Pie de página */
+.pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 40px;
+}
+
+/* Filtro inferior x
+.filtro-footer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.filtro-footer img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.filtro-footer input {
+    width: 260px;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid #d8dccb;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.filtro-footer input::placeholder {
+    color: #858879;
+}
+
+*/
+/* Botón de eliminar */
+.boton-borrar {
+    width: 50px;
+    height: 50px;
+}
