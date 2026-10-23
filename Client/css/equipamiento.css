@@ -160,34 +160,7 @@ td {
     padding: 24px 40px;
 }
 
-/* Filtro inferior x
-.filtro-footer {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
 
-.filtro-footer img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-}
-
-.filtro-footer input {
-    width: 260px;
-    height: 46px;
-    padding: 0 14px;
-    border: 1px solid #d8dccb;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 16px;
-}
-
-.filtro-footer input::placeholder {
-    color: #858879;
-}
-
-*/
 /* Botón de eliminar */
 .boton-borrar {
     width: 50px;
