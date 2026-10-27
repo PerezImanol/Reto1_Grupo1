@@ -166,3 +166,34 @@ td {
     width: 50px;
     height: 50px;
 }
+
+/* Checkbox de cada fila */
+.checkbox-fila {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: #493023;
+}
+
+/* Fila seleccionada */
+#tablaEquipamientos tr.fila-seleccionada {
+    background-color: #e5a04e;
+    color: white;
+}
+
+/* Mantener el color al pasar el ratón */
+#tablaEquipamientos tr.fila-seleccionada:hover {
+    background-color: #724a36;
+}
+
+/* Botón de borrar deshabilitado */
+.boton-borrar:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Secciones y formulario ocultos */
+.modificar[hidden],
+#formEquipamiento[hidden] {
+    display: none;
+}
