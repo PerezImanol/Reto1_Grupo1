@@ -49,8 +49,7 @@ btnSave.addEventListener("click", async (e) => {
     alert("Por favor, rellena los campos.");
   } else {
     let newInfo = [nameField.value, descField.value];
-    const response = await api.ubicaciones.actualizar(newInfo);
-    const data = await response.json();
+    const data = await api.ubicaciones.actualizar(newInfo);
 
     if (data.status !== 200) {
       alert(data.mensaje);
@@ -65,9 +64,8 @@ btnSave.addEventListener("click", async (e) => {
 });
 
 async function getAllLocations() {
-  const response = await api.ubicaciones.obtenerTodos();
+  const data = await api.ubicaciones.obtenerTodos();
 
-  const data = await response.json();
   return data.result || [];
 }
 
@@ -110,53 +108,24 @@ function renderLocations(locations) {
 
   locations.forEach((location) => {
     const row = document.createElement("tr");
+    const cbTd = document.createElement("td");
     const nameTd = document.createElement("td");
     const descTd = document.createElement("td");
     const buttonsTd = document.createElement("td");
-    const btnEdit = document.createElement("button");
     const btnDelete = document.createElement("button");
 
-    //good god the svg shit looks inefficient asf but it works
-    const pencil = document.createElement("img");
-    pencil.src = "../img/pencil.svg";
-    pencil.className = "svg";
+    const checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
 
-    const trash = document.createElement("img");
-    trash.src = "../img/trash.svg";
-    trash.className = "svg";
-
-    const pencilSpan = document.createElement("span");
-    pencilSpan.textContent = "Editar";
-
-    const trashSpan = document.createElement("span");
-    trashSpan.textContent = "Borrar";
+    cbTd.appendChild(checkBox);
 
     const { id_ubicacion, nombre, descripcion } = location;
     //Sets up table info
     nameTd.textContent = descripcion ?? "";
     descTd.textContent = nombre ?? "";
 
-    btnEdit.className = "btnEdit";
-    btnEdit.onclick = function () {
-      if (selectedLocation == location) {
-        pencilSpan.textContent = "Editando";
-        nameField.disabled = false;
-        descField.disabled = false;
-      } else {
-        pencilSpan.textContent = "Editar";
-      }
-    };
-    btnEdit.appendChild(pencil);
-    btnEdit.appendChild(pencilSpan);
-    buttonsTd.appendChild(btnEdit);
-
     btnDelete.className = "btnDelete";
     btnDelete.onclick = async function () {
-      if (!selectedLocation) {
-        alert("Por favor, selecciona una ubicacion para eliminar.");
-        return;
-      }
-
       if (!confirm("¿Estás seguro de que deseas eliminar esta ubicacion?")) {
         return;
       }
@@ -185,10 +154,18 @@ function renderLocations(locations) {
       }
     };
 
+    const trash = document.createElement("img");
+    trash.src = "../img/trash.svg";
+    trash.className = "svg";
+
+    const trashSpan = document.createElement("span");
+    trashSpan.textContent = "Borrar";
+
     btnDelete.appendChild(trash);
     btnDelete.appendChild(trashSpan);
     buttonsTd.appendChild(btnDelete);
 
+    row.appendChild(cbTd);
     row.appendChild(nameTd);
     row.appendChild(descTd);
     buttonsTd.className = "right";
