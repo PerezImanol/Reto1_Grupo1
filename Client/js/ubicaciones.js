@@ -116,11 +116,18 @@ function renderLocations(locations) {
 
     const checkBox = document.createElement("input");
     checkBox.type = "checkbox";
+    checkBox.className = "checkbox";
+    cbTd.addEventListener("change", () => {
+      if (checkBox.checked) {
+        seleccionarFila(row, checkBox, location);
+      } else {
+        deseleccionarFila();
+      }
+    });
 
     cbTd.appendChild(checkBox);
 
     const { id_ubicacion, nombre, descripcion } = location;
-    //Sets up table info
     nameTd.textContent = descripcion ?? "";
     descTd.textContent = nombre ?? "";
 
@@ -187,5 +194,36 @@ function renderLocations(locations) {
   if (showLocations) {
     showLocations.textContent =
       "Mostrando " + count + " de " + count + " ubicaciones";
+  }
+
+  function seleccionarFila(selectedRow, selectedCb, ubicacion) {
+    tabla.querySelectorAll(".checkbox").forEach((cb) => {
+      if (cb !== selectedCb) {
+        cb.checked = false;
+      }
+    });
+
+    tabla.querySelectorAll("tr").forEach((row) => {
+      row.classList.remove("fila-seleccionada");
+    });
+
+    // Marcar la fila elegida
+    selectedRow.classList.add("fila-seleccionada");
+
+    selectedLocation = ubicacion;
+
+    // Habilitar el botón de borrar
+    btnSave.disabled = false;
+  }
+
+  function deseleccionarFila() {
+    tabla.querySelectorAll("checkbox").forEach((cb) => {
+      cb.checked = false;
+    });
+
+    selectedLocation = null;
+
+    // Deshabilitar el botón de borrar
+    btnSave.disabled = true;
   }
 }

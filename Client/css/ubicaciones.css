@@ -51,6 +51,10 @@ th {
   padding: 10px;
 }
 
+.checkbox {
+  cursor: pointer;
+}
+
 .borderInput {
   border: 1px solid var(--borde-menu);
   border-radius: 5px;
