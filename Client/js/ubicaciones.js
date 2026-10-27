@@ -3,16 +3,69 @@ const btnUbicacion = document.getElementById("btnUbicacion");
 const btnPanel = document.getElementById("btnPanel");
 const btnNotificaciones = document.getElementById("btnNotificaciones");
 const btnPerfil = document.getElementById("btnPerfil");
+const nameField = document.getElementById("name");
+const descField = document.getElementById("desc");
+const btnSave = document.getElementById("btnSave");
+const selectedLocationTable = document.getElementById("select");
+
 let ALL_LOCATIONS = [];
 let selectedLocation = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   //Sets up location list
   loadLocactions();
+
+  nameField.disabled = true;
+  descField.disabled = true;
+  btnSave.disabled = true;
+});
+
+nameField.addEventListener("change", () => {
+  if (!nameField.value || !descField.value) {
+    btnSave.disabled = true;
+  } else {
+    btnSave.disabled = false;
+    nameField.value.trim();
+  }
+});
+
+descField.addEventListener("change", () => {
+  if (!nameField.value || !descField.value) {
+    btnSave.disabled = true;
+  } else {
+    btnSave.disabled = false;
+    descField.value.trim();
+  }
+});
+
+btnSave.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (!selectedLocation) {
+    alert("Por favor, selecciona una ubicacion para editar.");
+    return;
+  }
+
+  if (!nameField.value || !descField.value) {
+    alert("Por favor, rellena los campos.");
+  } else {
+    let newInfo = [nameField.value, descField.value];
+    const response = await api.ubicaciones.actualizar(newInfo);
+    const data = await response.json();
+
+    if (data.status !== 200) {
+      alert(data.mensaje);
+      selectedLocation = null;
+      if (selectedLocationTable) {
+        selectedLocationTable.textContent = "Selecciona una ubicacion";
+      }
+    } else {
+      alert(data.result || data.mensaje);
+    }
+  }
 });
 
 async function getAllLocations() {
-  const response = await fetch("../../Server/public/UbicacionAPI.php");
+  const response = await api.ubicaciones.obtenerTodos();
 
   const data = await response.json();
   return data.result || [];
@@ -31,7 +84,6 @@ async function loadLocactions() {
 
 function renderLocations(locations) {
   const tbody = document.getElementById("tableLocations");
-  const selectedLocationTable = document.getElementById("select");
   const showLocations = document.getElementById("show");
   let count = 0;
 
@@ -68,12 +120,10 @@ function renderLocations(locations) {
     const pencil = document.createElement("img");
     pencil.src = "../img/pencil.svg";
     pencil.className = "svg";
-    pencil.id = "pencil";
 
     const trash = document.createElement("img");
     trash.src = "../img/trash.svg";
     trash.className = "svg";
-    trash.id = "trash";
 
     const pencilSpan = document.createElement("span");
     pencilSpan.textContent = "Editar";
@@ -81,16 +131,17 @@ function renderLocations(locations) {
     const trashSpan = document.createElement("span");
     trashSpan.textContent = "Borrar";
 
-    const { nombre, descripcion } = location;
+    const { id_ubicacion, nombre, descripcion } = location;
+    //Sets up table info
     nameTd.textContent = descripcion ?? "";
     descTd.textContent = nombre ?? "";
 
     btnEdit.className = "btnEdit";
     btnEdit.onclick = function () {
-      //Edit stuff goes here
-
       if (selectedLocation == location) {
         pencilSpan.textContent = "Editando";
+        nameField.disabled = false;
+        descField.disabled = false;
       } else {
         pencilSpan.textContent = "Editar";
       }
@@ -100,8 +151,38 @@ function renderLocations(locations) {
     buttonsTd.appendChild(btnEdit);
 
     btnDelete.className = "btnDelete";
-    btnDelete.onclick = function () {
-      //Delete stuff goes here
+    btnDelete.onclick = async function () {
+      if (!selectedLocation) {
+        alert("Por favor, selecciona una ubicacion para eliminar.");
+        return;
+      }
+
+      if (!confirm("¿Estás seguro de que deseas eliminar esta ubicacion?")) {
+        return;
+      }
+
+      try {
+        let response = await api.ubicaciones.eliminar(id_ubicacion);
+
+        let data = {};
+        if (response.ok && response.status !== 204) {
+          data = await response.json();
+        }
+
+        if (response.ok) {
+          alert("Ubicacion eliminada correctamente");
+          selectedLocation = null;
+          if (selectedLocationTable) {
+            selectedLocationTable.textContent = "Selecciona una ubicacion";
+          }
+          await loadLocactions();
+        } else {
+          alert(data.error || data.result || "Error al eliminar la ubicacion");
+        }
+      } catch (error) {
+        console.error("Error: " + error);
+        alert("Error al conectar al servidor.");
+      }
     };
 
     btnDelete.appendChild(trash);
