@@ -1,0 +1,60 @@
+<header class="menu">
+    <a href="./equipamientos.html" class="logo">
+        <img src="../img/icon.png" alt="Logo" />
+        <span>CentroGestor</span>
+    </a>
+
+    <nav class="navegacion" aria-label="Navegación principal">
+        <ul class="lista-navegacion">
+            <li>
+                <a href="./equipamientos.html" class="nav-item">
+                    <img src="../img/equipamiento.png" alt="Icono de equipamientos" />
+                    <span>Equipamientos</span>
+                </a>
+            </li>
+            <li>
+                <a href="./ubicaciones.html" class="nav-item">
+                    <img src="../img/ubicacion.png" alt="Icono de ubicaciones" />
+                    <span>Ubicaciones</span>
+                </a>
+            </li>
+            <li>
+                <a href="./usuarios.html" class="nav-item">
+                    <img src="../img/usuarios.png" alt="Icono de usuarios" />
+                    <span>Usuarios</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="acciones">
+        <div class="notificaciones">
+            <button type="button" class="btn-notificaciones" id="btnNotificaciones"
+                aria-label="Abrir vista previa de notificaciones" aria-expanded="false"
+                aria-controls="menuNotificaciones">
+                <img src="../img/notificaciones.png" alt="" />
+                <span class="contador-notificaciones" id="contadorNotificaciones" aria-hidden="true" hidden></span>
+            </button>
+
+            <section class="menu-notificaciones" id="menuNotificaciones" aria-label="Vista previa de notificaciones" hidden>
+                <div class="cabecera-notificaciones">
+                    <h2>Notificaciones</h2>
+                    <span id="resumenNotificaciones">Vista previa</span>
+                </div>
+                <ul class="lista-notificaciones" id="vistaPreviaNotificaciones">
+                    <li class="notificacion notificacion-vacia">Abre para cargar las notificaciones.</li>
+                </ul>
+                <a class="ver-notificaciones" href="./notificaciones.html">Ver todo</a>
+            </section>
+        </div>
+
+        <a href="./perfil.html" class="perfil">
+            <img src="../img/usuario.png" alt="Imagen de perfil" class="avatar" />
+            <span class="datos-perfil">
+                <strong id="nombrePerfil">Cargando...</strong>
+                <small id="rolPerfil">Administración</small>
+            </span>
+            <img src="../img/flecha.png" alt="Abrir perfil" class="flecha" />
+        </a>
+    </div>
+</header>
