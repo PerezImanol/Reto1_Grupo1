@@ -9,6 +9,7 @@ filtroEstado.addEventListener("change", renderizarNotificaciones);
 
 async function cargarNotificaciones() {
   try {
+    await window.navbarReady;
     const usuario = await auth.requiereSesion();
 
     if (!usuario) {

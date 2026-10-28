@@ -3,20 +3,6 @@
     margin: 40px auto;
 }
 
-.btn-notificaciones.pagina-activa {
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
-    border-radius: 50%;
-    background: #edf0e5;
-    box-shadow: 0 0 0 2px var(--fondo-menu), 0 0 0 4px var(--verde-texto);
-    transition: background-color 160ms ease, box-shadow 160ms ease;
-}
-
-.btn-notificaciones.pagina-activa:hover {
-    background: #e2e8d5;
-}
-
 .encabezado-pagina-notificaciones {
     display: flex;
     align-items: flex-end;
@@ -282,6 +268,18 @@
 
     .tarjeta-notificacion {
         padding: 16px;
+    }
+
+    .titulo-notificacion {
+        align-items: flex-start;
+    }
+
+    .identificacion-notificacion {
+        min-width: 0;
+    }
+
+    .titulo-notificacion h2 {
+        overflow-wrap: anywhere;
     }
 }
 
