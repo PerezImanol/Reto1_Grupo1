@@ -12,7 +12,6 @@ let ALL_LOCATIONS = [];
 let selectedLocation = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  //Sets up location list
   loadLocactions();
 
   nameField.disabled = true;
@@ -48,17 +47,28 @@ btnSave.addEventListener("click", async (e) => {
   if (!nameField.value || !descField.value) {
     alert("Por favor, rellena los campos.");
   } else {
-    let newInfo = [nameField.value, descField.value];
-    const data = await api.ubicaciones.actualizar(newInfo);
+    let newInfo = {
+      id_ubicacion: selectedLocation.id_ubicacion,
+      nombre: nameField.value,
+      descripcion: descField.value,
+    };
 
-    if (data.status !== 200) {
-      alert(data.mensaje);
-      selectedLocation = null;
-      if (selectedLocationTable) {
-        selectedLocationTable.textContent = "Selecciona una ubicacion";
+    try {
+      const data = await api.ubicaciones.actualizar(newInfo);
+
+      if (data.status == 200) {
+        alert(data.mensaje);
+        selectedLocation = null;
+        if (selectedLocationTable) {
+          selectedLocationTable.textContent = "Selecciona una ubicacion";
+        }
+
+        await loadLocactions();
+      } else {
+        alert(data.result || data.mensaje);
       }
-    } else {
-      alert(data.result || data.mensaje);
+    } catch (e) {
+      alert("Error de servidor: " + e);
     }
   }
 });
@@ -119,17 +129,17 @@ function renderLocations(locations) {
     checkBox.className = "checkbox";
     cbTd.addEventListener("change", () => {
       if (checkBox.checked) {
-        seleccionarFila(row, checkBox, location);
+        seleccionarFila(tbody, checkBox, location);
       } else {
-        deseleccionarFila();
+        deseleccionarFila(tbody);
       }
     });
 
     cbTd.appendChild(checkBox);
 
     const { id_ubicacion, nombre, descripcion } = location;
-    nameTd.textContent = descripcion ?? "";
-    descTd.textContent = nombre ?? "";
+    nameTd.textContent = nombre ?? "";
+    descTd.textContent = descripcion ?? "";
 
     btnDelete.className = "btnDelete";
     btnDelete.onclick = async function () {
@@ -138,14 +148,9 @@ function renderLocations(locations) {
       }
 
       try {
-        let response = await api.ubicaciones.eliminar(id_ubicacion);
+        let data = await api.ubicaciones.eliminar(id_ubicacion);
 
-        let data = {};
-        if (response.ok && response.status !== 204) {
-          data = await response.json();
-        }
-
-        if (response.ok) {
+        if (data.result == "Success") {
           alert("Ubicacion eliminada correctamente");
           selectedLocation = null;
           if (selectedLocationTable) {
@@ -153,11 +158,12 @@ function renderLocations(locations) {
           }
           await loadLocactions();
         } else {
-          alert(data.error || data.result || "Error al eliminar la ubicacion");
+          alert(
+            data.mensaje || data.result || "Error al eliminar la ubicacion",
+          );
         }
-      } catch (error) {
-        console.error("Error: " + error);
-        alert("Error al conectar al servidor.");
+      } catch (e) {
+        alert("Error de servidor: " + e);
       }
     };
 
@@ -185,6 +191,9 @@ function renderLocations(locations) {
         selectedLocationTable.textContent =
           nombre + " seleccionada" || "Error al seleccionar ubicacion";
       }
+
+      checkBox.checked = true;
+      seleccionarFila(tbody, checkBox, location);
     });
 
     tbody.appendChild(row);
@@ -196,34 +205,38 @@ function renderLocations(locations) {
       "Mostrando " + count + " de " + count + " ubicaciones";
   }
 
-  function seleccionarFila(selectedRow, selectedCb, ubicacion) {
-    tabla.querySelectorAll(".checkbox").forEach((cb) => {
+  function seleccionarFila(tbody, selectedCb, location) {
+    tbody.querySelectorAll(".checkbox").forEach((cb) => {
       if (cb !== selectedCb) {
         cb.checked = false;
       }
     });
 
-    tabla.querySelectorAll("tr").forEach((row) => {
-      row.classList.remove("fila-seleccionada");
-    });
-
-    // Marcar la fila elegida
-    selectedRow.classList.add("fila-seleccionada");
-
-    selectedLocation = ubicacion;
-
-    // Habilitar el botón de borrar
+    selectedLocation = location;
     btnSave.disabled = false;
+    nameField.disabled = false;
+    descField.disabled = false;
+
+    nameField.value = location.nombre;
+    descField.value = location.descripcion;
   }
 
-  function deseleccionarFila() {
-    tabla.querySelectorAll("checkbox").forEach((cb) => {
+  function deseleccionarFila(tbody) {
+    tbody.querySelectorAll("checkbox").forEach((cb) => {
       cb.checked = false;
     });
 
     selectedLocation = null;
+    if (selectedLocationTable) {
+      selectedLocationTable.textContent = "Selecciona una ubicacion";
+    }
 
     // Deshabilitar el botón de borrar
     btnSave.disabled = true;
+
+    nameField.textContent = "";
+    descField.textContent = "";
+    nameField.disabled = true;
+    descField.disabled = true;
   }
 }

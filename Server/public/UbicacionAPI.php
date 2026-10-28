@@ -136,7 +136,6 @@ switch ($metodo) {
         if ($id !== null && (int) $id > 0 && $controller->eliminar((int) $id)) {
             echo json_encode([
                 "result" => "Success",
-                'status' => http_response_code(204),
                 "mensaje" => "Ubicación eliminada correctamente"
             ]);
         } else {
