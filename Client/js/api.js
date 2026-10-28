@@ -65,6 +65,7 @@ const api = {
 
     notificaciones: {
         obtenerTodos: () => peticionAPI("NotificacionAPI.php"),
+        obtenerPorUsuario: (id) => peticionAPI(`NotificacionAPI.php?id_user=${id}`),
         obtenerPorId: (id) => peticionAPI(`NotificacionAPI.php?id=${id}`),
         crear: (datos) => peticionAPI("NotificacionAPI.php", "POST", datos),
         actualizar: (datos) => peticionAPI("NotificacionAPI.php", "PUT", datos),

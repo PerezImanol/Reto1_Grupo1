@@ -7,12 +7,14 @@
 
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/notificaciones.css">
 
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
     <script src="../js/notificaciones.js" defer></script>
 </head>
 <body>
     <header class="menu">
-
         <a href="./equipamientos.html" class="logo">
             <img src="../img/icon.png" alt="Logo">
             <span>CentroGestor</span>
@@ -36,24 +38,48 @@
         </nav>
 
         <div class="acciones">
-
-            <a href="./notificaciones.html" class="btn-notificaciones" aria-label="Notificaciones">
+            <a href="./notificaciones.html" class="btn-notificaciones pagina-activa" aria-label="Notificaciones">
                 <img src="../img/notificaciones.png" alt="">
             </a>
 
             <a href="./perfil.html" class="perfil">
                 <img src="../img/usuario.png" alt="" class="avatar">
-
                 <span class="datos-perfil">
-                    <strong id="nombrePerfil">Ana García</strong>
-                    <small id="rolPerfil">Administradora</small>
+                    <strong id="nombrePerfil">Cargando...</strong>
+                    <small id="rolPerfil">Administración</small>
                 </span>
-
                 <img src="../img/flecha.png" alt="" class="flecha">
             </a>
-
         </div>
-
     </header>
+
+    <main class="pagina-notificaciones">
+        <header class="encabezado-pagina-notificaciones">
+            <div>
+                <p class="etiqueta-pagina">CENTROGESTOR</p>
+                <h1>Notificaciones</h1>
+                <p class="descripcion-pagina">Consulta las incidencias, avisos y necesidades comunicadas por los conserjes.</p>
+            </div>
+            <span class="total-notificaciones" id="totalNotificaciones">Cargando...</span>
+        </header>
+
+        <p class="mensaje-pagina-notificaciones" id="mensajeNotificaciones" role="status" aria-live="polite" hidden></p>
+
+        <section class="controles-notificaciones" aria-label="Filtros de notificaciones">
+            <div class="control-notificaciones">
+                <label for="filtroEstado">Filtrar por estado</label>
+                <select id="filtroEstado">
+                    <option value="TODAS">Todos los estados</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="EN_PROCESO">En proceso</option>
+                    <option value="REALIZADA">Realizada</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="lista-completa-notificaciones" id="listaNotificaciones" aria-label="Listado de notificaciones">
+            <p class="sin-notificaciones">Cargando notificaciones...</p>
+        </section>
+    </main>
 </body>
 </html>
