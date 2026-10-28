@@ -4,8 +4,61 @@ const totalNotificaciones = document.getElementById("totalNotificaciones");
 const mensajeNotificaciones = document.getElementById("mensajeNotificaciones");
 let notificaciones = [];
 
-document.addEventListener("DOMContentLoaded", cargarNotificaciones);
-filtroEstado.addEventListener("change", renderizarNotificaciones);
+window.servicioNotificaciones = {
+  obtenerTodas: obtenerNotificaciones,
+  obtenerPendientes: obtenerNotificacionesPendientes
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (listaNotificaciones && filtroEstado) {
+    cargarNotificaciones();
+    filtroEstado.addEventListener("change", renderizarNotificaciones);
+  }
+});
+
+async function obtenerNotificaciones(usuario) {
+  let resultado;
+  const esAdmin = auth.esAdministrador(usuario);
+
+  if (esAdmin) {
+    const usuarios = await api.usuarios.obtenerTodos();
+    if (!Array.isArray(usuarios)) {
+      throw new Error("La respuesta del servidor no contiene una lista de usuarios.");
+    }
+
+    const notificacionesPorUsuario = await Promise.all(
+      usuarios.map(async (creador) => {
+        const lista = await api.notificaciones.obtenerPorUsuario(creador.id_usuario);
+        if (!Array.isArray(lista)) {
+          throw new Error(`No se pudieron cargar las notificaciones del usuario ${creador.id_usuario}.`);
+        }
+
+        return lista.map((notificacion) => ({
+          ...notificacion,
+          usuarioNombre: `${creador.nombre} ${creador.apellido}`.trim()
+        }));
+      })
+    );
+    resultado = notificacionesPorUsuario.flat();
+  } else {
+    resultado = await api.notificaciones.obtenerPorUsuario(usuario.id_usuario);
+    if (!Array.isArray(resultado)) {
+      throw new Error("La respuesta del servidor no contiene una lista de notificaciones.");
+    }
+    resultado = resultado.map((notificacion) => ({
+      ...notificacion,
+      usuarioNombre: "Tu notificación"
+    }));
+  }
+
+  resultado.sort((a, b) => obtenerFechaOrden(b.fecha_creacion) - obtenerFechaOrden(a.fecha_creacion));
+  return resultado;
+}
+
+async function obtenerNotificacionesPendientes(usuario) {
+  const resultado = await obtenerNotificaciones(usuario);
+  return resultado.filter((notificacion) => normalizarEstado(notificacion.estado) === "PENDIENTE");
+}
 
 async function cargarNotificaciones() {
   try {
@@ -28,26 +81,7 @@ async function cargarNotificaciones() {
       return;
     }
 
-    const usuarios = await api.usuarios.obtenerTodos();
-    if (!Array.isArray(usuarios)) {
-      throw new Error("La respuesta del servidor no contiene una lista de usuarios.");
-    }
-
-    const notificacionesPorUsuario = await Promise.all(
-      usuarios.map(async (creador) => {
-        const lista = await api.notificaciones.obtenerPorUsuario(creador.id_usuario);
-        if (!Array.isArray(lista)) {
-          throw new Error(`No se pudieron cargar las notificaciones del usuario ${creador.id_usuario}.`);
-        }
-
-        return lista.map((notificacion) => ({
-          ...notificacion,
-          usuarioNombre: `${creador.nombre} ${creador.apellido}`.trim()
-        }));
-      })
-    );
-    notificaciones = notificacionesPorUsuario.flat();
-    notificaciones.sort((a, b) => obtenerFechaOrden(b.fecha_creacion) - obtenerFechaOrden(a.fecha_creacion));
+    notificaciones = await obtenerNotificaciones(usuario);
 
     renderizarNotificaciones();
   } catch (error) {

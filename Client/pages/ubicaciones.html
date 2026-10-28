@@ -10,55 +10,16 @@
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/ubicaciones.css">
 
+    <script src="//code.jquery.com/jquery.min.js" defer></script>
     <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/navbar.js" defer></script>
+    <script src="../js/notificaciones.js" defer></script>
     <script src="../js/ubicaciones.js" defer></script>
 </head>
 
 <body>
-    <header class="menu">
-
-        <a href="./equipamientos.html" class="logo">
-            <img src="../img/icon.png" alt="Logo">
-            <span>CentroGestor</span>
-        </a>
-
-        <nav class="navegacion">
-            <a href="./equipamientos.html" class="nav-item">
-                <img src="../img/equipamiento.png" alt="">
-                <span>Equipamientos</span>
-            </a>
-
-            <a href="./ubicaciones.html" class="nav-item activo">
-                <img src="../img/ubicacion.png" alt="">
-                <span>Ubicaciones</span>
-            </a>
-
-            <a href="./usuarios.html" class="nav-item">
-                <img src="../img/usuarios.png" alt="">
-                <span>Usuarios</span>
-            </a>
-        </nav>
-
-        <div class="acciones">
-
-            <a href="./notificaciones.html" class="btn-notificaciones" aria-label="Notificaciones">
-                <img src="../img/notificaciones.png" alt="">
-            </a>
-
-            <a href="./perfil.html" class="perfil">
-                <img src="../img/usuario.png" alt="" class="avatar">
-
-                <span class="datos-perfil">
-                    <strong id="nombrePerfil">Ana García</strong>
-                    <small id="rolPerfil">Administradora</small>
-                </span>
-
-                <img src="../img/flecha.png" alt="" class="flecha">
-            </a>
-
-        </div>
-
-    </header>
+    <div id="navbar-placeholder"></div>
     <main>
         <h1>Ubicaciones</h1>
         <section class="info">

@@ -1,28 +1,56 @@
-window.navbarReady = new Promise((resolve, reject) => {
-  $(function () {
-    $("#navbar-placeholder").load("./navbar.html", function (_response, status, request) {
-      if (status === "error") {
-        reject(new Error(`No se pudo cargar el menú: ${request.status} ${request.statusText}`));
+let cargaNavbar;
+
+window.cargarNavbar = function (selector = "#navbar-placeholder") {
+  if (cargaNavbar) {
+    return cargaNavbar;
+  }
+
+  cargaNavbar = new Promise((resolve, reject) => {
+    const contenedor = document.querySelector(selector);
+    if (!contenedor) {
+      reject(new Error(`No se encontró el contenedor del navbar: ${selector}`));
+      return;
+    }
+
+    const rutaNavbar = new URL("./navbar.html", document.baseURI).href;
+    $(contenedor).load(rutaNavbar, function (_respuesta, estado, solicitud) {
+      if (estado === "error") {
+        cargaNavbar = null;
+        reject(new Error(`No se pudo cargar el menú: ${solicitud.status} ${solicitud.statusText}`));
         return;
       }
 
-      const paginaActual = window.location.pathname.split("/").pop();
-      const enlaces = document.querySelectorAll(".nav-item");
-
-      enlaces.forEach((enlace) => {
-        const paginaEnlace = new URL(enlace.href, window.location.href).pathname.split("/").pop();
-        if (paginaEnlace === paginaActual) {
-          enlace.classList.add("activo");
-          enlace.setAttribute("aria-current", "page");
-        }
-      });
-
+      marcarPaginaActiva();
       configurarVistaPrevia();
       cargarVistaPrevia();
-      resolve();
+      resolve(contenedor);
     });
+  }).catch((error) => {
+    cargaNavbar = null;
+    throw error;
   });
+
+  return cargaNavbar;
+};
+
+window.navbarReady = Promise.resolve();
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector("#navbar-placeholder")) {
+    window.navbarReady = window.cargarNavbar();
+  }
 });
+
+function marcarPaginaActiva() {
+  const paginaActual = window.location.pathname.split("/").pop();
+  document.querySelectorAll(".nav-item").forEach((enlace) => {
+    const paginaEnlace = new URL(enlace.href, window.location.href).pathname.split("/").pop();
+    if (paginaEnlace === paginaActual) {
+      enlace.classList.add("activo");
+      enlace.setAttribute("aria-current", "page");
+    }
+  });
+}
 
 function configurarVistaPrevia() {
   const boton = document.getElementById("btnNotificaciones");
@@ -77,51 +105,12 @@ async function cargarVistaPrevia() {
 
     actualizarPerfilNavbar(usuario);
 
-    let notificaciones;
-    let esAdmin = auth.esAdministrador(usuario);
-    if (esAdmin) {
-      const usuarios = await api.usuarios.obtenerTodos();
-      if (!Array.isArray(usuarios)) {
-        throw new Error("La respuesta del servidor no contiene una lista de usuarios.");
-      }
-
-      const listas = await Promise.all(
-        usuarios.map((creador) => api.notificaciones.obtenerPorUsuario(creador.id_usuario))
-      );
-      if (!listas.every(Array.isArray)) {
-        throw new Error("No se pudieron cargar todas las notificaciones.");
-      }
-
-      notificaciones = listas.flat().map((notificacion) => {
-        const creador = usuarios.find((item) => Number(item.id_usuario) === Number(notificacion.id_user));
-        return {
-          ...notificacion,
-          usuarioNombre: creador ? `${creador.nombre} ${creador.apellido}`.trim() : `Usuario #${notificacion.id_user}`
-        };
-      });
-    } else {
-      notificaciones = await api.notificaciones.obtenerPorUsuario(usuario.id_usuario);
+    if (!window.servicioNotificaciones) {
+      throw new Error("No está disponible el servicio de notificaciones.");
     }
 
-    if (!Array.isArray(notificaciones)) {
-      throw new Error("La respuesta no contiene una lista de notificaciones.");
-    }
-
-    if (!esAdmin) {
-      notificaciones = notificaciones.map((notificacion) => ({
-        ...notificacion,
-        usuarioNombre: "Tu notificación"
-      }));
-    }
-
-    notificaciones = notificaciones.filter((notificacion) => {
-      const estado = typeof notificacion.estado === "string"
-        ? notificacion.estado
-        : notificacion.estado?.name;
-      return estado === "PENDIENTE";
-    });
-
-    notificaciones.sort((a, b) => obtenerFechaPreview(b.fecha_creacion) - obtenerFechaPreview(a.fecha_creacion));
+    const esAdmin = auth.esAdministrador(usuario);
+    const notificaciones = await window.servicioNotificaciones.obtenerPendientes(usuario);
     actualizarContadorNotificaciones(notificaciones.length, contador);
     resumen.textContent = `${notificaciones.length} ${notificaciones.length === 1 ? "notificación" : "notificaciones"}`;
     if (menu.hidden) {
@@ -215,11 +204,6 @@ function obtenerFechaTextoPreview(fecha) {
     return fecha.date;
   }
   return typeof fecha === "string" ? fecha : "";
-}
-
-function obtenerFechaPreview(fecha) {
-  const fechaParseada = new Date(obtenerFechaTextoPreview(fecha).replace(" ", "T"));
-  return Number.isNaN(fechaParseada.getTime()) ? 0 : fechaParseada.getTime();
 }
 
 function formatearEstadoPreview(estado) {
