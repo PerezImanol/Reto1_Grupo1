@@ -1,9 +1,6 @@
 <?php
 namespace App\Enums;
-
-//Las categorias de equipamiento.
-enum EnumCategoria
-{
+enum EnumCategoria{
     case PORTATIL;
     case SOBREMESA;
     case PERIFERICO;

@@ -1,27 +1,15 @@
 <?php
 
 require_once "Rol.php";
-class Usuario implements JsonSerializable
+class Usuario
 {
-    //El ID del usuario.
     private int $id_usuario;
-
-    //El nombre personal del usuario.
     private string $nombre;
-
-    //El apellido del usuario.
     private string $apellido;
-
-    //El nombre de usuario, necesario para login.
     private string $username;
-
-    //La contraseña del usuario, necesario para login.
     private string $password;
-
-    //El rol del usuario.
     private Rol $role;
 
-    //El constructor de clase.
     public function __construct(
         int $id_usuario,
         string $nombre,
@@ -38,21 +26,8 @@ class Usuario implements JsonSerializable
         $this->role = $role;
     }
 
-    //Metodo implementado de JsonSerializable, necesario para poder usar postman y el enrutador.
-    public function jsonSerialize(): mixed
-    {
-        return [
-            'id_usuario' => $this->id_usuario,
-            'nombre' => $this->nombre,
-            'apellido' => $this->apellido,
-            'username' => $this->username,
-            'password' => $this->password,
-            'role' => isset($this->role->value) ? $this->role->value : $this->role->name
-        ];
-    }
-
     /**
-     * Devuelve el ID del usuario.
+     * Get the value of id_usuario
      *
      * @return int
      */
@@ -62,7 +37,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el ID del usuario.
+     * Set the value of id_usuario
      *
      * @param int $id_usuario
      *
@@ -75,7 +50,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Devuelve el nombre personal del usuario.
+     * Get the value of nombre
      *
      * @return string
      */
@@ -85,7 +60,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el nombre personal del usuario.
+     * Set the value of nombre
      *
      * @param string $nombre
      *
@@ -98,7 +73,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Devuelve el apellido del usuario.
+     * Get the value of apellido
      *
      * @return string
      */
@@ -108,7 +83,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el apellido del usuario.
+     * Set the value of apellido
      *
      * @param string $apellido
      *
@@ -121,7 +96,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Devuelve el nombre de usuario.
+     * Get the value of username
      *
      * @return string
      */
@@ -131,7 +106,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el nombre de usuario.
+     * Set the value of username
      *
      * @param string $username
      *
@@ -144,7 +119,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Devuelve el la contraseña del usuario.
+     * Get the value of password
      *
      * @return string
      */
@@ -154,7 +129,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el la contraseña del usuario.
+     * Set the value of password
      *
      * @param string $password
      *
@@ -167,7 +142,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Devuelve el rol del usuario.
+     * Get the value of role
      *
      * @return Rol
      */
@@ -177,7 +152,7 @@ class Usuario implements JsonSerializable
     }
 
     /**
-     * Cambia el rol del usuario.
+     * Set the value of role
      *
      * @param Rol $role
      *
