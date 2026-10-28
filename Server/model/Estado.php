@@ -1,5 +1,4 @@
 <?php
-//Los estados de una notificacion.
 enum Estado
 {
     case PENDIENTE;

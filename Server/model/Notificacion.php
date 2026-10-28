@@ -1,27 +1,16 @@
 <?php
 
 require_once "Estado.php";
-class Notificacion implements JsonSerializable
+class Notificacion
 {
-    //El ID de la notificacion.
     private int $id_notificacion;
-
-    //El titulo de la notificacion.
     private string $titulo;
-
-    //La descripcion de la notificacion.
     private string $descripcion;
-
-    //La fecha de la notificacion.
     private DateTime $fecha_creacion;
-
-    //El estado de la notificacion.
     private Estado $estado;
-
-    //El ID del usuario.
     private int $id_user;
 
-    //El constructor de clase.
+
     public function __construct(
         int $id_notificacion,
         string $titulo,
@@ -38,21 +27,8 @@ class Notificacion implements JsonSerializable
         $this->id_user = $id_user;
     }
 
-    //Metodo implementado de JsonSerializable, necesario para poder usar postman y el enrutador.
-    public function jsonSerialize(): mixed
-    {
-        return [
-            'id_notificacion' => $this->id_notificacion,
-            'titulo' => $this->titulo,
-            'descripcion' => $this->descripcion,
-            'fecha_creacion' => $this->fecha_creacion,
-            'estado' => isset($this->estado->value) ? $this->estado->value : $this->estado->name,
-            'id_user' => $this->id_user
-        ];
-    }
-
     /**
-     * Devuelve el ID de la notificacion.
+     * Get the value of id_notificacion
      *
      * @return int
      */
@@ -62,7 +38,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia el ID de la notificacion.
+     * Set the value of id_notificacion
      *
      * @param int $id_notificacion
      *
@@ -75,7 +51,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Devuelve el titulo de la notificacion.
+     * Get the value of titulo
      *
      * @return string
      */
@@ -85,7 +61,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia el titulo de la notificacion.
+     * Set the value of titulo
      *
      * @param string $titulo
      *
@@ -98,7 +74,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Devuelve el ID de la notificacion.
+     * Get the value of descripcion
      *
      * @return string
      */
@@ -108,7 +84,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia el ID de la notificacion.
+     * Set the value of descripcion
      *
      * @param string $descripcion
      *
@@ -121,7 +97,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Devuelve la fecha de creacion de la notificacion.
+     * Get the value of fecha_creacion
      *
      * @return DateTime
      */
@@ -131,7 +107,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia la fecha de creacion de la notificacion.
+     * Set the value of fecha_creacion
      *
      * @param DateTime $fecha_creacion
      *
@@ -144,7 +120,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Devuelve el estado de la notificacion.
+     * Get the value of estado
      *
      * @return Estado
      */
@@ -154,7 +130,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia el estado de la notificacion.
+     * Set the value of estado
      *
      * @param Estado $estado
      *
@@ -167,7 +143,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Devuelve el ID del usuario.
+     * Get the value of id_user
      *
      * @return int
      */
@@ -177,7 +153,7 @@ class Notificacion implements JsonSerializable
     }
 
     /**
-     * Cambia el ID del usuario.
+     * Set the value of id_user
      *
      * @param int $id_user
      *
