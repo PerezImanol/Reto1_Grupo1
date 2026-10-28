@@ -1,0 +1,117 @@
+.notificaciones {
+    position: relative;
+}
+
+.btn-notificaciones {
+    z-index: 1;
+}
+
+.contador-notificaciones {
+    position: absolute;
+    top: 0;
+    right: -5px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 10px;
+    background: #b94b36;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+}
+
+.menu-notificaciones {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 12px);
+    right: -12px;
+    width: min(360px, calc(100vw - 24px));
+    overflow: hidden;
+    border: 1px solid #e5ddc9;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(41 56 32 / 16%);
+}
+
+.menu-notificaciones[hidden] {
+    display: none;
+}
+
+.cabecera-notificaciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid #eee9dc;
+}
+
+.cabecera-notificaciones h2 {
+    margin: 0;
+    color: var(--verde-oscuro);
+    font-size: 16px;
+}
+
+.cabecera-notificaciones span {
+    color: var(--verde-texto);
+    font-size: 12px;
+}
+
+.lista-notificaciones {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.notificacion {
+    display: flex;
+    gap: 10px;
+    padding: 13px 18px;
+    border-bottom: 1px solid #f1eee6;
+}
+
+.notificacion:last-child {
+    border-bottom: 0;
+}
+
+.punto-notificacion {
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: #78904c;
+}
+
+.notificacion strong {
+    font-size: 13px;
+}
+
+.notificacion p {
+    margin: 4px 0;
+    color: #62665a;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.notificacion time {
+    color: #85877e;
+    font-size: 11px;
+}
+
+.ver-notificaciones {
+    display: block;
+    padding: 13px 18px;
+    border-top: 1px solid #eee9dc;
+    color: var(--verde-texto);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+.ver-notificaciones:hover {
+    background: #faf8ef;
+    color: var(--verde-oscuro);
+}

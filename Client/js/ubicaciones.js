@@ -3,18 +3,79 @@ const btnUbicacion = document.getElementById("btnUbicacion");
 const btnPanel = document.getElementById("btnPanel");
 const btnNotificaciones = document.getElementById("btnNotificaciones");
 const btnPerfil = document.getElementById("btnPerfil");
+const nameField = document.getElementById("name");
+const descField = document.getElementById("desc");
+const btnSave = document.getElementById("btnSave");
+const selectedLocationTable = document.getElementById("select");
+
 let ALL_LOCATIONS = [];
 let selectedLocation = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  //Sets up location list
   loadLocactions();
+
+  nameField.disabled = true;
+  descField.disabled = true;
+  btnSave.disabled = true;
+});
+
+nameField.addEventListener("change", () => {
+  if (!nameField.value || !descField.value) {
+    btnSave.disabled = true;
+  } else {
+    btnSave.disabled = false;
+    nameField.value.trim();
+  }
+});
+
+descField.addEventListener("change", () => {
+  if (!nameField.value || !descField.value) {
+    btnSave.disabled = true;
+  } else {
+    btnSave.disabled = false;
+    descField.value.trim();
+  }
+});
+
+btnSave.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (!selectedLocation) {
+    alert("Por favor, selecciona una ubicacion para editar.");
+    return;
+  }
+
+  if (!nameField.value || !descField.value) {
+    alert("Por favor, rellena los campos.");
+  } else {
+    let newInfo = {
+      id_ubicacion: selectedLocation.id_ubicacion,
+      nombre: nameField.value,
+      descripcion: descField.value,
+    };
+
+    try {
+      const data = await api.ubicaciones.actualizar(newInfo);
+
+      if (data.status == 200) {
+        alert(data.mensaje);
+        selectedLocation = null;
+        if (selectedLocationTable) {
+          selectedLocationTable.textContent = "Selecciona una ubicacion";
+        }
+
+        await loadLocactions();
+      } else {
+        alert(data.result || data.mensaje);
+      }
+    } catch (e) {
+      alert("Error de servidor: " + e);
+    }
+  }
 });
 
 async function getAllLocations() {
-  const response = await fetch("../../Server/public/UbicacionAPI.php");
+  const data = await api.ubicaciones.obtenerTodos();
 
-  const data = await response.json();
   return data.result || [];
 }
 
@@ -31,7 +92,6 @@ async function loadLocactions() {
 
 function renderLocations(locations) {
   const tbody = document.getElementById("tableLocations");
-  const selectedLocationTable = document.getElementById("select");
   const showLocations = document.getElementById("show");
   let count = 0;
 
@@ -58,56 +118,67 @@ function renderLocations(locations) {
 
   locations.forEach((location) => {
     const row = document.createElement("tr");
+    const cbTd = document.createElement("td");
     const nameTd = document.createElement("td");
     const descTd = document.createElement("td");
     const buttonsTd = document.createElement("td");
-    const btnEdit = document.createElement("button");
     const btnDelete = document.createElement("button");
 
-    //good god the svg shit looks inefficient asf but it works
-    const pencil = document.createElement("img");
-    pencil.src = "../img/pencil.svg";
-    pencil.className = "svg";
-    pencil.id = "pencil";
+    const checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
+    checkBox.className = "checkbox";
+    cbTd.addEventListener("change", () => {
+      if (checkBox.checked) {
+        seleccionarFila(tbody, checkBox, location);
+      } else {
+        deseleccionarFila(tbody);
+      }
+    });
+
+    cbTd.appendChild(checkBox);
+
+    const { id_ubicacion, nombre, descripcion } = location;
+    nameTd.textContent = nombre ?? "";
+    descTd.textContent = descripcion ?? "";
+
+    btnDelete.className = "btnDelete";
+    btnDelete.onclick = async function () {
+      if (!confirm("¿Estás seguro de que deseas eliminar esta ubicacion?")) {
+        return;
+      }
+
+      try {
+        let data = await api.ubicaciones.eliminar(id_ubicacion);
+
+        if (data.result == "Success") {
+          alert("Ubicacion eliminada correctamente");
+          selectedLocation = null;
+          if (selectedLocationTable) {
+            selectedLocationTable.textContent = "Selecciona una ubicacion";
+          }
+          await loadLocactions();
+        } else {
+          alert(
+            data.mensaje || data.result || "Error al eliminar la ubicacion",
+          );
+        }
+      } catch (e) {
+        alert("Error de servidor: " + e);
+      }
+    };
 
     const trash = document.createElement("img");
     trash.src = "../img/trash.svg";
     trash.className = "svg";
-    trash.id = "trash";
-
-    const pencilSpan = document.createElement("span");
-    pencilSpan.textContent = "Editar";
 
     const trashSpan = document.createElement("span");
     trashSpan.textContent = "Borrar";
-
-    const { nombre, descripcion } = location;
-    nameTd.textContent = descripcion ?? "";
-    descTd.textContent = nombre ?? "";
-
-    btnEdit.className = "btnEdit";
-    btnEdit.onclick = function () {
-      //Edit stuff goes here
-
-      if (selectedLocation == location) {
-        pencilSpan.textContent = "Editando";
-      } else {
-        pencilSpan.textContent = "Editar";
-      }
-    };
-    btnEdit.appendChild(pencil);
-    btnEdit.appendChild(pencilSpan);
-    buttonsTd.appendChild(btnEdit);
-
-    btnDelete.className = "btnDelete";
-    btnDelete.onclick = function () {
-      //Delete stuff goes here
-    };
 
     btnDelete.appendChild(trash);
     btnDelete.appendChild(trashSpan);
     buttonsTd.appendChild(btnDelete);
 
+    row.appendChild(cbTd);
     row.appendChild(nameTd);
     row.appendChild(descTd);
     buttonsTd.className = "right";
@@ -120,6 +191,9 @@ function renderLocations(locations) {
         selectedLocationTable.textContent =
           nombre + " seleccionada" || "Error al seleccionar ubicacion";
       }
+
+      checkBox.checked = true;
+      seleccionarFila(tbody, checkBox, location);
     });
 
     tbody.appendChild(row);
@@ -129,5 +203,40 @@ function renderLocations(locations) {
   if (showLocations) {
     showLocations.textContent =
       "Mostrando " + count + " de " + count + " ubicaciones";
+  }
+
+  function seleccionarFila(tbody, selectedCb, location) {
+    tbody.querySelectorAll(".checkbox").forEach((cb) => {
+      if (cb !== selectedCb) {
+        cb.checked = false;
+      }
+    });
+
+    selectedLocation = location;
+    btnSave.disabled = false;
+    nameField.disabled = false;
+    descField.disabled = false;
+
+    nameField.value = location.nombre;
+    descField.value = location.descripcion;
+  }
+
+  function deseleccionarFila(tbody) {
+    tbody.querySelectorAll("checkbox").forEach((cb) => {
+      cb.checked = false;
+    });
+
+    selectedLocation = null;
+    if (selectedLocationTable) {
+      selectedLocationTable.textContent = "Selecciona una ubicacion";
+    }
+
+    // Deshabilitar el botón de borrar
+    btnSave.disabled = true;
+
+    nameField.textContent = "";
+    descField.textContent = "";
+    nameField.disabled = true;
+    descField.disabled = true;
   }
 }

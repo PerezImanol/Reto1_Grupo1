@@ -86,15 +86,19 @@
                     <img src="../img/filtrar.png" alt="">
                 </div>
 
-                <button id="btnAnadir" class="boton-icono boton-anadir"
-                        aria-label="Añadir equipamiento">
+                <button id="btnAnadir" class="boton-icono boton-anadir" aria-label="Añadir equipamiento">
                     <img src="../img/añadir.png" alt="">
                 </button>
+                <button id="btnBorrar" class="boton-icono boton-borrar" aria-label="Borrar equipamiento" disabled>
+                    <img src="../img/borrar.png" alt="">
+                </button>
+
             </div>
 
             <table>
                 <thead>
                     <tr>
+                        <th class="columna-seleccion"></th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Marca</th>
@@ -106,16 +110,68 @@
 
                 <tbody id="tablaEquipamientos">
                     <tr>
-                        <td colspan="6">Cargando equipamientos...</td>
+                        <td colspan="7">Cargando equipamientos...</td>
                     </tr>
                 </tbody>
             </table>
 
         </section>
-        <section class="modificar">
-            <button id="btnBorrar" class="boton-icono boton-borrar" aria-label="Eliminar">
-                <img src="../img/borrar.png" alt="">
-            </button>
+
+        <section id="seccionModificar" class="modificar" hidden>
+
+            <form id="formEquipamiento" hidden>
+                <h2 id="tituloFormulario">Modificar equipamiento</h2>
+                <div class="campos-formulario">
+                    <label>
+                        Nombre
+                        <input type="text" name="nombre" required>
+                    </label>
+
+                    <label>
+                        Descripción
+                        <input type="text" name="descripcion">
+                    </label>
+
+                    <label>
+                        Marca
+                        <input type="text" name="marca">
+                    </label>
+
+                    <label>
+                        Modelo
+                        <input type="text" name="modelo">
+                    </label>
+
+                    <label>
+                        Categoría
+                        <select name="categoria" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="PORTATIL">Portátil</option>
+                            <option value="SOBREMESA">Sobremesa</option>
+                            <option value="PERIFERICO">Periférico</option>
+                            <option value="AUDIOVISUAL">Audiovisual</option>
+                            <option value="OTROS">Otros</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Ubicación actual
+                        <input type="text" name="nombreUbicacion">
+                    </label>
+
+                </div>
+
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-accion">
+                        Guardar
+                    </button>
+
+                    <button type="button" id="btnCancelar" class="boton-accion boton-cancelar">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+
         </section>
     </main>
 
