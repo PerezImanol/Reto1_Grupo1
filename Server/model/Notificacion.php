@@ -1,16 +1,27 @@
 <?php
 
 require_once "Estado.php";
-class Notificacion
+class Notificacion implements JsonSerializable
 {
+    //El ID de la notificacion.
     private int $id_notificacion;
+
+    //El titulo de la notificacion.
     private string $titulo;
+
+    //La descripcion de la notificacion.
     private string $descripcion;
+
+    //La fecha de la notificacion.
     private DateTime $fecha_creacion;
+
+    //El estado de la notificacion.
     private Estado $estado;
+
+    //El ID del usuario.
     private int $id_user;
 
-
+    //El constructor de clase.
     public function __construct(
         int $id_notificacion,
         string $titulo,
@@ -27,8 +38,21 @@ class Notificacion
         $this->id_user = $id_user;
     }
 
+    //Metodo implementado de JsonSerializable, necesario para poder usar postman y el enrutador.
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_notificacion' => $this->id_notificacion,
+            'titulo' => $this->titulo,
+            'descripcion' => $this->descripcion,
+            'fecha_creacion' => $this->fecha_creacion,
+            'estado' => isset($this->estado->value) ? $this->estado->value : $this->estado->name,
+            'id_user' => $this->id_user
+        ];
+    }
+
     /**
-     * Get the value of id_notificacion
+     * Devuelve el ID de la notificacion.
      *
      * @return int
      */
@@ -38,7 +62,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of id_notificacion
+     * Cambia el ID de la notificacion.
      *
      * @param int $id_notificacion
      *
@@ -51,7 +75,7 @@ class Notificacion
     }
 
     /**
-     * Get the value of titulo
+     * Devuelve el titulo de la notificacion.
      *
      * @return string
      */
@@ -61,7 +85,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of titulo
+     * Cambia el titulo de la notificacion.
      *
      * @param string $titulo
      *
@@ -74,7 +98,7 @@ class Notificacion
     }
 
     /**
-     * Get the value of descripcion
+     * Devuelve el ID de la notificacion.
      *
      * @return string
      */
@@ -84,7 +108,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of descripcion
+     * Cambia el ID de la notificacion.
      *
      * @param string $descripcion
      *
@@ -97,7 +121,7 @@ class Notificacion
     }
 
     /**
-     * Get the value of fecha_creacion
+     * Devuelve la fecha de creacion de la notificacion.
      *
      * @return DateTime
      */
@@ -107,7 +131,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of fecha_creacion
+     * Cambia la fecha de creacion de la notificacion.
      *
      * @param DateTime $fecha_creacion
      *
@@ -120,7 +144,7 @@ class Notificacion
     }
 
     /**
-     * Get the value of estado
+     * Devuelve el estado de la notificacion.
      *
      * @return Estado
      */
@@ -130,7 +154,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of estado
+     * Cambia el estado de la notificacion.
      *
      * @param Estado $estado
      *
@@ -143,7 +167,7 @@ class Notificacion
     }
 
     /**
-     * Get the value of id_user
+     * Devuelve el ID del usuario.
      *
      * @return int
      */
@@ -153,7 +177,7 @@ class Notificacion
     }
 
     /**
-     * Set the value of id_user
+     * Cambia el ID del usuario.
      *
      * @param int $id_user
      *

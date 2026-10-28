@@ -1,41 +1,60 @@
 <?php
 
-require_once ("../model/Usuario.php");
-require_once ("../dao/ConexionDB.php");
+require_once "../model/Usuario.php";
+require_once "../dao/ConexionDB.php";
 
 class UsuarioDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
+
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Inicia la sesion en la base de datos, o denega el acceso si los credenciales son incorrectos.
     public function login(string $username, string $password)
     {
+        //Preparacion de query
         $sql = "SELECT *
                     FROM usuarios
                     WHERE nombre_usuario = ?";
+
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $username);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $resultado = $stmt->get_result();
-        $user = $resultado->fetch_assoc();
+        $row = $resultado->fetch_assoc();
 
-        if ($user && password_verify($password, $user["password_hash"])) {
-            return $user;
+        //Resultados de query
+        $role = $row["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
+        if ($row && password_verify($password, $row["password_hash"])) {
+            return new Usuario(
+                $row["id_usuario"],
+                $row["nombre"],
+                $row["apellidos"],
+                $row["nombre_usuario"],
+                $row["password_hash"],
+                $role
+            );
         } else {
             return null;
         }
     }
 
+    //Devuelve todos los usuarios en la base de datos.
     public function getAllUsers(): array
     {
-        $users = [];
+        //Preparacion de query
         $sql = "SELECT * 
                     FROM usuarios";
-        $resultado = $this->conexion->query($sql);
 
+        $resultado = $this->conexion->query($sql);
+        $users = [];
+
+        //Resultados de query
         while ($fila = $resultado->fetch_assoc()) {
             $role = $fila["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
 
@@ -53,15 +72,20 @@ class UsuarioDAO
         return $users;
     }
 
+    //Busca un usuario en concreto por ID en la base de datos y la devuelve.
     public function buscarPorId(int $idUser): ?Usuario
     {
+        //Preparacion de query
         $sql = "SELECT *
                     FROM usuarios
                     WHERE id_usuario = ?";
+
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $idUser);
         $stmt->execute();
         $resultado = $stmt->get_result();
+
+        //Resultados de query
         if ($fila = $resultado->fetch_assoc()) {
             $role = $fila["rol"] === "ADMIN" ? Rol::ADMIN : Rol::USER;
 
@@ -80,16 +104,20 @@ class UsuarioDAO
 
     }
 
+    //Inserta un nuevo usuario a la base de datos.
     public function insertar(Usuario $user): bool
     {
+        //Preparacion de query
         $sql = "INSERT INTO usuarios (nombre, apellidos, nombre_usuario, password_hash, rol)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?)";
+
         $stmt = $this->conexion->prepare($sql);
         $nombre = $user->getNombre();
         $apellido = $user->getApellido();
         $username = $user->getUsername();
         $password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
-        $role = $user->getRole();
+        $roleEnum = $user->getRole();
+        $role = isset($enumCategoria->value) ? $roleEnum->value : $roleEnum->name;
 
         $stmt->bind_param(
             "sssss",
@@ -99,23 +127,28 @@ class UsuarioDAO
             $password,
             $role
         );
+
+        //Resultados de query
         return $stmt->execute();
     }
 
+    //Actualiza un usuario en la base de datos.
     public function actualizar(Usuario $user): bool
     {
+        //Preparacion de query
         $sql = "UPDATE usuarios
                     SET nombre = ?,
                     apellidos = ?,
                     nombre_usuario = ?,
-                    rol = ?;
+                    rol = ?
                     WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
         $nombre = $user->getNombre();
         $apellido = $user->getApellido();
         $username = $user->getUsername();
-        $role = $user->getRole();
+        $roleEnum = $user->getRole();
+        $role = isset($enumCategoria->value) ? $roleEnum->value : $roleEnum->name;
         $id = $user->getIdUsuario();
 
         $stmt->bind_param(
@@ -126,34 +159,44 @@ class UsuarioDAO
             $role,
             $id
         );
+
+        //Resultados de query
         return $stmt->execute();
     }
 
+    //Actualiza la contraseña de un usuario en la base de datos.
     public function actualizar_password(Usuario $user): bool
     {
-        $hashed_password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+        //Preparacion de query
         $sql = "UPDATE usuarios
-                    SET password_hash = ?;
+                    SET password_hash = ?
                     WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
-        $password = $user->getPassword();
+        $hashed_password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
         $id = $user->getIdUsuario();
 
         $stmt->bind_param(
             "si",
-            $password,
+            $hashed_password,
             $id
         );
+
+        //Resultados de query
         return $stmt->execute();
     }
-    // ELIMINAR
+
+    // Elimina un usuario en la base de datos.
     public function eliminar(int $idUser): bool
     {
+        //Preparacion de query
         $sql = "DELETE FROM usuarios
                     WHERE id_usuario = ?";
+
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $idUser);
+
+        //Resultados de query
         return $stmt->execute();
     }
 }

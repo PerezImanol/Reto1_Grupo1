@@ -1,60 +1,68 @@
 <?php
 
-require_once ("../model/Notificacion.php");
-require_once ("../dao/ConexionDB.php");
+require_once("../model/Notificacion.php");
+require_once("../dao/ConexionDB.php");
 
 class NotificacionDAO
 {
+    //Variable de la conexion.
     private mysqli $conexion;
+
+    //Initializador de la conexion.
     public function __construct()
     {
         $this->conexion = ConexionDB::conexion();
     }
 
+    //Devuelve todas las notificaciones de un usuario en concreto en la base de datos.
     public function getAllNotifsUser(int $id_user): array
-{
-    $notifs = [];
+    {
+        //Preparacion de query
+        $sql = "SELECT * FROM notificaciones WHERE id_usuario = ?";
 
-    $sql = "SELECT * FROM notificaciones WHERE id_usuario = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_user);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $notifs = [];
 
-    $stmt = $this->conexion->prepare($sql);
-    $stmt->bind_param("i", $id_user);
-    $stmt->execute();
+        //Resultados de query
+        while ($fila = $resultado->fetch_assoc()) {
+            $estado = match ($fila["estado"]) {
+                "PENDIENTE" => Estado::PENDIENTE,
+                "EN_PROCESO" => Estado::EN_PROCESO,
+                "REALIZADA" => Estado::REALIZADA
+            };
 
-    $resultado = $stmt->get_result();
+            $notif = new Notificacion(
+                $fila["id_notificacion"],
+                $fila["titulo"],
+                $fila["descripcion"],
+                new DateTime($fila["fecha_creacion"]),
+                $estado,
+                $fila["id_usuario"]
+            );
 
-    while ($fila = $resultado->fetch_assoc()) {
+            $notifs[] = $notif;
+        }
 
-        $estado = match ($fila["estado"]) {
-            "PENDIENTE" => Estado::PENDIENTE,
-            "EN_PROCESO" => Estado::EN_PROCESO,
-            "REALIZADA" => Estado::REALIZADA
-        };
-
-        $notif = new Notificacion(
-            $fila["id_notificacion"],
-            $fila["titulo"],
-            $fila["descripcion"],
-            new DateTime($fila["fecha_creacion"]),
-            $estado,
-            $fila["id_usuario"]
-        );
-
-        $notifs[] = $notif;
+        return $notifs;
     }
 
-    return $notifs;
-}
-
-    public function buscarPorId(int $idUser): ?Notificacion
+    //Devuelve una notificacion de un usuario en concreto en la base de datos.
+    public function buscarPorId(int $idNotif): ?Notificacion
     {
+        //Preparacion de query
         $sql = "SELECT *
                     FROM notificaciones
                     WHERE id_notificacion = ?";
+
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idUser);
+        $stmt->bind_param("i", $idNotif);
         $stmt->execute();
         $resultado = $stmt->get_result();
+
+        //Resultados de query
         if ($fila = $resultado->fetch_assoc()) {
             $estado = match ($fila["estado"]) {
                 "PENDIENTE" => Estado::PENDIENTE,
@@ -66,7 +74,7 @@ class NotificacionDAO
                 $fila["id_notificacion"],
                 $fila["titulo"],
                 $fila["descripcion"],
-                $fila["fecha_creacion"],
+                new DateTime($fila["fecha_creacion"]),
                 $estado,
                 $fila["id_usuario"]
             );
@@ -77,15 +85,19 @@ class NotificacionDAO
 
     }
 
+    //Inserta una nueva notificacion a la base de datos.
     public function insertar(Notificacion $notif): bool
     {
+        //Preparacion de query
         $sql = "INSERT INTO notificaciones (titulo, descripcion, fecha_creacion, estado, id_usuario)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?)";
+
         $stmt = $this->conexion->prepare($sql);
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
-        $fecha_creacion = $notif->getFechaCreacion();
-        $estado = $notif->getEstado();
+        $fecha_creacion = $notif->getFechaCreacion()->format('Y-m-d H:i:s');
+        $estadoEnum = $notif->getEstado();
+        $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id_usuario = $notif->getIdUser();
 
         $stmt->bind_param(
@@ -96,43 +108,58 @@ class NotificacionDAO
             $estado,
             $id_usuario
         );
+
+        //Resultados de query
         return $stmt->execute();
     }
 
+    //Actualiza una notificacion a la base de datos.
     public function actualizar(Notificacion $notif): bool
     {
+        //Preparacion de query
         $sql = "UPDATE notificaciones
-                    SET titulo = ?,
+                SET titulo = ?,
                     descripcion = ?,
                     fecha_creacion = ?,
-                    estado = ?;
-                    WHERE id_notificacion = ?";
+                    estado = ?
+                WHERE id_notificacion = ? AND id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
         $titulo = $notif->getTitulo();
         $descripcion = $notif->getDescripcion();
-        $fecha_creacion = $notif->getFechaCreacion();
-        $estado = $notif->getEstado();
+        $fecha_creacion = $notif->getFechaCreacion()->format('Y-m-d H:i:s');
+        $estadoEnum = $notif->getEstado();
+        $estado = isset($estadoEnum->value) ? $estadoEnum->value : $estadoEnum->name;
         $id = $notif->getIdNotificacion();
+        $id_user = $notif->getIdUser();
 
         $stmt->bind_param(
-            "ssssi",
+            "ssssii",
             $titulo,
             $descripcion,
             $fecha_creacion,
             $estado,
-            $id
+            $id,
+            $id_user
         );
-        return $stmt->execute();
+
+        //Resultados de query
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
     }
 
-    // ELIMINAR
-    public function eliminar(int $idNotif): bool
+    // Elimina una notificacion en la base de datos.
+    public function eliminar(int $idNotif, int $idUser): bool
     {
+        //Preparacion de query
         $sql = "DELETE FROM notificaciones
-                    WHERE id_notificacion = ?";
+                    WHERE id_notificacion = ? AND id_usuario = ?";
+
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $idNotif);
+        $stmt->bind_param("ii", $idNotif, $idUser);
+
+        //Resultados de query
         return $stmt->execute();
     }
 }
