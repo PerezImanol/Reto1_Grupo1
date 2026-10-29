@@ -63,9 +63,9 @@ switch ($metodo) {
 
         if (!is_array($datos)) {
             echo json_encode([
-                "result" => "Error",
+                "mensaje" => "JSON inválido.",
                 'status' => http_response_code(400),
-                "mensaje" => "JSON inválido"
+                'exito' => false
             ]);
             exit;
         }
@@ -77,15 +77,15 @@ switch ($metodo) {
 
         if ($exito) {
             echo json_encode([
-                "result" => "Success",
+                "mensaje" => "Ubicación creada con éxito.",
                 'status' => http_response_code(201),
-                "mensaje" => "Ubicación creada con éxito"
+                'exito' => false
             ]);
         } else {
             echo json_encode([
-                "result" => "Error",
+                "mensaje" => "No se pudo insertar la ubicacion en la base de datos.",
                 'status' => http_response_code(500),
-                "mensaje" => "No se pudo insertar en la base de datos"
+                'exito' => false
             ]);
         }
 
@@ -97,9 +97,9 @@ switch ($metodo) {
 
         if (!is_array($datos)) {
             echo json_encode([
-                "result" => "Error",
+                "mensaje" => "JSON inválido.",
                 'status' => http_response_code(400),
-                "mensaje" => "JSON inválido"
+                'exito' => false
             ]);
             exit;
         }
@@ -113,16 +113,16 @@ switch ($metodo) {
 
         if ($exito) {
             echo json_encode([
-                "result" => "Success",
+                "mensaje" => "Ubicación actualizada con éxito.",
                 'status' => http_response_code(200),
-                "mensaje" => "Ubicación actualizada con éxito"
+                'exito' => true
             ]);
         } else {
             http_response_code(500);
             echo json_encode([
-                "result" => "Error",
+                "mensaje" => "No se pudo actualizar en la base de datos.",
                 'status' => http_response_code(500),
-                "mensaje" => "No se pudo actualizar en la base de datos"
+                'exito' => false
             ]);
         }
 
@@ -135,15 +135,14 @@ switch ($metodo) {
 
         if ($id !== null && (int) $id > 0 && $controller->eliminar((int) $id)) {
             echo json_encode([
-                "result" => "Success",
-                "mensaje" => "Ubicación eliminada correctamente"
+                "mensaje" => "Ubicación eliminada correctamente",
+                'exito' => true
             ]);
         } else {
-            http_response_code(400);
             echo json_encode([
-                "result" => "Error",
+                "mensaje" => "ID inválido o no se pudo eliminar.",
                 'status' => http_response_code(400),
-                "mensaje" => "ID inválido o no se pudo eliminar"
+                'exito' => false
             ]);
         }
 
@@ -154,7 +153,8 @@ switch ($metodo) {
         // Indicamos que el método HTTP utilizado no está permitido.
         echo json_encode([
             "mensaje" => "Método no permitido",
-            'status' => http_response_code(405)
+            'status' => http_response_code(405),
+            'exito' => false
         ]);
 
         exit;

@@ -41,19 +41,23 @@
                 </thead>
                 <tbody id="tableLocations">
                     <tr>
-                        <td colspan="3">Tabla sin contenido</td>
+                        <td colspan="3">Cargando ubicaciones...</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="2" id="show">Mostrando 0 de 0 ubicaciones</td>
+                        <td id="show" colspan="2">Mostrando 0 de 0 ubicaciones</td>
                         <td></td>
-                        <td class="right" id="select">Selecciona una ubicacion</td>
+                        <td class="right">
+                            <span id="select">Selecciona una ubicacion</span>
+                        </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
+        <p class="messageDefault" id="message" hidden></p>
     </main>
+
     <section class="border">
         <div class="buttons">
             <button id="btnSave">Guardar cambios</button>
