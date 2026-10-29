@@ -6,7 +6,9 @@ const btnPerfil = document.getElementById("btnPerfil");
 const nameField = document.getElementById("name");
 const descField = document.getElementById("desc");
 const btnSave = document.getElementById("btnSave");
+const btnCancel = document.getElementById("btnCancel");
 const selectedLocationTable = document.getElementById("select");
+const tbody = document.getElementById("tableLocations");
 
 let ALL_LOCATIONS = [];
 let selectedLocation = null;
@@ -17,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   nameField.disabled = true;
   descField.disabled = true;
   btnSave.disabled = true;
+  btnCancel.disabled = true;
 });
 
 nameField.addEventListener("change", () => {
@@ -73,6 +76,10 @@ btnSave.addEventListener("click", async (e) => {
   }
 });
 
+btnCancel.addEventListener("click", () => {
+  deseleccionarFila(tbody);
+});
+
 async function getAllLocations() {
   const data = await api.ubicaciones.obtenerTodos();
 
@@ -91,7 +98,6 @@ async function loadLocactions() {
 }
 
 function renderLocations(locations) {
-  const tbody = document.getElementById("tableLocations");
   const showLocations = document.getElementById("show");
   let count = 0;
 
@@ -204,39 +210,41 @@ function renderLocations(locations) {
     showLocations.textContent =
       "Mostrando " + count + " de " + count + " ubicaciones";
   }
+}
 
-  function seleccionarFila(tbody, selectedCb, location) {
-    tbody.querySelectorAll(".checkbox").forEach((cb) => {
-      if (cb !== selectedCb) {
-        cb.checked = false;
-      }
-    });
-
-    selectedLocation = location;
-    btnSave.disabled = false;
-    nameField.disabled = false;
-    descField.disabled = false;
-
-    nameField.value = location.nombre;
-    descField.value = location.descripcion;
-  }
-
-  function deseleccionarFila(tbody) {
-    tbody.querySelectorAll("checkbox").forEach((cb) => {
+function seleccionarFila(tbody, selectedCb, location) {
+  tbody.querySelectorAll(".checkbox").forEach((cb) => {
+    if (cb !== selectedCb) {
       cb.checked = false;
-    });
-
-    selectedLocation = null;
-    if (selectedLocationTable) {
-      selectedLocationTable.textContent = "Selecciona una ubicacion";
     }
+  });
 
-    // Deshabilitar el botón de borrar
-    btnSave.disabled = true;
+  selectedLocation = location;
+  btnSave.disabled = false;
+  btnCancel.disabled = false;
+  nameField.disabled = false;
+  descField.disabled = false;
 
-    nameField.textContent = "";
-    descField.textContent = "";
-    nameField.disabled = true;
-    descField.disabled = true;
+  nameField.value = location.nombre;
+  descField.value = location.descripcion;
+}
+
+function deseleccionarFila(tbody) {
+  tbody.querySelectorAll(".checkbox").forEach((cb) => {
+    cb.checked = false;
+  });
+
+  selectedLocation = null;
+  if (selectedLocationTable) {
+    selectedLocationTable.textContent = "Selecciona una ubicacion";
   }
+
+  // Deshabilitar el botón de borrar
+  btnSave.disabled = true;
+  btnCancel.disabled = true;
+
+  nameField.textContent = "";
+  descField.textContent = "";
+  nameField.disabled = true;
+  descField.disabled = true;
 }
