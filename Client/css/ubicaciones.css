@@ -55,7 +55,7 @@ th {
 
 .borderInput {
   border: 1px solid var(--borde-menu);
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 5px 0;
 }
 
@@ -78,17 +78,24 @@ button:disabled {
 #btnSave {
   background: var(--verde-texto);
   color: var(--fondo-menu);
-  border: 2px solid var(--verde-texto);
+  border: solid var(--verde-texto);
   padding: 10px 25px;
   width: 16em;
 }
 
 #btnCancel {
   background-color: var(--fondo-menu);
-  border: 2px solid var(--borde-menu);
+  color: var(--borde-menu);
+  border: solid var(--borde-menu);
   padding: 10px 25px;
   margin-top: 20px;
-  color: var(--borde-menu);
+}
+
+#btnAdd {
+  background: var(--verde-texto);
+  color: var(--fondo-menu);
+  border: 2px solid var(--verde-texto);
+  padding: 10px 25px;
 }
 
 .btnDelete {
