@@ -25,7 +25,7 @@
 
     <main>
         <section class="contenido">
-
+            
             <div class="barra-herramientas">
                 <div class="buscador">
                     <input type="text" id="search" name="search" placeholder="Buscar equipamiento...">
@@ -55,32 +55,38 @@
                 </button>
 
             </div>
-
+            <p class="mensaje-pagina-equipamientos" id="mensajeEquipamientos" role="status" aria-live="polite" hidden></p>
             <table>
                 <thead>
                     <tr>
                         <th class="columna-seleccion"></th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Categoría</th>
-                        <th>Ubicación actual</th>
+                        <th>Nombre <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('nombre', this)" alt="Ordenar por nombre"></th>
+                        <th>Descripción <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('descripcion', this)" alt="Ordenar por descripción"></th>
+                        <th>Marca <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('marca', this)" alt="Ordenar por marca"></th>
+                        <th>Modelo <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('modelo', this)" alt="Ordenar por modelo"></th>
+                        <th>Categoría <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('categoria', this)" alt="Ordenar por categoría"></th>
+                        <th>
+                            Ubicación actual
+                            <img src="../img/flechas_ordenar.png"
+                                class="flechas-ordenar"
+                                onclick="ordenarTabla('nombreUbicacion', this)"
+                                alt="Ordenar por ubicación">
+                        </th>
                     </tr>
                 </thead>
-
                 <tbody id="tablaEquipamientos">
                     <tr>
                         <td colspan="7">Cargando equipamientos...</td>
                     </tr>
                 </tbody>
             </table>
-
+            
         </section>
 
         <section id="seccionModificar" class="modificar" hidden>
 
             <form id="formEquipamiento" hidden>
+                
                 <h2 id="tituloFormulario">Modificar equipamiento</h2>
                 <div class="campos-formulario">
                     <label>
@@ -90,17 +96,17 @@
 
                     <label>
                         Descripción
-                        <input type="text" name="descripcion">
+                        <input type="text" name="descripcion" required>
                     </label>
 
                     <label>
                         Marca
-                        <input type="text" name="marca">
+                        <input type="text" name="marca" required>
                     </label>
 
                     <label>
                         Modelo
-                        <input type="text" name="modelo">
+                        <input type="text" name="modelo" required>
                     </label>
 
                     <label>
@@ -117,7 +123,7 @@
 
                     <label>
                         Ubicación actual
-                        <input type="text" name="nombreUbicacion">
+                        <input type="text" name="nombreUbicacion" readonly>
                     </label>
 
                 </div>
@@ -135,7 +141,28 @@
 
         </section>
     </main>
+    <!-- Ventana de confirmación para eliminar -->
+    <div id="modalConfirmarBorrado" class="modal-confirmacion" hidden>
+        <div class="contenido-modal" role="dialog" aria-modal="true"
+            aria-labelledby="textoConfirmacionBorrado">
 
+            <img src="../img/borrar.png" alt="" class="icono-confirmacion">
+
+            <p id="textoConfirmacionBorrado">
+                Seguro que quieres eliminar este equipamiento?
+            </p>
+
+            <div class="botones-confirmacion">
+                <button type="button" id="btnCancelarBorrado">
+                    Cancelar
+                </button>
+
+                <button type="button" id="btnConfirmarBorrado">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
