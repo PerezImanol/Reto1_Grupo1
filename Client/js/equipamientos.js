@@ -72,6 +72,15 @@ async function cargarEquipamientos() {
                 fila.appendChild(celda);
             });
 
+            // Celda con la flecha para ver el historial de ubicaciones
+            const celdaFlecha = document.createElement('td');
+            celdaFlecha.innerHTML = '<a href="historialUbi.html"><img src="../img/flecha.png" alt="Ver historial" height="20" width="20"></a>';
+            fila.appendChild(celdaFlecha);
+
+            // añadir todo el contenido de la fila a la tabla
+            tabla.appendChild(fila);
+
+
             // Seleccionar o deseleccionar usando solamente el checkbox
             checkbox.addEventListener('change', () => {
                 if (checkbox.checked) {
@@ -80,8 +89,7 @@ async function cargarEquipamientos() {
                     deseleccionarFila();
                 }
             });
-
-            tabla.appendChild(fila);
+            
         });
 
         deseleccionarFila();
