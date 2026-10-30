@@ -139,6 +139,11 @@ function seleccionarFila(filaSeleccionada, checkboxSeleccionado, equipamiento) {
 
     formEquipamiento.elements.namedItem('nombreUbicacion').value =
         equipamiento.nombreUbicacion ?? '';
+
+    window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+    });
 }
 
 
@@ -190,11 +195,16 @@ btnAnadir.addEventListener('click', () => {
     modoFormulario = 'crear';
 
     seccionModificar.hidden = false;
-    formEquipamiento.hidden = false;
+    formEquipamiento.hidden = false;a
 
     tituloFormulario.textContent = 'Añadir equipamiento';
 
     formEquipamiento.elements.namedItem('nombreUbicacion').value = 'Almacén';
+    // Bajar al final de la página
+    window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+    });
 });
 
 
@@ -258,7 +268,7 @@ function buscarEquipamientos() {
 
 formEquipamiento.addEventListener('submit', async evento => {
     evento.preventDefault();
-
+    
     if (modoFormulario === 'modificar' && !equipamientoSeleccionado) {
         mostrarMensaje('Selecciona un equipamiento para modificarlo', true);
         return;
