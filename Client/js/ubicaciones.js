@@ -56,8 +56,8 @@ function renderLocations(locations) {
     if (showLocations) {
       showLocations.textContent = "Mostrando 0 de 0 ubicaciones";
     }
-    if (selectedUserTable) {
-      selectedUserTable.textContent = "Selecciona una ubicacion";
+    if (selectedLocationTable) {
+      selectedLocationTable.textContent = "Selecciona una ubicacion";
     }
     return;
   }
@@ -98,8 +98,8 @@ function renderLocations(locations) {
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona una ubicacion";
+          if (selectedLocationTable) {
+            selectedLocationTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -132,8 +132,8 @@ function renderLocations(locations) {
     row.addEventListener("click", () => {
       selectedLocation = location;
 
-      if (selectedUserTable) {
-        selectedUserTable.textContent = nombre + " seleccionado";
+      if (selectedLocationTable) {
+        selectedLocationTable.textContent = nombre + " seleccionado";
       }
 
       checkBox.checked = true;
@@ -178,8 +178,8 @@ btnAdd.addEventListener("click", () => {
   nameField.disabled = false;
   descField.disabled = false;
 
-  if (selectedUserTable) {
-    selectedUserTable.textContent = "Añadiendo ubicacion";
+  if (selectedLocationTable) {
+    selectedLocationTable.textContent = "Añadiendo ubicacion";
   }
 });
 
@@ -200,7 +200,9 @@ btnSave.addEventListener("click", async (e) => {
         descripcion: descField.value,
       };
 
-      ALL_LOCATIONS.forEach((location) => {
+      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
+        const location = ALL_LOCATIONS[i];
+
         if (location.username == newInfo.username) {
           showMessage(
             "No se puede usar el mismo nombre para dos ubicaciones.",
@@ -208,15 +210,15 @@ btnSave.addEventListener("click", async (e) => {
           );
           return;
         }
-      });
+      }
 
       try {
         const data = await api.ubicaciones.crear(newInfo);
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona una ubicacion";
+          if (selectedLocationTable) {
+            selectedLocationTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -238,7 +240,9 @@ btnSave.addEventListener("click", async (e) => {
         descripcion: descField.value,
       };
 
-      ALL_LOCATIONS.forEach((location) => {
+      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
+        const location = ALL_LOCATIONS[i];
+
         if (location.username == newInfo.username) {
           showMessage(
             "No se puede usar el mismo nombre para dos ubicaciones.",
@@ -246,15 +250,15 @@ btnSave.addEventListener("click", async (e) => {
           );
           return;
         }
-      });
+      }
 
       try {
         const data = await api.ubicaciones.actualizar(newInfo);
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona una ubicacion";
+          if (selectedLocationTable) {
+            selectedLocationTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -297,8 +301,8 @@ function deseleccionarFila(tbody) {
   });
 
   selectedLocation = null;
-  if (selectedUserTable) {
-    selectedUserTable.textContent = "Selecciona una ubicacion";
+  if (selectedLocationTable) {
+    selectedLocationTable.textContent = "Selecciona una ubicacion";
   }
 
   // Deshabilitar el botón de borrar
