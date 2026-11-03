@@ -268,7 +268,9 @@ btnSave.addEventListener("click", async (e) => {
         username: usernameField.value,
       };
 
-      ALL_USERS.forEach((user) => {
+      for (let i = 0; i < ALL_USERS.length; i++) {
+        const user = ALL_USERS[i];
+
         if (user.username == newInfo.username) {
           showMessage(
             "No se puede usar el mismo nombre de usuario para dos usuarios.",
@@ -276,7 +278,7 @@ btnSave.addEventListener("click", async (e) => {
           );
           return;
         }
-      });
+      }
 
       try {
         const data = await api.usuarios.actualizar(newInfo);

@@ -203,7 +203,7 @@ btnSave.addEventListener("click", async (e) => {
       for (let i = 0; i < ALL_LOCATIONS.length; i++) {
         const location = ALL_LOCATIONS[i];
 
-        if (location.username == newInfo.username) {
+        if (location.nombre == newInfo.nombre) {
           showMessage(
             "No se puede usar el mismo nombre para dos ubicaciones.",
             true,
@@ -243,7 +243,7 @@ btnSave.addEventListener("click", async (e) => {
       for (let i = 0; i < ALL_LOCATIONS.length; i++) {
         const location = ALL_LOCATIONS[i];
 
-        if (location.username == newInfo.username) {
+        if (location.nombre == newInfo.nombre) {
           showMessage(
             "No se puede usar el mismo nombre para dos ubicaciones.",
             true,
