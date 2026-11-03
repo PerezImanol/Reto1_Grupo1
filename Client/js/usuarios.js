@@ -13,7 +13,7 @@ let ALL_USERS = [];
 let selectedUser = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  loadUsers();
+  await loadUsers();
 
   nameField.disabled = true;
   surnameField.disabled = true;
@@ -107,13 +107,9 @@ function renderUsers(users) {
         let data = await api.usuarios.eliminar(id_usuario);
 
         if (data.exito) {
-          selectedUser = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona un usuario";
-          }
           await loadLocactions();
-
           showMessage("Usuario eliminado correctamente");
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.mensaje || "Error al eliminar el usuario", true);
         }
@@ -243,13 +239,9 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.crear(newInfo);
 
         if (data.exito) {
-          selectedLocation = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona un usuario";
-          }
           await loadLocactions();
-
           showMessage(data.mensaje);
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.result || data.mensaje, true);
         }
@@ -284,13 +276,9 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.actualizar(newInfo);
 
         if (data.exito) {
-          selectedLocation = null;
-          if (selectedUserTable) {
-            selectedUserTable.textContent = "Selecciona un usuario";
-          }
           await loadLocactions();
-
           showMessage(data.mensaje);
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.result || data.mensaje, true);
         }

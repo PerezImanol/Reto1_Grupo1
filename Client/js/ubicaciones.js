@@ -12,7 +12,7 @@ let ALL_LOCATIONS = [];
 let selectedLocation = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  loadLocactions();
+  await loadLocactions();
 
   nameField.disabled = true;
   descField.disabled = true;
@@ -97,13 +97,9 @@ function renderLocations(locations) {
         let data = await api.ubicaciones.eliminar(id_ubicacion);
 
         if (data.exito) {
-          selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
-          }
           await loadLocactions();
-
           showMessage("Ubicacion eliminada correctamente");
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.mensaje || "Error al eliminar la ubicacion", true);
         }
@@ -216,13 +212,9 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.ubicaciones.crear(newInfo);
 
         if (data.exito) {
-          selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
-          }
           await loadLocactions();
-
           showMessage(data.mensaje);
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.result || data.mensaje, true);
         }
@@ -256,13 +248,9 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.ubicaciones.actualizar(newInfo);
 
         if (data.exito) {
-          selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
-          }
           await loadLocactions();
-
           showMessage(data.mensaje);
+          deseleccionarFila(tbody);
         } else {
           showMessage(data.result || data.mensaje, true);
         }
