@@ -200,6 +200,16 @@ btnSave.addEventListener("click", async (e) => {
         descripcion: descField.value,
       };
 
+      ALL_LOCATIONS.forEach((location) => {
+        if (location.username == newInfo.username) {
+          showMessage(
+            "No se puede usar el mismo nombre para dos ubicaciones.",
+            true,
+          );
+          return;
+        }
+      });
+
       try {
         const data = await api.ubicaciones.crear(newInfo);
 
@@ -227,6 +237,16 @@ btnSave.addEventListener("click", async (e) => {
         nombre: nameField.value,
         descripcion: descField.value,
       };
+
+      ALL_LOCATIONS.forEach((location) => {
+        if (location.username == newInfo.username) {
+          showMessage(
+            "No se puede usar el mismo nombre para dos ubicaciones.",
+            true,
+          );
+          return;
+        }
+      });
 
       try {
         const data = await api.ubicaciones.actualizar(newInfo);

@@ -227,6 +227,16 @@ btnSave.addEventListener("click", async (e) => {
         username: usernameField.value,
       };
 
+      ALL_USERS.forEach((user) => {
+        if (user.username == newInfo.username) {
+          showMessage(
+            "No se puede usar el mismo nombre de usuario para dos usuarios.",
+            true,
+          );
+          return;
+        }
+      });
+
       try {
         const data = await api.usuarios.crear(newInfo);
 
@@ -255,6 +265,16 @@ btnSave.addEventListener("click", async (e) => {
         apellido: surnameField.value,
         username: usernameField.value,
       };
+
+      ALL_USERS.forEach((user) => {
+        if (user.username == newInfo.username) {
+          showMessage(
+            "No se puede usar el mismo nombre de usuario para dos usuarios.",
+            true,
+          );
+          return;
+        }
+      });
 
       try {
         const data = await api.usuarios.actualizar(newInfo);
