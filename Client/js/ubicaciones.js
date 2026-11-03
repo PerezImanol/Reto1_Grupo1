@@ -56,8 +56,8 @@ function renderLocations(locations) {
     if (showLocations) {
       showLocations.textContent = "Mostrando 0 de 0 ubicaciones";
     }
-    if (selectedLocationTable) {
-      selectedLocationTable.textContent = "Selecciona una ubicacion";
+    if (selectedUserTable) {
+      selectedUserTable.textContent = "Selecciona una ubicacion";
     }
     return;
   }
@@ -67,7 +67,7 @@ function renderLocations(locations) {
     const cbTd = document.createElement("td");
     const nameTd = document.createElement("td");
     const descTd = document.createElement("td");
-    const buttonsTd = document.createElement("td");
+    const deleteTd = document.createElement("td");
     const btnDelete = document.createElement("button");
 
     const checkBox = document.createElement("input");
@@ -98,8 +98,8 @@ function renderLocations(locations) {
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
+          if (selectedUserTable) {
+            selectedUserTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -121,20 +121,19 @@ function renderLocations(locations) {
 
     btnDelete.appendChild(trash);
     btnDelete.appendChild(trashSpan);
-    buttonsTd.appendChild(btnDelete);
+    deleteTd.appendChild(btnDelete);
 
     row.appendChild(cbTd);
     row.appendChild(nameTd);
     row.appendChild(descTd);
-    buttonsTd.className = "right";
-    row.appendChild(buttonsTd);
+    deleteTd.className = "right";
+    row.appendChild(deleteTd);
 
     row.addEventListener("click", () => {
       selectedLocation = location;
 
-      if (selectedLocationTable) {
-        selectedLocationTable.textContent =
-          nombre + " seleccionada" || "Error al seleccionar ubicacion";
+      if (selectedUserTable) {
+        selectedUserTable.textContent = nombre + " seleccionado";
       }
 
       checkBox.checked = true;
@@ -157,6 +156,7 @@ nameField.addEventListener("change", () => {
   } else {
     btnSave.disabled = false;
     nameField.value.trim();
+    descField.value.trim();
   }
 });
 
@@ -165,6 +165,7 @@ descField.addEventListener("change", () => {
     btnSave.disabled = true;
   } else {
     btnSave.disabled = false;
+    nameField.value.trim();
     descField.value.trim();
   }
 });
@@ -177,8 +178,8 @@ btnAdd.addEventListener("click", () => {
   nameField.disabled = false;
   descField.disabled = false;
 
-  if (selectedLocationTable) {
-    selectedLocationTable.textContent = "Añadiendo ubicacion";
+  if (selectedUserTable) {
+    selectedUserTable.textContent = "Añadiendo ubicacion";
   }
 });
 
@@ -192,7 +193,7 @@ btnSave.addEventListener("click", async (e) => {
 
   if (add) {
     if (!nameField.value || !descField.value) {
-      showMessage("Por favor, rellena los campos.");
+      showMessage("Por favor, rellena los campos.", true);
     } else {
       let newInfo = {
         nombre: nameField.value,
@@ -204,8 +205,8 @@ btnSave.addEventListener("click", async (e) => {
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
+          if (selectedUserTable) {
+            selectedUserTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -232,8 +233,8 @@ btnSave.addEventListener("click", async (e) => {
 
         if (data.exito) {
           selectedLocation = null;
-          if (selectedLocationTable) {
-            selectedLocationTable.textContent = "Selecciona una ubicacion";
+          if (selectedUserTable) {
+            selectedUserTable.textContent = "Selecciona una ubicacion";
           }
           await loadLocactions();
 
@@ -276,8 +277,8 @@ function deseleccionarFila(tbody) {
   });
 
   selectedLocation = null;
-  if (selectedLocationTable) {
-    selectedLocationTable.textContent = "Selecciona una ubicacion";
+  if (selectedUserTable) {
+    selectedUserTable.textContent = "Selecciona una ubicacion";
   }
 
   // Deshabilitar el botón de borrar

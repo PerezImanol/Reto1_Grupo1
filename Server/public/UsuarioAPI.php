@@ -10,7 +10,7 @@ POST !!!! el user es unico
     "username": "jihanP",
     "password": "password",
     "role": "USER"
-    
+
 }
 
 PUT !! hay dos formas , o sin cambiar la contraseña:
@@ -100,7 +100,7 @@ switch ($metodo) {
         }
         exit;
 
-    
+
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
@@ -151,7 +151,7 @@ switch ($metodo) {
                 $rol
             ));
 
-        // Si solo se envía una de las dos contraseñas, hay un error
+            // Si solo se envía una de las dos contraseñas, hay un error
         } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
             http_response_code(400);
             echo json_encode([
@@ -160,7 +160,7 @@ switch ($metodo) {
             ]);
             exit;
 
-        // Editar los datos sin cambiar la contraseña
+            // Editar los datos sin cambiar la contraseña
         } else {
             $exito = $controller->actualizar(new Usuario(
                 $id,
