@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,53 +8,75 @@
 
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/usuarios.css">
 
+    <script src="//code.jquery.com/jquery.min.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/navbar.js" defer></script>
+    <script src="../js/notificaciones.js" defer></script>
     <script src="../js/usuarios.js" defer></script>
 </head>
+
 <body>
-    <header class="menu">
-
-        <a href="./equipamientos.html" class="logo">
-            <img src="../img/icon.png" alt="Logo">
-            <span>CentroGestor</span>
-        </a>
-
-        <nav class="navegacion">
-            <a href="./equipamientos.html" class="nav-item">
-                <img src="../img/equipamiento.png" alt="">
-                <span>Equipamientos</span>
-            </a>
-
-            <a href="./ubicaciones.html" class="nav-item">
-                <img src="../img/ubicacion.png" alt="">
-                <span>Ubicaciones</span>
-            </a>
-
-            <a href="./usuarios.html" class="nav-item activo">
-                <img src="../img/usuarios.png" alt="">
-                <span>Usuarios</span>
-            </a>
-        </nav>
-
-        <div class="acciones">
-
-            <a href="./notificaciones.html" class="btn-notificaciones" aria-label="Notificaciones">
-                <img src="../img/notificaciones.png" alt="">
-            </a>
-
-            <a href="./perfil.html" class="perfil">
-                <img src="../img/usuario.png" alt="" class="avatar">
-
-                <span class="datos-perfil">
-                    <strong id="nombrePerfil">Ana García</strong>
-                    <small id="rolPerfil">Administradora</small>
-                </span>
-
-                <img src="../img/flecha.png" alt="" class="flecha">
-            </a>
-
+    <div id="navbar-placeholder"></div>
+    <main>
+        <h1>Usuarios</h1>
+        <section class="info">
+            <p>Consulta y edita los usuarios.</p>
+        </section>
+        <div class="tableView">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="total" colspan="5">Todos los usuarios</th>
+                        <th class="right"><button id="btnAdd">Añadir usuario</button></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Rol</th>
+                        <th class="right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableLocations">
+                    <tr>
+                        <td colspan="5">Cargando usuarios...</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td id="show" colspan="4">Mostrando 0 de 0 usuarios</td>
+                        <td></td>
+                        <td class="right">
+                            <span id="select">Selecciona un usuario</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
+        <p class="messageDefault" id="message" hidden></p>
+    </main>
 
-    </header>
+    <section class="border">
+        <div class="buttons">
+            <button id="btnSave">Guardar cambios</button>
+            <button id="btnCancel">Cancelar cambios</button>
+        </div>
+        <div id="text">
+            <label for="name">Nombre</label><br />
+            <input type="text" id="name" name="name" class="borderInput"><br />
+            <label for="surname">Apellido</label><br />
+            <input type="text" id="surname" name="surname" class="borderInput"><br />
+            <label for="username">Nombre de usuario</label><br />
+            <input type="text" id="username" name="username" class="borderInput"><br />
+        </div>
+    </section>
+    <footer class="info">
+        <p>CentroGestor · Gestion de activos</p>
+    </footer>
 </body>
+
 </html>

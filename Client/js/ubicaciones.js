@@ -67,7 +67,7 @@ function renderLocations(locations) {
     const cbTd = document.createElement("td");
     const nameTd = document.createElement("td");
     const descTd = document.createElement("td");
-    const buttonsTd = document.createElement("td");
+    const deleteTd = document.createElement("td");
     const btnDelete = document.createElement("button");
 
     const checkBox = document.createElement("input");
@@ -121,20 +121,19 @@ function renderLocations(locations) {
 
     btnDelete.appendChild(trash);
     btnDelete.appendChild(trashSpan);
-    buttonsTd.appendChild(btnDelete);
+    deleteTd.appendChild(btnDelete);
 
     row.appendChild(cbTd);
     row.appendChild(nameTd);
     row.appendChild(descTd);
-    buttonsTd.className = "right";
-    row.appendChild(buttonsTd);
+    deleteTd.className = "right";
+    row.appendChild(deleteTd);
 
     row.addEventListener("click", () => {
       selectedLocation = location;
 
       if (selectedLocationTable) {
-        selectedLocationTable.textContent =
-          nombre + " seleccionada" || "Error al seleccionar ubicacion";
+        selectedLocationTable.textContent = nombre + " seleccionado";
       }
 
       checkBox.checked = true;
@@ -157,6 +156,7 @@ nameField.addEventListener("change", () => {
   } else {
     btnSave.disabled = false;
     nameField.value.trim();
+    descField.value.trim();
   }
 });
 
@@ -165,6 +165,7 @@ descField.addEventListener("change", () => {
     btnSave.disabled = true;
   } else {
     btnSave.disabled = false;
+    nameField.value.trim();
     descField.value.trim();
   }
 });
@@ -192,12 +193,24 @@ btnSave.addEventListener("click", async (e) => {
 
   if (add) {
     if (!nameField.value || !descField.value) {
-      showMessage("Por favor, rellena los campos.");
+      showMessage("Por favor, rellena los campos.", true);
     } else {
       let newInfo = {
         nombre: nameField.value,
         descripcion: descField.value,
       };
+
+      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
+        const location = ALL_LOCATIONS[i];
+
+        if (location.nombre == newInfo.nombre) {
+          showMessage(
+            "No se puede usar el mismo nombre para dos ubicaciones.",
+            true,
+          );
+          return;
+        }
+      }
 
       try {
         const data = await api.ubicaciones.crear(newInfo);
@@ -226,6 +239,18 @@ btnSave.addEventListener("click", async (e) => {
         nombre: nameField.value,
         descripcion: descField.value,
       };
+
+      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
+        const location = ALL_LOCATIONS[i];
+
+        if (location.nombre == newInfo.nombre) {
+          showMessage(
+            "No se puede usar el mismo nombre para dos ubicaciones.",
+            true,
+          );
+          return;
+        }
+      }
 
       try {
         const data = await api.ubicaciones.actualizar(newInfo);

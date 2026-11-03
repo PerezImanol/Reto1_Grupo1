@@ -118,7 +118,6 @@ switch ($metodo) {
                 'exito' => true
             ]);
         } else {
-            http_response_code(500);
             echo json_encode([
                 "mensaje" => "No se pudo actualizar en la base de datos.",
                 'status' => http_response_code(500),

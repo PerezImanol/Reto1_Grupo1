@@ -10,7 +10,7 @@ POST !!!! el user es unico
     "username": "jihanP",
     "password": "password",
     "role": "USER"
-    
+
 }
 
 PUT !! hay dos formas , o sin cambiar la contraseña:
@@ -81,6 +81,15 @@ switch ($metodo) {
     case 'POST':
         $datos = json_decode(file_get_contents('php://input'), true);
 
+        if (!is_array($datos)) {
+            echo json_encode([
+                "mensaje" => "JSON inválido.",
+                'status' => http_response_code(400),
+                'exito' => false
+            ]);
+            exit;
+        }
+
         $rol = obtenerRol($datos['role'] ?? null);
         $exito = $controller->insertar(new Usuario(
             (int) ($datos['id'] ?? 0),
@@ -92,23 +101,29 @@ switch ($metodo) {
         ));
 
         if ($exito) {
-            http_response_code(201);
-            echo json_encode(["status" => "success", "mensaje" => "Usuario creado con éxito."]);
+            echo json_encode([
+                "mensaje" => "Usuario creado con éxito.",
+                'status' => http_response_code(201),
+                'exito' => true
+            ]);
         } else {
-            http_response_code(500);
-            echo json_encode(["status" => "error", "mensaje" => "No se pudo insertar el usuario en la base de datos, puede que el nombre de usuario este cogido."]);
+            echo json_encode([
+                "mensaje" => "No se pudo insertar el usuario en la base de datos, puede que el nombre de usuario este cogido.",
+                'status' => http_response_code(500),
+                'exito' => false
+            ]);
         }
         exit;
 
-    
+
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
         if (!is_array($datos)) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "JSON inválido"
+                "mensaje" => "JSON inválido.",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -117,10 +132,10 @@ switch ($metodo) {
         $rol = obtenerRol($datos['role'] ?? null);
 
         if ($id <= 0) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "ID de usuario inválido"
+                "mensaje" => "ID de usuario inválido.",
+                "status" => http_response_code(400),
+                "exito" => false
             ]);
             exit;
         }
@@ -134,10 +149,10 @@ switch ($metodo) {
             );
 
             if (!$passCheck) {
-                http_response_code(400);
                 echo json_encode([
-                    "status" => "error",
-                    "mensaje" => "La contraseña actual es incorrecta"
+                    "status" => http_response_code(400),
+                    "mensaje" => "La contraseña actual es incorrecta.",
+                    "exito" => false
                 ]);
                 exit;
             }
@@ -151,16 +166,16 @@ switch ($metodo) {
                 $rol
             ));
 
-        // Si solo se envía una de las dos contraseñas, hay un error
+            // Si solo se envía una de las dos contraseñas, hay un error
         } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva"
+                "status" => http_response_code(400),
+                "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva.",
+                "exito" => false
             ]);
             exit;
 
-        // Editar los datos sin cambiar la contraseña
+            // Editar los datos sin cambiar la contraseña
         } else {
             $exito = $controller->actualizar(new Usuario(
                 $id,
@@ -173,16 +188,16 @@ switch ($metodo) {
         }
 
         if ($exito) {
-            http_response_code(200);
             echo json_encode([
-                "status" => "success",
-                "mensaje" => "Usuario actualizado con éxito"
+                "status" => http_response_code(200),
+                "mensaje" => "Usuario actualizado con éxito.",
+                "exito" => true
             ]);
         } else {
-            http_response_code(500);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "No se pudo actualizar el usuario"
+                "status" => http_response_code(500),
+                "mensaje" => "No se pudo actualizar el usuario.",
+                "exito" => false
             ]);
         }
 
@@ -193,16 +208,25 @@ switch ($metodo) {
         $id = $_GET['id'] ?? null;
 
         if ($id && $controller->eliminar((int) $id)) {
-            echo json_encode(["status" => "success", "mensaje" => "Usuario eliminado correctamente"]);
+            echo json_encode([
+                "mensaje" => "Usuario eliminado correctamente.",
+                "exito" => true
+            ]);
         } else {
-            http_response_code(400);
-            echo json_encode(["status" => "error", "mensaje" => "ID inválido o no se pudo eliminar el usuario."]);
+            echo json_encode([
+                "status" => http_response_code(400),
+                "mensaje" => "ID inválido o no se pudo eliminar el usuario.",
+                "exito" => false
+            ]);
         }
         exit;
 
     default:
-        http_response_code(405);
-        echo json_encode(["mensaje" => "Método no permitido"]);
+        echo json_encode([
+            "mensaje" => "Método no permitido",
+            'status' => http_response_code(405),
+            'exito' => false
+        ]);
         exit;
 }
 
