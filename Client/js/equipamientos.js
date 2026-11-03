@@ -74,7 +74,19 @@ async function cargarEquipamientos() {
 
             // Celda con la flecha para ver el historial de ubicaciones
             const celdaFlecha = document.createElement('td');
-            celdaFlecha.innerHTML = '<a href="historialUbi.html"><img src="../img/flecha.png" alt="Ver historial" height="20" width="20"></a>';
+
+            const enlaceHistorial = document.createElement('a');
+            enlaceHistorial.href = `historialUbi.html?id=${equipamiento.id_equipamiento}`;
+
+            const imagenFlecha = document.createElement('img');
+            imagenFlecha.src = '../img/flecha.png';
+            imagenFlecha.alt = 'Ver historial';
+            imagenFlecha.height = 20;
+            imagenFlecha.width = 20;
+
+            enlaceHistorial.appendChild(imagenFlecha);
+            celdaFlecha.appendChild(enlaceHistorial);
+
             fila.appendChild(celdaFlecha);
 
             // añadir todo el contenido de la fila a la tabla

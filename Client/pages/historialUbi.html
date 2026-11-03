@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +18,44 @@
     <script src="../js/notificaciones.js" defer></script>
     <script src="../js/historial.js" defer></script>
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
+    <main>
+        <section class="contenido">
+            <h1>Historial de ubicaciones</h1>
+            <div class="barra-herramientas">
+                <div class="filtro-columna">
+                    <select id="filtroEquipamiento">
+                        <option value="">Todos los equipamientos</option>
+                    </select>
+                    <img src="../img/filtrar.png" alt="">
+                </div>
+            </div>
+
+            <p id="mensajeHistorial" role="status" aria-live="polite" hidden></p>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Equipamiento</th>
+                            <th>Ubicación</th>
+                            <th>Fecha inicio</th>
+                            <th>Fecha fin</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody id="tablaHistorial">
+                        <tr>
+                            <td colspan="5">Cargando historiales...</td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
+    
+        </section>
+    </main>
+
 </body>
 </html>

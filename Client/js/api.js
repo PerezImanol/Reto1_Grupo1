@@ -60,6 +60,7 @@ const api = {
 
     historico: {
         obtenerTodos: () => peticionAPI("HistoricoUbicacionAPI.php"),
+        obtenerPorEquipamiento: (id) => peticionAPI(`HistoricoUbicacionAPI.php?id_equipamiento=${id}`),
         crear: (datos) => peticionAPI("HistoricoUbicacionAPI.php", "POST", datos)
     },
 

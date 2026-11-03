@@ -26,6 +26,12 @@ class HistoricoUbicacionesController
         return $this->dao->buscarHistoricoPorId($id);
     }
 
+    // Devuelve los historiales de un equipamiento concreto.
+    public function listarPorEquipamiento(int $idEquipamiento): array
+    {
+        return $this->dao->buscarHistoricosPorEquipamiento($idEquipamiento);
+    }
+
     // Registra una nueva ubicación para un equipamiento.
     public function insertar(
         int $idEquipamiento,

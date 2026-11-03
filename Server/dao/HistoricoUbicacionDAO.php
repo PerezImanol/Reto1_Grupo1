@@ -16,34 +16,25 @@ class HistoricoUbicacionesDAO
         $this->conexion = ConexionDB::conexion();
     }
 
-    //Devuelve todos los historiales en la base de datos.
+    // Devuelve todos los historiales con el nombre del equipamiento y ubicación.
     public function buscarHistoricos(): array
     {
-        //Preparacion de query
-        $sql = "SELECT * FROM historico_ubicaciones";
+        $sql = "SELECT h.*, e.nombre AS nombre_equipamiento,
+                    u.nombre AS nombre_ubicacion
+                FROM historico_ubicaciones h
+                INNER JOIN equipamientos e
+                    ON h.id_equipamiento = e.id_equipamiento
+                INNER JOIN ubicaciones u
+                    ON h.id_ubicacion = u.id_ubicacion
+                ORDER BY h.fecha_inicio DESC";
 
         $resultado = $this->conexion->query($sql);
         $historicos = [];
 
-        //Resultados de query
         while ($fila = $resultado->fetch_assoc()) {
-            $fechaInicio = new DateTime($fila['fecha_inicio']);
-            $fechaFin = null;
-
-            if ($fila['fecha_fin'] !== null) {
-                $fechaFin = new DateTime($fila['fecha_fin']);
-            }
-
-            $historico = new HistoricoUbicaciones(
-                $fila['id_historico'],
-                $fila['id_equipamiento'],
-                $fila['id_ubicacion'],
-                $fechaInicio,
-                $fechaFin
-            );
-
-            $historicos[] = $historico;
+            $historicos[] = $fila;
         }
+
         return $historicos;
     }
 
@@ -80,6 +71,34 @@ class HistoricoUbicacionesDAO
         return null;
     }
 
+    // Devuelve los historiales de un equipamiento concreto.
+    public function buscarHistoricosPorEquipamiento(int $idEquipamiento): array
+    {
+        $sql = "SELECT h.*, e.nombre AS nombre_equipamiento,
+                    u.nombre AS nombre_ubicacion
+                FROM historico_ubicaciones h
+                INNER JOIN equipamientos e
+                    ON h.id_equipamiento = e.id_equipamiento
+                INNER JOIN ubicaciones u
+                    ON h.id_ubicacion = u.id_ubicacion
+                WHERE h.id_equipamiento = ?
+                ORDER BY h.fecha_inicio DESC";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $idEquipamiento);
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+        $historicos = [];
+
+        while ($fila = $resultado->fetch_assoc()) {
+            $historicos[] = $fila;
+        }
+
+        return $historicos;
+    }
+
+    
     //Inserta un nuevo historial a la base de datos.
     public function insertarHistorico(HistoricoUbicaciones $historico): bool
     {
@@ -157,5 +176,6 @@ class HistoricoUbicacionesDAO
         //Resultados de query
         return $stmt->execute();
     }
+
 }
 ?>

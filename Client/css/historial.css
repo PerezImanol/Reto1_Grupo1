@@ -1,0 +1,168 @@
+/* ==============================
+   ESTILOS GENERALES
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #fffbea;
+    color: #293820;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    padding: 35px 45px;
+}
+
+.contenido {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0 0 30px;
+    color: #293820;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* ==============================
+   BARRA DE HERRAMIENTAS
+============================== */
+
+.barra-herramientas {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 22px;
+}
+
+.filtro-columna {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    background-color: #ffffff;
+    border: 1px solid #d8dccd;
+    border-radius: 8px;
+}
+
+.filtro-columna select {
+    min-width: 230px;
+    padding: 8px 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #293820;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.filtro-columna img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    padding: 1px;
+    border-radius: 7px;
+    background-color: #293820;
+    object-fit: contain;
+}
+
+/* ==============================
+   MENSAJES
+============================== */
+
+#mensajeHistorial {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    border-radius: 7px;
+    background-color: #e8eedf;
+    color: #293820;
+    font-size: 14px;
+}
+
+#mensajeHistorial.mensaje-error {
+    background-color: #f8e1dc;
+    color: #a12d20;
+}
+
+#mensajeHistorial[hidden] {
+    display: none;
+}
+
+/* ==============================
+   TABLA
+============================== */
+
+.tabla-contenedor {
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #e0e2d8;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(41, 56, 32, 0.07);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    background-color: #293820;
+    color: #ffffff;
+}
+
+th {
+    padding: 17px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e9eadf;
+    color: #3d4935;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #f5f6ed;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==============================
+   TABLA VACÍA
+============================== */
+
+.tabla-vacia {
+    padding: 30px 20px;
+    color: #777d6e;
+    text-align: center;
+    font-size: 15px;
+}
+
+/* ==============================
+   SCROLL DE TABLA
+============================== */
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    min-width: 850px;
+}

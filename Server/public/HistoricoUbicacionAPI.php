@@ -46,10 +46,18 @@ switch ($metodo) {
 
     case 'GET':
 
-        // Si recibimos un ID, buscamos un registro; si no, mostramos todos.
+        // Buscar un histórico concreto por su ID.
         if (isset($_GET['id'])) {
             $resultado = $controller->buscarPorId((int) $_GET['id']);
-        } else {
+        }
+        // Buscar todos los históricos de un equipamiento.
+        elseif (isset($_GET['id_equipamiento'])) {
+            $resultado = $controller->listarPorEquipamiento(
+                (int) $_GET['id_equipamiento']
+            );
+        }
+        // Mostrar todos los históricos.
+        else {
             $resultado = $controller->listar();
         }
 
