@@ -68,14 +68,21 @@ function obtenerRol(?string $strRol): Rol
 
 switch ($metodo) {
     case 'GET':
-        if (isset($_GET['id'])) {
-            $resultado = $controller->buscarPorId((int) $_GET['id']);
-        } else {
-            $resultado = $controller->getAllUsers();
+        try {
+            if (isset($_GET['id'])) {
+                $resultado = $controller->buscarPorId((int) $_GET['id']);
+            } else {
+                $resultado = $controller->getAllUsers();
+            }
+            http_response_code(200);
+            echo json_encode($resultado);
+        } catch (\Throwable $th) {
+            echo json_encode([
+                'mensaje' => $th->getMessage(),
+                'status' => http_response_code(500),
+                'exito' => false
+            ], JSON_UNESCAPED_UNICODE);
         }
-
-        http_response_code(200);
-        echo json_encode($resultado);
         exit;
 
     case 'POST':
@@ -90,31 +97,38 @@ switch ($metodo) {
             exit;
         }
 
-        $rol = obtenerRol($datos['role'] ?? null);
-        $exito = $controller->insertar(new Usuario(
-            (int) ($datos['id'] ?? 0),
-            $datos['nombre'] ?? '',
-            $datos['apellido'] ?? '',
-            $datos['username'] ?? '',
-            $datos['password'] ?? '',
-            $rol,
-        ));
+        try {
+            $rol = obtenerRol($datos['role'] ?? null);
+            $exito = $controller->insertar(new Usuario(
+                (int) ($datos['id'] ?? 0),
+                $datos['nombre'] ?? '',
+                $datos['apellido'] ?? '',
+                $datos['username'] ?? '',
+                $datos['password'] ?? '',
+                $rol,
+            ));
 
-        if ($exito) {
+            if ($exito) {
+                echo json_encode([
+                    "mensaje" => "Usuario creado con éxito.",
+                    'status' => http_response_code(201),
+                    'exito' => true
+                ]);
+            } else {
+                echo json_encode([
+                    "mensaje" => "No se pudo insertar el usuario en la base de datos, puede que el nombre de usuario este cogido.",
+                    'status' => http_response_code(500),
+                    'exito' => false
+                ]);
+            }
+        } catch (\Throwable $th) {
             echo json_encode([
-                "mensaje" => "Usuario creado con éxito.",
-                'status' => http_response_code(201),
-                'exito' => true
-            ]);
-        } else {
-            echo json_encode([
-                "mensaje" => "No se pudo insertar el usuario en la base de datos, puede que el nombre de usuario este cogido.",
+                'mensaje' => $th->getMessage(),
                 'status' => http_response_code(500),
                 'exito' => false
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }
         exit;
-
 
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
@@ -129,8 +143,6 @@ switch ($metodo) {
         }
 
         $id = (int) ($datos['id'] ?? 0);
-        $rol = obtenerRol($datos['role'] ?? null);
-
         if ($id <= 0) {
             echo json_encode([
                 "mensaje" => "ID de usuario inválido.",
@@ -140,84 +152,97 @@ switch ($metodo) {
             exit;
         }
 
-        // Cambiar contraseña
-        if (isset($datos['password']) && isset($datos['newPassword'])) {
+        try {
+            $rol = obtenerRol($datos['role'] ?? null);
+            // Cambiar contraseña
+            if (isset($datos['password']) && isset($datos['newPassword'])) {
 
-            $passCheck = $controller->login(
-                $datos['username'] ?? '',
-                $datos['password']
-            );
+                $passCheck = $controller->login(
+                    $datos['username'] ?? '',
+                    $datos['password']
+                );
 
-            if (!$passCheck) {
+                if (!$passCheck) {
+                    echo json_encode([
+                        "status" => http_response_code(400),
+                        "mensaje" => "La contraseña actual es incorrecta.",
+                        "exito" => false
+                    ]);
+                    exit;
+                }
+
+                $exito = $controller->actualizar_password(new Usuario(
+                    $id,
+                    $datos['nombre'] ?? '',
+                    $datos['apellido'] ?? '',
+                    $datos['username'] ?? '',
+                    $datos['newPassword'],
+                    $rol
+                ));
+            } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
+                // Si solo se envía una de las dos contraseñas, hay un error
                 echo json_encode([
                     "status" => http_response_code(400),
-                    "mensaje" => "La contraseña actual es incorrecta.",
+                    "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva.",
                     "exito" => false
                 ]);
                 exit;
+            } else {
+                // Editar los datos sin cambiar la contraseña
+                $exito = $controller->actualizar(new Usuario(
+                    $id,
+                    $datos['nombre'] ?? '',
+                    $datos['apellido'] ?? '',
+                    $datos['username'] ?? '',
+                    '',
+                    $rol
+                ));
             }
 
-            $exito = $controller->actualizar_password(new Usuario(
-                $id,
-                $datos['nombre'] ?? '',
-                $datos['apellido'] ?? '',
-                $datos['username'] ?? '',
-                $datos['newPassword'],
-                $rol
-            ));
-
-            // Si solo se envía una de las dos contraseñas, hay un error
-        } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
+            if ($exito) {
+                echo json_encode([
+                    "status" => http_response_code(200),
+                    "mensaje" => "Usuario actualizado con éxito.",
+                    "exito" => true
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => http_response_code(500),
+                    "mensaje" => "No se pudo actualizar el usuario.",
+                    "exito" => false
+                ]);
+            }
+        } catch (\Throwable $th) {
             echo json_encode([
-                "status" => http_response_code(400),
-                "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva.",
-                "exito" => false
-            ]);
-            exit;
-
-            // Editar los datos sin cambiar la contraseña
-        } else {
-            $exito = $controller->actualizar(new Usuario(
-                $id,
-                $datos['nombre'] ?? '',
-                $datos['apellido'] ?? '',
-                $datos['username'] ?? '',
-                '',
-                $rol
-            ));
+                'mensaje' => $th->getMessage(),
+                'status' => http_response_code(500),
+                'exito' => false
+            ], JSON_UNESCAPED_UNICODE);
         }
-
-        if ($exito) {
-            echo json_encode([
-                "status" => http_response_code(200),
-                "mensaje" => "Usuario actualizado con éxito.",
-                "exito" => true
-            ]);
-        } else {
-            echo json_encode([
-                "status" => http_response_code(500),
-                "mensaje" => "No se pudo actualizar el usuario.",
-                "exito" => false
-            ]);
-        }
-
         exit;
-
 
     case 'DELETE':
         $id = $_GET['id'] ?? null;
 
-        if ($id && $controller->eliminar((int) $id)) {
+        try {
+            if ($id && $controller->eliminar((int) $id)) {
+                echo json_encode([
+                    "mensaje" => "Usuario eliminado correctamente.",
+                    "exito" => true
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => http_response_code(400),
+                    "mensaje" => "ID inválido o no se pudo eliminar el usuario.",
+                    "exito" => false
+                ]);
+            }
+        } catch (\Throwable $th) {
             echo json_encode([
-                "mensaje" => "Usuario eliminado correctamente.",
-                "exito" => true
-            ]);
-        } else {
-            echo json_encode([
-                "status" => http_response_code(400),
-                "mensaje" => "ID inválido o no se pudo eliminar el usuario.",
-                "exito" => false
-            ]);
+                'mensaje' => $th->getMessage(),
+                'status' => http_response_code(500),
+                'exito' => false
+            ], JSON_UNESCAPED_UNICODE);
         }
         exit;
 

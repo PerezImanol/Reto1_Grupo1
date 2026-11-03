@@ -23,7 +23,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getAllLocations() {
   const data = await api.ubicaciones.obtenerTodos();
 
-  return data.result || [];
+  if (data.exito) {
+    return data.result || [];
+  }
+
+  throw new Error(data.mensaje);
 }
 
 async function loadLocactions() {
@@ -216,7 +220,7 @@ btnSave.addEventListener("click", async (e) => {
           showMessage(data.mensaje);
           deseleccionarFila(tbody);
         } else {
-          showMessage(data.result || data.mensaje, true);
+          showMessage(data.mensaje, true);
         }
       } catch (e) {
         showMessage("Error de servidor: " + e, true);
@@ -252,7 +256,7 @@ btnSave.addEventListener("click", async (e) => {
           showMessage(data.mensaje);
           deseleccionarFila(tbody);
         } else {
-          showMessage(data.result || data.mensaje, true);
+          showMessage(data.mensaje, true);
         }
       } catch (e) {
         showMessage("Error de servidor: " + e, true);

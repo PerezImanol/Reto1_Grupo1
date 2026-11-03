@@ -243,7 +243,7 @@ btnSave.addEventListener("click", async (e) => {
           showMessage(data.mensaje);
           deseleccionarFila(tbody);
         } else {
-          showMessage(data.result || data.mensaje, true);
+          showMessage(data.mensaje, true);
         }
       } catch (e) {
         showMessage("Error de servidor: " + e, true);
@@ -280,7 +280,7 @@ btnSave.addEventListener("click", async (e) => {
           showMessage(data.mensaje);
           deseleccionarFila(tbody);
         } else {
-          showMessage(data.result || data.mensaje, true);
+          showMessage(data.mensaje, true);
         }
       } catch (e) {
         showMessage("Error de servidor: " + e, true);
