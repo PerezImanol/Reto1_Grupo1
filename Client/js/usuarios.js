@@ -48,13 +48,12 @@ function renderUsers(users) {
   tbody.innerHTML = "";
 
   if (!users || users.length === 0) {
-    const row = document.createElement("tr");
-    row.classList.add("emptyRow");
-    const cell = document.createElement("td");
-    cell.colSpan = 3;
-    cell.textContent = "No hay usuarios disponibles";
-    row.appendChild(cell);
-    tbody.appendChild(row);
+    tbody.innerHTML = `
+    <tr>
+      <td class="emptyRow" colspan="5">No hay usuarios disponibles</td>
+    </tr>
+    `;
+
     if (showUsers) {
       showUsers.textContent = "Mostrando 0 de 0 usuarios";
     }
@@ -79,9 +78,9 @@ function renderUsers(users) {
     checkBox.className = "checkbox";
     cbTd.addEventListener("change", () => {
       if (checkBox.checked) {
-        seleccionarFila(tbody, checkBox, user);
+        seleccionarFila(checkBox, user);
       } else {
-        deseleccionarFila(tbody);
+        deseleccionarFila();
       }
     });
 
@@ -109,7 +108,7 @@ function renderUsers(users) {
         if (data.exito) {
           await loadLocactions();
           showMessage("Usuario eliminado correctamente");
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje || "Error al eliminar el usuario", true);
         }
@@ -146,7 +145,7 @@ function renderUsers(users) {
       }
 
       checkBox.checked = true;
-      seleccionarFila(tbody, checkBox, user);
+      seleccionarFila(checkBox, user);
     });
 
     tbody.appendChild(row);
@@ -241,7 +240,7 @@ btnSave.addEventListener("click", async (e) => {
         if (data.exito) {
           await loadLocactions();
           showMessage(data.mensaje);
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje, true);
         }
@@ -278,7 +277,7 @@ btnSave.addEventListener("click", async (e) => {
         if (data.exito) {
           await loadLocactions();
           showMessage(data.mensaje);
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje, true);
         }
@@ -290,7 +289,7 @@ btnSave.addEventListener("click", async (e) => {
 });
 
 btnCancel.addEventListener("click", () => {
-  deseleccionarFila(tbody);
+  deseleccionarFila();
 });
 
 function seleccionarFila(selectedCb, user) {

@@ -49,14 +49,13 @@ function renderLocations(locations) {
 
   tbody.innerHTML = "";
 
-  if (!locations || locations.length === 0) {
-    const row = document.createElement("tr");
-    row.classList.add("emptyRow");
-    const cell = document.createElement("td");
-    cell.colSpan = 3;
-    cell.textContent = "No hay ubicaciones disponibles";
-    row.appendChild(cell);
-    tbody.appendChild(row);
+  if (!Array.isArray(locations) || locations.length === 0) {
+    tbody.innerHTML = `
+    <tr>
+      <td class="emptyRow" colspan="3">No hay ubicaciones disponibles</td>
+    </tr>
+    `;
+
     if (showLocations) {
       showLocations.textContent = "Mostrando 0 de 0 ubicaciones";
     }
@@ -79,9 +78,9 @@ function renderLocations(locations) {
     checkBox.className = "checkbox";
     cbTd.addEventListener("change", () => {
       if (checkBox.checked) {
-        seleccionarFila(tbody, checkBox, location);
+        seleccionarFila(checkBox, location);
       } else {
-        deseleccionarFila(tbody);
+        deseleccionarFila();
       }
     });
 
@@ -103,7 +102,7 @@ function renderLocations(locations) {
         if (data.exito) {
           await loadLocactions();
           showMessage("Ubicacion eliminada correctamente");
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje || "Error al eliminar la ubicacion", true);
         }
@@ -137,7 +136,7 @@ function renderLocations(locations) {
       }
 
       checkBox.checked = true;
-      seleccionarFila(tbody, checkBox, location);
+      seleccionarFila(checkBox, location);
     });
 
     tbody.appendChild(row);
@@ -218,7 +217,7 @@ btnSave.addEventListener("click", async (e) => {
         if (data.exito) {
           await loadLocactions();
           showMessage(data.mensaje);
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje, true);
         }
@@ -254,7 +253,7 @@ btnSave.addEventListener("click", async (e) => {
         if (data.exito) {
           await loadLocactions();
           showMessage(data.mensaje);
-          deseleccionarFila(tbody);
+          deseleccionarFila();
         } else {
           showMessage(data.mensaje, true);
         }
@@ -266,7 +265,7 @@ btnSave.addEventListener("click", async (e) => {
 });
 
 btnCancel.addEventListener("click", () => {
-  deseleccionarFila(tbody);
+  deseleccionarFila();
 });
 
 function seleccionarFila(selectedCb, location) {
