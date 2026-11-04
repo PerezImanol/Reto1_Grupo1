@@ -68,7 +68,7 @@ button {
 .buttons {
   display: flex;
   flex-direction: column;
-  margin: 10px 12px;
+  margin: 2.4em 12px;
 }
 
 button:disabled {
