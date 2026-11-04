@@ -269,7 +269,7 @@ btnCancel.addEventListener("click", () => {
   deseleccionarFila(tbody);
 });
 
-function seleccionarFila(tbody, selectedCb, location) {
+function seleccionarFila(selectedCb, location) {
   add = false;
   tbody.querySelectorAll(".checkbox").forEach((cb) => {
     if (cb !== selectedCb) {
@@ -287,7 +287,7 @@ function seleccionarFila(tbody, selectedCb, location) {
   descField.value = location.descripcion;
 }
 
-function deseleccionarFila(tbody) {
+function deseleccionarFila() {
   tbody.querySelectorAll(".checkbox").forEach((cb) => {
     cb.checked = false;
   });
