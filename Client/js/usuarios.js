@@ -253,10 +253,11 @@ btnSave.addEventListener("click", async (e) => {
       showMessage("Por favor, rellena los campos.", true);
     } else {
       let newInfo = {
-        id_usuario: selectedUser.id_usuario,
+        id: selectedUser.id_usuario,
         nombre: nameField.value,
         apellido: surnameField.value,
         username: usernameField.value,
+        role: selectedUser.role,
       };
 
       for (let i = 0; i < ALL_USERS.length; i++) {
@@ -275,7 +276,7 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.actualizar(newInfo);
 
         if (data.exito) {
-          await loadLocactions();
+          await loadUsers();
           showMessage(data.mensaje);
           deseleccionarFila();
         } else {
