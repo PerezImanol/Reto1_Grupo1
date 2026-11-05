@@ -22,21 +22,24 @@
     <div id="navbar-placeholder"></div>
     <main>
         <h1>Perfil</h1>
-        <section>
+        <section class="info">
             <p>Edita tu perfil</p>
         </section>
-        <div class="layout">
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name">
-            <label for="surname">Apellido:</label>
-            <input type="text" id="surname" name="surname">
-            <label for="username">Nombre de usuario:</label>
-            <input type="text" id="username" name="username">
-            <label for="role">Rol:</label>
-            <input type="text" id="role" name="role">
-            <button>Borrar cuenta</button> <!--Deshabilitado si usuario es admin-->
-        </div>
-        <p class="messageDefault" id="message" hidden></p>
+        <section id="position">
+            <div class="layout">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" class="borderInput">
+                <label for="surname">Apellido:</label>
+                <input type="text" id="surname" name="surname" class="borderInput">
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username" class="borderInput">
+                <label for="role">Rol:</label>
+                <input type="text" id="role" name="role" class="borderInput">
+                <button id="btnSave">Editar datos</button>
+                <button id="btnDelete">Borrar cuenta</button>
+                <p class="messageDefault" id="message" hidden></p>
+            </div>
+        </section>
     </main>
 </body>
 

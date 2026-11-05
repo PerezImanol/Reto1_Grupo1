@@ -13,10 +13,60 @@ h1 {
   margin: 15px;
 }
 
+.info {
+  margin: 0 16px;
+}
+
+#position {
+  display: flex;
+  justify-content: center;
+  margin-top: 3%;
+}
+
 .layout {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  row-gap: 10px;
+  margin: 0 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 10px 16px;
+  width: 50%;
+}
+
+.layout:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.borderInput {
+  border: 1px solid var(--borde-menu);
+  border-radius: 5px;
+  padding: 5px 0;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+#btnSave {
+  background: var(--verde-texto);
+  color: var(--fondo-menu);
+  border: solid var(--verde-texto);
+  padding: 10px 0;
+}
+
+#btnDelete {
+  background: red;
+  color: var(--fondo-menu);
+  border: solid red;
+  padding: 10px 0;
 }
 
 .messageDefault {
