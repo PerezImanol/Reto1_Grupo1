@@ -252,6 +252,28 @@
     white-space: nowrap;
     clip-path: inset(50%);
 }
+.navbar-movil {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #293820;
+    padding: 15px 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.enlace-movil {
+    color: #fffbea;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 8px;
+}
+
+.enlace-movil.activo {
+    color: #e5a04e;
+    font-weight: bold;
+    border-bottom: 2px solid #e5a04e;
+}
 
 @media (min-width: 600px) {
     .pagina-equipamientos {
