@@ -42,4 +42,19 @@ class NotificacionController
     {
         return $this->NotificacionDAO->eliminar($idNotif, $idUser);
     }
+
+    public function actualizarContenido(
+        int $idNotif,
+        int $idUser,
+        string $titulo,
+        string $descripcion
+    ): bool {
+
+        return $this->NotificacionDAO->actualizarContenido(
+            $idNotif,
+            $idUser,
+            $titulo,
+            $descripcion
+        );
+    }
 }

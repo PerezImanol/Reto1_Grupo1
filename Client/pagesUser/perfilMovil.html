@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CentroGestor - Mi perfil</title>
+
+    <link rel="icon" href="../img/icon.png">
+    <link rel="stylesheet" href="../css/tema.css">
+    <link rel="stylesheet" href="../css/usuarioMovil.css">
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="contenido-movil">
+        <h1>Mi perfil</h1>
+        <p class="descripcion-pagina">Consulta los datos de tu cuenta.</p>
+
+        <section class="tarjeta-movil perfil-movil">
+            <div class="dato-perfil">
+                <span>Nombre</span>
+                <strong id="perfilNombre">Cargando...</strong>
+            </div>
+
+            <div class="dato-perfil">
+                <span>Apellidos</span>
+                <strong id="perfilApellidos">Cargando...</strong>
+            </div>
+
+            <div class="dato-perfil">
+                <span>Nombre de usuario</span>
+                <strong id="perfilUsuario">Cargando...</strong>
+            </div>
+
+            <div class="dato-perfil">
+                <span>Rol</span>
+                <strong id="perfilRol">Cargando...</strong>
+            </div>
+        </section>
+
+        <div id="mensajePerfil" class="mensaje"></div>
+
+        <button type="button" id="btnCerrarSesion" class="boton-cerrar-sesion">
+            Cerrar sesión
+        </button>
+    </main>
+
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/navbarMovil.js" defer></script>
+    <script src="../js/perfilMovil.js" defer></script>
+</body>
+</html>

@@ -29,7 +29,7 @@ http://localhost/Server/public/EquipamientoAPI.phpid=15
 */
 
 
-
+require_once("Autorizacion.php");
 use App\Enums\EnumCategoria;
 
 require_once( "../controller/EquipamientoController.php");
@@ -65,12 +65,12 @@ function obtenerCategoria(?string $strCategoria): EnumCategoria
         default => EnumCategoria::OTROS
     };
 }
-
 switch ($metodo) {
 
     case 'GET':
-        
-        // Si recibimos un ID, buscamos un equipamiento; si no, los mostramos todos.
+
+        requiereSesion();
+
         if (isset($_GET['id'])) {
             $resultado = $controller->buscarPorId((int) $_GET['id']);
         } else {
@@ -83,15 +83,13 @@ switch ($metodo) {
 
     case 'POST':
 
-        // Leemos los datos JSON enviados en el cuerpo de la petición.
+        requiereAdmin();
+
         $datos = json_decode(file_get_contents('php://input'), true);
 
         if (!is_array($datos)) {
             http_response_code(400);
-            echo json_encode([
-                "status" => "error",
-                "mensaje" => "JSON inválido"
-            ]);
+            echo json_encode(["mensaje" => "JSON inválido"]);
             exit;
         }
 
@@ -106,19 +104,12 @@ switch ($metodo) {
             (int) ($datos['id_ubicacion_actual'] ?? 0)
         );
 
-        // Devolvemos el resultado de la inserción.
         if ($exito) {
             http_response_code(201);
-            echo json_encode([
-                "status" => "success",
-                "mensaje" => "Equipamiento creado con éxito"
-            ]);
+            echo json_encode(["mensaje" => "Equipamiento creado con éxito"]);
         } else {
             http_response_code(500);
-            echo json_encode([
-                "status" => "error",
-                "mensaje" => "No se pudo insertar en la base de datos"
-            ]);
+            echo json_encode(["mensaje" => "No se pudo crear el equipamiento"]);
         }
 
         exit;
@@ -126,77 +117,77 @@ switch ($metodo) {
 
     case 'PUT':
 
+        requiereSesion();
+
         $datos = json_decode(file_get_contents('php://input'), true);
 
         if (!is_array($datos)) {
             http_response_code(400);
-            echo json_encode([
-                "status" => "error",
-                "mensaje" => "JSON inválido"
-            ]);
+            echo json_encode(["mensaje" => "JSON inválido"]);
             exit;
         }
 
-        $categoriaEnum = obtenerCategoria($datos['categoria'] ?? null);
+        $id = (int) ($datos['id_equipamiento'] ?? $datos['id'] ?? 0);
 
-        // Aceptamos ambos nombres para el ID del equipamiento.
-        $id = (int) (
-            $datos['id_equipamiento'] ?? $datos['id'] ?? 0
-        );
+        // USER solamente puede cambiar la ubicación.
+        if ($_SESSION["role"] === "USER") {
 
-        $exito = $controller->actualizar(
-            $id,
-            $datos['nombre'] ?? '',
-            $datos['descripcion'] ?? '',
-            $datos['marca'] ?? '',
-            $datos['modelo'] ?? '',
-            $categoriaEnum,
-            (int) ($datos['id_ubicacion_actual'] ?? 0)
-        );
+            $idUbicacion = (int) ($datos['id_ubicacion_actual'] ?? 0);
+
+            if ($id <= 0 || $idUbicacion <= 0) {
+                http_response_code(400);
+                echo json_encode(["mensaje" => "Datos inválidos"]);
+                exit;
+            }
+
+            $exito = $controller->actualizarUbicacion($id, $idUbicacion);
+
+        } else {
+
+            requiereAdmin();
+
+            $categoriaEnum = obtenerCategoria($datos['categoria'] ?? null);
+
+            $exito = $controller->actualizar(
+                $id,
+                $datos['nombre'] ?? '',
+                $datos['descripcion'] ?? '',
+                $datos['marca'] ?? '',
+                $datos['modelo'] ?? '',
+                $categoriaEnum,
+                (int) ($datos['id_ubicacion_actual'] ?? 0)
+            );
+        }
 
         if ($exito) {
-            echo json_encode([
-                "status" => "success",
-                "mensaje" => "Equipamiento actualizado con éxito"
-            ]);
+            echo json_encode(["mensaje" => "Equipamiento actualizado con éxito"]);
         } else {
             http_response_code(500);
-            echo json_encode([
-                "status" => "error",
-                "mensaje" => "No se pudo actualizar en la base de datos"
-            ]);
+            echo json_encode(["mensaje" => "No se pudo actualizar el equipamiento"]);
         }
 
         exit;
 
 
     case 'DELETE':
-        // El ID se recibe como parámetro en la URL.
+
+        requiereAdmin();
+
         $id = (int) ($_GET['id'] ?? 0);
 
         if ($id > 0 && $controller->eliminar($id)) {
-            echo json_encode([
-                "status" => "success",
-                "mensaje" => "Equipamiento eliminado correctamente"
-            ]);
+            echo json_encode(["mensaje" => "Equipamiento eliminado correctamente"]);
         } else {
             http_response_code(400);
-            echo json_encode([
-                "status" => "error",
-                "mensaje" => "ID inválido o no se pudo eliminar"
-            ]);
+            echo json_encode(["mensaje" => "No se pudo eliminar el equipamiento"]);
         }
 
         exit;
 
 
     default:
-        // Respondemos con un error si se utiliza un método HTTP no permitido.
-        http_response_code(405);
-        echo json_encode([
-            "status" => "error",
-            "mensaje" => "Método no permitido"
-        ]);
 
+        http_response_code(405);
+        echo json_encode(["mensaje" => "Método no permitido"]);
         exit;
 }

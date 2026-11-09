@@ -154,7 +154,9 @@ class NotificacionDAO
     {
         //Preparacion de query
         $sql = "DELETE FROM notificaciones
-                    WHERE id_notificacion = ? AND id_usuario = ?";
+            WHERE id_notificacion = ?
+            AND id_usuario = ?
+            AND estado <> 'REALIZADA'";
 
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("ii", $idNotif, $idUser);
@@ -162,5 +164,27 @@ class NotificacionDAO
         //Resultados de query
         return $stmt->execute();
     }
+
+    // USER: modifica únicamente título y descripción.
+    public function actualizarContenido(
+        int $idNotif,
+        int $idUser,
+        string $titulo,
+        string $descripcion
+    ): bool {
+
+        $sql = "UPDATE notificaciones
+                SET titulo = ?, descripcion = ?
+                WHERE id_notificacion = ?
+                AND id_usuario = ?
+                AND estado <> 'REALIZADA'";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("ssii", $titulo, $descripcion, $idNotif, $idUser);
+
+        return $stmt->execute() && $stmt->affected_rows > 0;
+    }
+
+    
 }
 ?>

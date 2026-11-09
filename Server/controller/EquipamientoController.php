@@ -65,4 +65,10 @@ class EquipamientoController
     {
         return $this->dao->eliminar($id);
     }
+    
+    // Cambia únicamente la ubicación de un equipamiento.
+    public function actualizarUbicacion(int $idEquipamiento, int $idUbicacion): bool
+    {
+        return $this->dao->actualizarUbicacion($idEquipamiento, $idUbicacion);
+    }
 }

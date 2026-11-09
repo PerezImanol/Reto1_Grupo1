@@ -4,6 +4,7 @@ const botonBuscar = document.getElementById('btnBuscar');
 const criterioOrdenacion = document.getElementById('criterios-ordenacion');
 const totalEquipamientos = document.getElementById('totalEquipamientos');
 const mensajeEquipamientos = document.getElementById('mensajeEquipamientos');
+const filtroCategoria = document.getElementById('filtroCategoria');
 
 let equipamientos = [];
 let ubicaciones = [];
@@ -45,13 +46,17 @@ async function cargarDatos() {
     }
 }
 
+filtroCategoria.addEventListener('change', renderizarEquipamientos);
 function renderizarEquipamientos() {
     const textoBusqueda = buscadorEquipamientos.value.trim().toLocaleLowerCase('es');
     const criterio = criterioOrdenacion.value;
+    const categoriaSeleccionada = filtroCategoria.value;
+
     const campoOrden = criterio.startsWith('n') ? 'nombre' : 'categoria';
     const direccion = criterio.endsWith('Desc') ? -1 : 1;
+
     const filtrados = equipamientos
-        .filter((equipamiento) => {
+        .filter(equipamiento => {
             const contenido = [
                 equipamiento.nombre,
                 equipamiento.descripcion,
@@ -61,7 +66,12 @@ function renderizarEquipamientos() {
                 equipamiento.nombreUbicacion
             ].join(' ').toLocaleLowerCase('es');
 
-            return contenido.includes(textoBusqueda);
+            const coincideTexto = contenido.includes(textoBusqueda);
+
+            const coincideCategoria = categoriaSeleccionada === '' ||
+                String(equipamiento.categoria).toUpperCase() === categoriaSeleccionada;
+
+            return coincideTexto && coincideCategoria;
         })
         .sort((a, b) => compararTexto(a[campoOrden], b[campoOrden]) * direccion);
 
@@ -72,7 +82,8 @@ function renderizarEquipamientos() {
     if (filtrados.length === 0) {
         const texto = equipamientos.length === 0
             ? 'No hay equipamientos registrados.'
-            : 'No se encontraron equipamientos con esa búsqueda.';
+            : 'No se encontraron equipamientos con esos filtros.';
+
         listaEquipamientos.replaceChildren(crearEstadoLista(texto));
         return;
     }
@@ -80,6 +91,7 @@ function renderizarEquipamientos() {
     const tarjetas = filtrados.map(crearTarjetaEquipamiento);
     listaEquipamientos.replaceChildren(...tarjetas);
 }
+
 
 function crearTarjetaEquipamiento(equipamiento) {
     const tarjeta = document.createElement('article');

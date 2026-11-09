@@ -8,6 +8,7 @@ const tituloFormulario = document.getElementById('tituloFormulario');
 
 const buscador = document.getElementById('search');
 const columnaFiltro = document.getElementById('columnaFiltro');
+const filtroCategoria = document.getElementById('filtroCategoria');
 const btnBuscar = document.getElementById('btnBuscar');
 
 const mensajeEquipamientos = document.getElementById('mensajeEquipamientos');
@@ -215,7 +216,7 @@ btnAnadir.addEventListener('click', () => {
     modoFormulario = 'crear';
 
     seccionModificar.hidden = false;
-    formEquipamiento.hidden = false;a
+    formEquipamiento.hidden = false;
 
     tituloFormulario.textContent = 'Añadir equipamiento';
 
@@ -236,6 +237,7 @@ btnCancelar.addEventListener('click', () => {
 
 
 /******************************** BUSCADOR ********************************/
+filtroCategoria.addEventListener('change', buscarEquipamientos);
 columnaFiltro.addEventListener('change', () => {
     const columna = columnaFiltro.options[
         columnaFiltro.selectedIndex
@@ -256,9 +258,11 @@ buscador.addEventListener('keydown', evento => {
     }
 });
 
+
 function buscarEquipamientos() {
     const texto = buscador.value.trim().toLowerCase();
     const columna = columnaFiltro.value;
+    const categoriaSeleccionada = filtroCategoria.value;
 
     const filas = tabla.querySelectorAll('tr');
 
@@ -272,16 +276,22 @@ function buscarEquipamientos() {
     };
 
     filas.forEach(fila => {
-        // Ignorar las filas que muestran mensajes
-        if (fila.cells.length !== 7) {
+        // Ignorar filas que muestran mensajes.
+        if (fila.cells.length !== 8) {
             return;
         }
 
         const valor = fila.cells[indice[columna]].textContent.toLowerCase();
+        const categoria = fila.cells[5].textContent.trim().toUpperCase();
 
-        fila.style.display = valor.includes(texto) ? '' : 'none';
+        const coincideTexto = valor.includes(texto);
+        const coincideCategoria = categoriaSeleccionada === '' ||
+            categoria === categoriaSeleccionada;
+
+        fila.style.display = coincideTexto && coincideCategoria ? '' : 'none';
     });
 }
+
 
 
 /******************************** GUARDAR EQUIPAMIENTO ********************************/
@@ -515,6 +525,20 @@ function mostrarTablaOrdenada() {
             }
         });
 
+        const celdaFlecha = document.createElement('td');
+        const enlaceHistorial = document.createElement('a');
+
+        enlaceHistorial.href = `historialUbi.html?id=${equipamiento.id_equipamiento}`;
+
+        const imagenFlecha = document.createElement('img');
+        imagenFlecha.src = '../img/flecha.png';
+        imagenFlecha.alt = 'Ver historial';
+        imagenFlecha.height = 20;
+        imagenFlecha.width = 20;
+
+        enlaceHistorial.appendChild(imagenFlecha);
+        celdaFlecha.appendChild(enlaceHistorial);
+        fila.appendChild(celdaFlecha);
         tabla.appendChild(fila);
     });
 

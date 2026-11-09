@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CentroGestor - Notificaciones</title>
+
+    <link rel="icon" href="../img/icon.png">
+    <link rel="stylesheet" href="../css/tema.css">
+    <link rel="stylesheet" href="../css/usuarioMovil.css">
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="contenido-movil">
+        <h1>Mis notificaciones</h1>
+        <p class="descripcion-pagina">Gestiona tus notificaciones.</p>
+
+        <div id="mensajeNotificaciones" class="mensaje"></div>
+
+        <form id="formNotificacion" class="formulario-movil">
+            <input type="hidden" id="idNotificacion">
+
+            <label for="tituloNotificacion">Título</label>
+            <input type="text" id="tituloNotificacion" required maxlength="100">
+
+            <label for="descripcionNotificacion">Descripción</label>
+            <textarea id="descripcionNotificacion" rows="4" required></textarea>
+
+            <div class="acciones-formulario">
+                <button type="submit" id="btnGuardarNotificacion">Crear notificación</button>
+                <button type="button" id="btnCancelarEdicion" hidden>Cancelar</button>
+            </div>
+        </form>
+
+        <h2>Mis notificaciones</h2>
+        <section id="listaNotificaciones" class="lista-movil">
+            <p>Cargando notificaciones...</p>
+        </section>
+    </main>
+
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/navbarMovil.js" defer></script>
+    <script src="../js/notificacionesMovil.js" defer></script>
+</body>
+</html>

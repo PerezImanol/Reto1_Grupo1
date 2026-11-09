@@ -175,4 +175,17 @@ class EquipamientoDAO
         //Resultados de query
         return $stmt->execute();
     }
+
+    // Permite cambiar únicamente la ubicación de un equipamiento.
+    public function actualizarUbicacion(int $idEquipamiento, int $idUbicacion): bool
+    {
+        $sql = "UPDATE equipamientos
+                SET id_ubicacion_actual = ?
+                WHERE id_equipamiento = ?";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("ii", $idUbicacion, $idEquipamiento);
+
+        return $stmt->execute() && $stmt->affected_rows > 0;
+    }
 }

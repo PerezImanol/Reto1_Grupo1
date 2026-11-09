@@ -29,34 +29,59 @@
     <main>
         <section class="contenido">
             <div class="barra-herramientas">
-                <div class="buscador">
-                    <input type="text" id="search" name="search" placeholder="Buscar equipamiento...">
+                <div class="grupo-busqueda">
+                    <label for="columnaFiltro">Buscar por</label>
 
-                    <button id="btnBuscar" class="boton-icono" aria-label="Buscar">
-                        <img src="../img/buscar.png" alt="">
+                    <div class="buscador">
+                        <select id="columnaFiltro" aria-label="Buscar por">
+                            <option value="nombre">Nombre</option>
+                            <option value="descripcion">Descripción</option>
+                            <option value="marca">Marca</option>
+                            <option value="modelo">Modelo</option>
+                            <option value="categoria">Categoría</option>
+                            <option value="nombreUbicacion">Ubicación actual</option>
+                        </select>
+
+                        <span class="separador-buscador"></span>
+
+                        <input type="text" id="search" name="search"    placeholder="Escribe para buscar..." >
+
+                        <button id="btnBuscar" class="boton-icono" aria-label="Buscar">
+                            <img src="../img/buscar.png" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grupo-categoria">
+                    <label for="filtroCategoria">Filtrar por categoría</label>
+
+                    <div class="filtro-categoria">
+                        <select id="filtroCategoria" aria-label="Filtrar por categoría">
+                            <option value="">Todas las categorías</option>
+                            <option value="PORTATIL">Portátil</option>
+                            <option value="SOBREMESA">Sobremesa</option>
+                            <option value="PERIFERICO">Periférico</option>
+                            <option value="AUDIOVISUAL">Audiovisual</option>
+                            <option value="OTROS">Otros</option>
+                        </select>
+                        <img src="../img/filtrar.png" alt="">
+                    </div>
+                </div>
+
+                <div class="acciones-equipamientos">
+                    <button id="btnAnadir" class="boton-icono boton-anadir"
+                        aria-label="Añadir equipamiento">
+                        <img src="../img/añadir.png" alt="">
+                    </button>
+
+                    <button id="btnBorrar" class="boton-icono boton-borrar"
+                        aria-label="Borrar equipamiento" disabled>
+                        <img src="../img/borrar.png" alt="">
                     </button>
                 </div>
-                <div class="filtro-columna">
-                    <select id="columnaFiltro" aria-label="Columna por la que buscar">
-                        <option value="nombre">Nombre</option>
-                        <option value="descripcion">Descripción</option>
-                        <option value="marca">Marca</option>
-                        <option value="modelo">Modelo</option>
-                        <option value="categoria">Categoría</option>
-                        <option value="nombreUbicacion">Ubicación actual</option>
-                    </select>
-
-                    <img src="../img/filtrar.png" alt="">
-                </div>
-
-                <button id="btnAnadir" class="boton-icono boton-anadir" aria-label="Añadir equipamiento">
-                    <img src="../img/añadir.png" alt="">
-                </button>
-                <button id="btnBorrar" class="boton-icono boton-borrar" aria-label="Borrar equipamiento" disabled>
-                    <img src="../img/borrar.png" alt="">
-                </button>
 
             </div>
+
             <p class="mensaje-pagina-equipamientos" id="mensajeEquipamientos" role="status" aria-live="polite" hidden></p>
             <table>
                 <thead>

@@ -14,72 +14,141 @@
 
 .barra-herramientas {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: flex-end;
+    gap: 25px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
+/* Grupos de controles */
 
-/* Buscador */
+.grupo-busqueda,
+.grupo-categoria {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-busqueda {
+    flex: 1;
+    min-width: 350px;
+}
+
+.grupo-categoria {
+    width: 260px;
+}
+
+/* Etiquetas superiores */
+
+.grupo-busqueda label,
+.grupo-categoria label {
+    color: #293820;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Buscador integrado */
 
 .buscador {
     display: flex;
     align-items: center;
-    width: 420px;
+    width: 100%;
     height: 50px;
-    border: 1px solid #d8dccb;
+    box-sizing: border-box;
+    border: 1px solid #c8cebd;
     border-radius: 9px;
     overflow: hidden;
     background-color: white;
 }
 
+.buscador:focus-within {
+    border-color: #59663b;
+    box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.12);
+}
+
+/* Selector del campo de búsqueda */
+
+.buscador select {
+    width: 155px;
+    height: 100%;
+    padding: 0 12px;
+    border: none;
+    outline: none;
+    background-color: #f4f5ef;
+    color: #293820;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Separador entre selector y texto */
+
+.separador-buscador {
+    width: 1px;
+    height: 27px;
+    background-color: #d8dccb;
+}
+
+/* Texto de búsqueda */
+
 .buscador input {
     flex: 1;
     min-width: 0;
     height: 100%;
-    padding: 0 16px;
+    padding: 0 14px;
     border: none;
     outline: none;
     font-family: inherit;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .buscador input::placeholder {
     color: #858879;
 }
 
+/* Botón de búsqueda */
+
 .buscador .boton-icono {
     width: 50px;
     height: 50px;
     border-radius: 0;
+    flex-shrink: 0;
 }
 
+/* Filtro independiente de categoría */
 
-/* Filtro por columna */
-
-.filtro-columna {
+.filtro-categoria {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
-    border: 1px solid #d8dccb;
-    border-radius: 8px;
-    background-color: #fffbea;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #c8cebd;
+    border-radius: 9px;
+    overflow: hidden;
+    
 }
 
-.filtro-columna select {
-    min-width: 180px;
-    height: 50px;
-    padding: 0 14px;
+.filtro-categoria select {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 10px;
     border: none;
     outline: none;
     background-color: transparent;
     color: #293820;
     font-family: inherit;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
 }
 
-.filtro-columna img {
+.filtro-categoria:focus-within {
+    border-color: #59663b;
+    box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.12);
+}
+
+.filtro-categoria img {
     display: block;
     width: 50px;
     height: 50px;
@@ -89,6 +158,13 @@
     object-fit: contain;
 }
 
+/* Botones de acciones */
+
+.acciones-equipamientos {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
 /* Botones con imágenes */
 
@@ -116,7 +192,6 @@
 .boton-icono:hover {
     background-color: #465538;
 }
-
 
 /* Botón de borrar deshabilitado */
 
