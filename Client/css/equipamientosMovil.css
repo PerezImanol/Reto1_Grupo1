@@ -1,0 +1,338 @@
+.pagina-equipamientos {
+    width: calc(100% - 24px);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.encabezado-equipamientos {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.etiqueta-pagina {
+    margin: 0 0 6px;
+    color: var(--verde-texto);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.encabezado-equipamientos h1 {
+    margin: 0;
+    color: var(--verde-oscuro);
+    font-size: 25px;
+}
+
+.descripcion-pagina {
+    margin: 8px 0 0;
+    color: #62665a;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.total-equipamientos {
+    justify-self: start;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #f3f2e9;
+    color: var(--verde-texto);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.controles-equipamientos {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid #e8e4d8;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.busqueda-equipamientos {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    overflow: hidden;
+    border: 1px solid #d8d5c9;
+    border-radius: 6px;
+}
+
+.busqueda-equipamientos input {
+    width: 100%;
+    min-width: 0;
+    padding: 0 12px;
+    border: 0;
+    outline: 0;
+    color: var(--verde-oscuro);
+    font: inherit;
+    font-size: 16px;
+}
+
+.busqueda-equipamientos input::placeholder {
+    color: #85877e;
+    font-size: 14px;
+}
+
+.busqueda-equipamientos button {
+    display: grid;
+    width: 48px;
+    min-height: 48px;
+    flex: 0 0 48px;
+    place-items: center;
+    border: 0;
+    background: var(--verde-oscuro);
+    cursor: pointer;
+}
+
+.busqueda-equipamientos button:hover {
+    background: #465538;
+}
+
+.busqueda-equipamientos button img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.ordenar-equipamientos {
+    display: grid;
+    gap: 5px;
+    color: #62665a;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ordenar-equipamientos select,
+.campo-ubicacion select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 1px solid #d8d5c9;
+    border-radius: 6px;
+    background: #fff;
+    color: var(--verde-oscuro);
+    font: inherit;
+    font-size: 16px;
+}
+
+.mensaje-equipamientos {
+    margin: 0 0 14px;
+    padding: 12px;
+    border: 1px solid #d8e4cf;
+    border-radius: 6px;
+    background: #f3f8ef;
+    color: var(--verde-oscuro);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.mensaje-equipamientos[hidden] {
+    display: none;
+}
+
+.mensaje-equipamientos.mensaje-error {
+    border-color: #e6c6b8;
+    background: #fff5f0;
+    color: #8c3928;
+}
+
+.lista-equipamientos {
+    display: grid;
+    gap: 12px;
+}
+
+.tarjeta-equipamiento {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #e8e4d8;
+    border-left: 4px solid var(--verde-texto);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgb(41 56 32 / 5%);
+}
+
+.cabecera-tarjeta-equipamiento {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+}
+
+.identificacion-equipamiento {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.id-equipamiento {
+    color: #85877e;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tarjeta-equipamiento h2 {
+    margin: 0;
+    color: var(--verde-oscuro);
+    font-size: 17px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.categoria-equipamiento {
+    max-width: 100%;
+    padding: 5px 10px;
+    border-radius: 14px;
+    background: #f3f2e9;
+    color: var(--verde-texto);
+    font-size: 12px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.descripcion-equipamiento {
+    margin: 12px 0;
+    color: #62665a;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.detalles-equipamiento {
+    display: grid;
+    gap: 7px;
+    margin: 0 0 14px;
+    color: #62665a;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.campo-ubicacion {
+    display: grid;
+    gap: 6px;
+}
+
+.campo-ubicacion label {
+    color: #62665a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.campo-ubicacion select:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.busqueda-equipamientos:focus-within,
+.ordenar-equipamientos select:focus-visible,
+.campo-ubicacion select:focus-visible {
+    outline: 2px solid var(--verde-texto);
+    outline-offset: 2px;
+}
+
+.estado-lista {
+    margin: 0;
+    padding: 20px 14px;
+    border: 1px dashed #d8d5c9;
+    border-radius: 8px;
+    color: #62665a;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.texto-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+@media (min-width: 600px) {
+    .pagina-equipamientos {
+        width: min(100% - 40px, 760px);
+        margin: 28px auto;
+    }
+
+    .encabezado-equipamientos {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+    }
+
+    .total-equipamientos {
+        justify-self: auto;
+    }
+
+    .controles-equipamientos {
+        grid-template-columns: minmax(0, 1fr) minmax(190px, 230px);
+        align-items: end;
+        padding: 14px;
+    }
+
+    .cabecera-tarjeta-equipamiento {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        justify-items: stretch;
+    }
+
+    .categoria-equipamiento {
+        justify-self: end;
+    }
+
+    .detalles-equipamiento {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .campo-ubicacion {
+        max-width: 360px;
+    }
+}
+
+@media (min-width: 900px) {
+    .pagina-equipamientos {
+        width: min(100% - 48px, 920px);
+        margin: 40px auto;
+    }
+
+    .encabezado-equipamientos h1 {
+        font-size: 28px;
+    }
+
+    .lista-equipamientos {
+        gap: 14px;
+    }
+
+    .tarjeta-equipamiento {
+        padding: 19px 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .pagina-equipamientos {
+        width: calc(100% - 20px);
+        margin: 16px auto;
+    }
+
+    .encabezado-equipamientos h1 {
+        font-size: 23px;
+    }
+
+    .controles-equipamientos,
+    .tarjeta-equipamiento {
+        padding: 12px;
+    }
+
+    .busqueda-equipamientos input {
+        padding: 0 9px;
+    }
+
+    .busqueda-equipamientos input::placeholder {
+        font-size: 12px;
+    }
+}
