@@ -1,8 +1,4 @@
 <header class="menu">
-    <script>
-        const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
-        document.documentElement.dataset.tema = temaGuardado;
-    </script>
     <a href="./equipamientos.html" class="logo">
         <img src="../img/icon.png" alt="Logo" />
         <span>CentroGestor</span>
@@ -46,7 +42,8 @@
                 <span class="contador-notificaciones" id="contadorNotificaciones" aria-hidden="true" hidden></span>
             </button>
 
-            <section class="menu-notificaciones" id="menuNotificaciones" aria-label="Vista previa de notificaciones" hidden>
+            <section class="menu-notificaciones" id="menuNotificaciones" aria-label="Vista previa de notificaciones"
+                hidden>
                 <div class="cabecera-notificaciones">
                     <h2>Notificaciones</h2>
                     <span id="resumenNotificaciones">Vista previa</span>
@@ -59,8 +56,7 @@
         </div>
 
         <div class="perfil-contenedor">
-            <button type="button" class="perfil" id="btnPerfil"
-                aria-expanded="false" aria-controls="menuPerfil">
+            <button type="button" class="perfil" id="btnPerfil" aria-expanded="false" aria-controls="menuPerfil">
                 <img src="../img/usuario.png" alt="" class="avatar" />
 
                 <span class="datos-perfil">
@@ -80,8 +76,7 @@
                     <span id="textoTema">Modo oscuro</span>
                 </button>
 
-                <button type="button" class="opcion-perfil opcion-cerrar-sesion"
-                    id="btnCerrarSesion">
+                <button type="button" class="opcion-perfil opcion-cerrar-sesion" id="btnCerrarSesion">
                     <span>Cerrar sesión</span>
                 </button>
             </div>

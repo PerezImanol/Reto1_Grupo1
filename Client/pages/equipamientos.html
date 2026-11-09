@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CentroGestor - Equipamiento</title>
-    <script>
-        const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
-        document.documentElement.dataset.tema = temaGuardado;
-    </script>
     <link rel="icon" href="../img/icon.png">
-    
+
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/equipamiento.css">
     <link rel="stylesheet" href="../css/tema.css">
@@ -21,7 +18,7 @@
     <script src="../js/navbar.js" defer></script>
     <script src="../js/notificaciones.js" defer></script>
     <script src="../js/equipamientos.js" defer></script>
-    
+
 </head>
 
 <body>
@@ -44,7 +41,7 @@
 
                         <span class="separador-buscador"></span>
 
-                        <input type="text" id="search" name="search"    placeholder="Escribe para buscar..." >
+                        <input type="text" id="search" name="search" placeholder="Escribe para buscar...">
 
                         <button id="btnBuscar" class="boton-icono" aria-label="Buscar">
                             <img src="../img/buscar.png" alt="">
@@ -69,35 +66,37 @@
                 </div>
 
                 <div class="acciones-equipamientos">
-                    <button id="btnAnadir" class="boton-icono boton-anadir"
-                        aria-label="Añadir equipamiento">
+                    <button id="btnAnadir" class="boton-icono boton-anadir" aria-label="Añadir equipamiento">
                         <img src="../img/añadir.png" alt="">
                     </button>
 
-                    <button id="btnBorrar" class="boton-icono boton-borrar"
-                        aria-label="Borrar equipamiento" disabled>
+                    <button id="btnBorrar" class="boton-icono boton-borrar" aria-label="Borrar equipamiento" disabled>
                         <img src="../img/borrar.png" alt="">
                     </button>
                 </div>
 
             </div>
 
-            <p class="mensaje-pagina-equipamientos" id="mensajeEquipamientos" role="status" aria-live="polite" hidden></p>
+            <p class="mensaje-pagina-equipamientos" id="mensajeEquipamientos" role="status" aria-live="polite" hidden>
+            </p>
             <table>
                 <thead>
                     <tr>
                         <th class="columna-seleccion"></th>
-                        <th>Nombre <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('nombre', this)" alt="Ordenar por nombre"></th>
-                        <th>Descripción <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('descripcion', this)" alt="Ordenar por descripción"></th>
-                        <th>Marca <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('marca', this)" alt="Ordenar por marca"></th>
-                        <th>Modelo <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('modelo', this)" alt="Ordenar por modelo"></th>
-                        <th>Categoría <img src="../img/flechas_ordenar.png" class="flechas-ordenar" onclick="ordenarTabla('categoria', this)" alt="Ordenar por categoría"></th>
+                        <th>Nombre <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('nombre', this)" alt="Ordenar por nombre"></th>
+                        <th>Descripción <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('descripcion', this)" alt="Ordenar por descripción"></th>
+                        <th>Marca <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('marca', this)" alt="Ordenar por marca"></th>
+                        <th>Modelo <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('modelo', this)" alt="Ordenar por modelo"></th>
+                        <th>Categoría <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('categoria', this)" alt="Ordenar por categoría"></th>
                         <th>
                             Ubicación actual
-                            <img src="../img/flechas_ordenar.png"
-                                class="flechas-ordenar"
-                                onclick="ordenarTabla('nombreUbicacion', this)"
-                                alt="Ordenar por ubicación">
+                            <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('nombreUbicacion', this)" alt="Ordenar por ubicación">
                         </th>
                         <th>Historial Ubicación</th>
                     </tr>
@@ -108,13 +107,13 @@
                     </tr>
                 </tbody>
             </table>
-            
+
         </section>
 
         <section id="seccionModificar" class="modificar" hidden>
 
             <form id="formEquipamiento" hidden>
-                
+
                 <h2 id="tituloFormulario">Modificar equipamiento</h2>
                 <div class="campos-formulario">
                     <label>
@@ -171,8 +170,7 @@
     </main>
     <!-- Ventana de confirmación para eliminar -->
     <div id="modalConfirmarBorrado" class="modal-confirmacion" hidden>
-        <div class="contenido-modal" role="dialog" aria-modal="true"
-            aria-labelledby="textoConfirmacionBorrado">
+        <div class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="textoConfirmacionBorrado">
 
             <img src="../img/borrar.png" alt="" class="icono-confirmacion">
 
@@ -193,4 +191,5 @@
     </div>
 
 </body>
+
 </html>

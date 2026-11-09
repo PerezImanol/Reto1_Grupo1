@@ -16,7 +16,11 @@ window.cargarNavbar = function (selector = "#navbar-placeholder") {
     $(contenedor).load(rutaNavbar, function (_respuesta, estado, solicitud) {
       if (estado === "error") {
         cargaNavbar = null;
-        reject(new Error(`No se pudo cargar el menú: ${solicitud.status} ${solicitud.statusText}`));
+        reject(
+          new Error(
+            `No se pudo cargar el menú: ${solicitud.status} ${solicitud.statusText}`,
+          ),
+        );
         return;
       }
 
@@ -46,7 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function marcarPaginaActiva() {
   const paginaActual = window.location.pathname.split("/").pop();
   document.querySelectorAll(".nav-item").forEach((enlace) => {
-    const paginaEnlace = new URL(enlace.href, window.location.href).pathname.split("/").pop();
+    const paginaEnlace = new URL(enlace.href, window.location.href).pathname
+      .split("/")
+      .pop();
     if (paginaEnlace === paginaActual) {
       enlace.classList.add("activo");
       enlace.setAttribute("aria-current", "page");
@@ -90,7 +96,9 @@ async function cargarVistaPrevia() {
   const contador = document.getElementById("contadorNotificaciones");
   const menu = document.getElementById("menuNotificaciones");
   if (!menu.hidden) {
-    listaVistaPrevia.replaceChildren(crearMensajePreview("Cargando notificaciones..."));
+    listaVistaPrevia.replaceChildren(
+      crearMensajePreview("Cargando notificaciones..."),
+    );
   }
 
   try {
@@ -100,7 +108,11 @@ async function cargarVistaPrevia() {
       resumen.textContent = "Sin sesión";
       actualizarContadorNotificaciones(0, contador);
       if (!menu.hidden) {
-        listaVistaPrevia.replaceChildren(crearMensajePreview("Inicia sesión para consultar tus notificaciones."));
+        listaVistaPrevia.replaceChildren(
+          crearMensajePreview(
+            "Inicia sesión para consultar tus notificaciones.",
+          ),
+        );
       }
       return;
     }
@@ -112,7 +124,8 @@ async function cargarVistaPrevia() {
     }
 
     const esAdmin = auth.esAdministrador(usuario);
-    const notificaciones = await window.servicioNotificaciones.obtenerPendientes(usuario);
+    const notificaciones =
+      await window.servicioNotificaciones.obtenerPendientes(usuario);
     actualizarContadorNotificaciones(notificaciones.length, contador);
     resumen.textContent = `${notificaciones.length} ${notificaciones.length === 1 ? "notificación" : "notificaciones"}`;
     if (menu.hidden) {
@@ -121,7 +134,9 @@ async function cargarVistaPrevia() {
     listaVistaPrevia.replaceChildren();
 
     if (notificaciones.length === 0) {
-      listaVistaPrevia.appendChild(crearMensajePreview("No hay notificaciones."));
+      listaVistaPrevia.appendChild(
+        crearMensajePreview("No hay notificaciones."),
+      );
       return;
     }
 
@@ -132,7 +147,9 @@ async function cargarVistaPrevia() {
     console.error("Error al cargar la vista previa de notificaciones:", error);
     resumen.textContent = "No disponible";
     if (!menu.hidden) {
-      listaVistaPrevia.replaceChildren(crearMensajePreview("No se pudieron cargar las notificaciones."));
+      listaVistaPrevia.replaceChildren(
+        crearMensajePreview("No se pudieron cargar las notificaciones."),
+      );
     }
   }
 }
@@ -141,12 +158,14 @@ function actualizarContadorNotificaciones(total, contador) {
   contador.textContent = String(total);
   const paginaActual = window.location.pathname.split("/").pop();
   contador.hidden = total === 0 || paginaActual === "notificaciones.html";
-  document.getElementById("btnNotificaciones").setAttribute(
-    "aria-label",
-    total > 0
-      ? `Abrir vista previa de notificaciones: ${total} ${total === 1 ? "notificación" : "notificaciones"}`
-      : "Abrir vista previa de notificaciones"
-  );
+  document
+    .getElementById("btnNotificaciones")
+    .setAttribute(
+      "aria-label",
+      total > 0 ?
+        `Abrir vista previa de notificaciones: ${total} ${total === 1 ? "notificación" : "notificaciones"}`
+      : "Abrir vista previa de notificaciones",
+    );
 }
 
 function crearElementoPreview(notificacion, esAdmin) {
@@ -169,9 +188,13 @@ function crearElementoPreview(notificacion, esAdmin) {
   const fecha = document.createElement("time");
   const valorFecha = obtenerFechaTextoPreview(notificacion.fecha_creacion);
   const fechaParseada = new Date(valorFecha.replace(" ", "T"));
-  fecha.textContent = Number.isNaN(fechaParseada.getTime())
-    ? `Fecha: ${valorFecha || "no disponible"}`
-    : new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: "short" }).format(fechaParseada);
+  fecha.textContent =
+    Number.isNaN(fechaParseada.getTime()) ?
+      `Fecha: ${valorFecha || "no disponible"}`
+    : new Intl.DateTimeFormat("es-ES", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(fechaParseada);
 
   const estado = document.createElement("span");
   estado.className = "notificacion-estado";
@@ -213,7 +236,7 @@ function formatearEstadoPreview(estado) {
   const nombres = {
     PENDIENTE: "Pendiente",
     EN_PROCESO: "En proceso",
-    REALIZADA: "Realizada"
+    REALIZADA: "Realizada",
   };
   return nombres[valor] || "Sin estado";
 }
@@ -222,41 +245,41 @@ function formatearEstadoPreview(estado) {
 // ==============================
 
 function configurarMenuPerfil() {
-    const boton = document.getElementById("btnPerfil");
-    const menu = document.getElementById("menuPerfil");
-    const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+  const boton = document.getElementById("btnPerfil");
+  const menu = document.getElementById("menuPerfil");
+  const btnCerrarSesion = document.getElementById("btnCerrarSesion");
 
-    boton.addEventListener("click", () => {
-        const abrir = menu.hidden;
+  boton.addEventListener("click", () => {
+    const abrir = menu.hidden;
 
-        menu.hidden = !abrir;
-        boton.setAttribute("aria-expanded", String(abrir));
-    });
+    menu.hidden = !abrir;
+    boton.setAttribute("aria-expanded", String(abrir));
+  });
 
-    document.addEventListener("click", (evento) => {
-        if (!evento.target.closest(".perfil-contenedor")) {
-            menu.hidden = true;
-            boton.setAttribute("aria-expanded", "false");
-        }
-    });
+  document.addEventListener("click", (evento) => {
+    if (!evento.target.closest(".perfil-contenedor")) {
+      menu.hidden = true;
+      boton.setAttribute("aria-expanded", "false");
+    }
+  });
 
-    document.addEventListener("keydown", (evento) => {
-        if (evento.key === "Escape" && !menu.hidden) {
-            menu.hidden = true;
-            boton.setAttribute("aria-expanded", "false");
-            boton.focus();
-        }
-    });
+  document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape" && !menu.hidden) {
+      menu.hidden = true;
+      boton.setAttribute("aria-expanded", "false");
+      boton.focus();
+    }
+  });
 
-    btnCerrarSesion.addEventListener("click", async () => {
-        try {
-            await auth.logout();
-            window.location.href = "./login.html";
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-            alert("No se pudo cerrar la sesión.");
-        }
-    });
+  btnCerrarSesion.addEventListener("click", async () => {
+    try {
+      await auth.logout();
+      window.location.href = "./login.html";
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      alert("No se pudo cerrar la sesión.");
+    }
+  });
 }
 
 // ==============================
@@ -264,24 +287,27 @@ function configurarMenuPerfil() {
 // ==============================
 
 function configurarTema() {
-    const botonTema = document.getElementById("btnTema");
-    const textoTema = document.getElementById("textoTema");
+  const botonTema = document.getElementById("btnTema");
+  const textoTema = document.getElementById("textoTema");
 
-    function actualizarTema() {
-        const temaOscuro = document.documentElement.dataset.tema === "oscuro";
+  function actualizarTema() {
+    const temaOscuro = document.documentElement.dataset.tema === "oscuro";
 
-        textoTema.textContent = temaOscuro ? "Modo claro" : "Modo oscuro";
-    }
+    textoTema.textContent = temaOscuro ? "Modo claro" : "Modo oscuro";
+  }
+
+  actualizarTema();
+
+  botonTema.addEventListener("click", () => {
+    const temaOscuro = document.documentElement.dataset.tema !== "oscuro";
+
+    document.documentElement.dataset.tema = temaOscuro ? "oscuro" : "claro";
+
+    localStorage.setItem("temaCentroGestor", temaOscuro ? "oscuro" : "claro");
 
     actualizarTema();
+  });
 
-    botonTema.addEventListener("click", () => {
-        const temaOscuro = document.documentElement.dataset.tema !== "oscuro";
-
-        document.documentElement.dataset.tema = temaOscuro ? "oscuro" : "claro";
-
-        localStorage.setItem("temaCentroGestor", temaOscuro ? "oscuro" : "claro");
-
-        actualizarTema();
-    });
+  const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
+  document.documentElement.dataset.tema = temaGuardado;
 }
