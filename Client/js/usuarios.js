@@ -1,6 +1,11 @@
 const nameField = document.getElementById("name");
 const surnameField = document.getElementById("surname");
 const usernameField = document.getElementById("username");
+const passwordField = document.getElementById("password");
+const oldPasswordLabel = document.getElementById("oldPasswordLabel");
+const oldPasswordField = document.getElementById("oldPassword");
+const confirmPasswordField = document.getElementById("passwordConfirm");
+const roleSelect = document.getElementById("role");
 const btnAdd = document.getElementById("btnAdd");
 const btnSave = document.getElementById("btnSave");
 const btnCancel = document.getElementById("btnCancel");
@@ -18,6 +23,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   nameField.disabled = true;
   surnameField.disabled = true;
   usernameField.disabled = true;
+  passwordField.disabled = true;
+  oldPasswordLabel.hidden = true;
+  oldPasswordField.hidden = true;
+  confirmPasswordField.disabled = true;
+  roleSelect.disabled = true;
   btnSave.disabled = true;
   btnCancel.disabled = true;
 });
@@ -94,6 +104,8 @@ function renderUsers(users) {
 
     btnDelete.className = "btnDelete";
     btnDelete.onclick = async function () {
+      hideMessage();
+
       if (
         !confirm(
           "¿Estás seguro de que deseas eliminar este usuario? No podra iniciar sesion.",
@@ -191,6 +203,7 @@ usernameField.addEventListener("change", () => {
 });
 
 btnAdd.addEventListener("click", () => {
+  hideMessage();
   add = true;
 
   btnSave.disabled = false;
@@ -198,6 +211,9 @@ btnAdd.addEventListener("click", () => {
   nameField.disabled = false;
   surnameField.disabled = false;
   usernameField.disabled = false;
+  passwordField.disabled = false;
+  confirmPasswordField.disabled = false;
+  roleSelect.disabled = false;
 
   if (selectedUserTable) {
     selectedUserTable.textContent = "Añadiendo usuario";
@@ -206,9 +222,21 @@ btnAdd.addEventListener("click", () => {
 
 btnSave.addEventListener("click", async (e) => {
   e.preventDefault();
+  hideMessage();
 
   if (!selectedUser && !add) {
     showMessage("Por favor, selecciona un usuario para editar.", true);
+    return;
+  }
+
+  if (!passwordField.value) {
+    showMessage("Introduce una contraseña.", true);
+    return;
+  } else if (
+    passwordField.value &&
+    passwordField.value != confirmPasswordField.value
+  ) {
+    showMessage("Las contraseñas no coinciden.", true);
     return;
   }
 
@@ -220,6 +248,8 @@ btnSave.addEventListener("click", async (e) => {
         nombre: nameField.value,
         apellido: surnameField.value,
         username: usernameField.value,
+        password: passwordField.value,
+        role: roleSelect.value,
       };
 
       for (let i = 0; i < ALL_USERS.length; i++) {
@@ -257,7 +287,9 @@ btnSave.addEventListener("click", async (e) => {
         nombre: nameField.value,
         apellido: surnameField.value,
         username: usernameField.value,
-        role: selectedUser.role,
+        password: oldPasswordField.value,
+        newPassword: passwordField.value,
+        role: roleSelect.value,
       };
 
       for (let i = 0; i < ALL_USERS.length; i++) {
@@ -307,6 +339,11 @@ function seleccionarFila(selectedCb, user) {
   nameField.disabled = false;
   surnameField.disabled = false;
   usernameField.disabled = false;
+  passwordField.disabled = false;
+  oldPasswordLabel.hidden = false;
+  oldPasswordField.hidden = false;
+  confirmPasswordField.disabled = false;
+  roleSelect.disabled = false;
 
   nameField.value = user.nombre;
   surnameField.value = user.apellido;
@@ -314,6 +351,8 @@ function seleccionarFila(selectedCb, user) {
 }
 
 function deseleccionarFila() {
+  hideMessage();
+
   tbody.querySelectorAll(".checkbox").forEach((cb) => {
     cb.checked = false;
   });
@@ -327,11 +366,25 @@ function deseleccionarFila() {
   btnCancel.disabled = true;
 
   nameField.value = "";
-  surnameField.value = "";
-  usernameField.value = "";
   nameField.disabled = true;
+
+  surnameField.value = "";
   surnameField.disabled = true;
+
+  usernameField.value = "";
   usernameField.disabled = true;
+
+  passwordField.value = "";
+  passwordField.disabled = true;
+
+  oldPasswordLabel.hidden = true;
+  oldPasswordField.value = "";
+  oldPasswordField.hidden = true;
+
+  confirmPasswordField.value = "";
+  confirmPasswordField.disabled = true;
+
+  roleSelect.disabled = true;
 }
 
 function showMessage(texto, esError = false) {
