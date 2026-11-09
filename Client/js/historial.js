@@ -27,13 +27,14 @@ async function iniciarPagina() {
     });
 
     // Comprobar si venimos desde la página de equipamientos.
-    if (idUsuarioURL !== null) {
-      if (!/^\d+$/.test(idUsuarioURL) || Number(idUsuarioURL) <= 0) {
+    if (idEquipamientoURL !== null) {
+      if (!/^\d+$/.test(idEquipamientoURL) || Number(idEquipamientoURL) <= 0) {
         throw new Error("El ID del equipamiento no es válido.");
       }
 
       const equipamientoExiste = equipamientos.some(
-        (equipamiento) => String(equipamiento.id_equipamiento) === idUsuarioURL,
+        (equipamiento) =>
+          String(equipamiento.id_equipamiento) === idEquipamientoURL,
       );
 
       if (!equipamientoExiste) {
@@ -41,9 +42,9 @@ async function iniciarPagina() {
       }
 
       // Seleccionar automáticamente el equipamiento recibido.
-      filtroEquipamiento.value = idUsuarioURL;
+      filtroEquipamiento.value = idEquipamientoURL;
 
-      await cargarHistoriales(idUsuarioURL);
+      await cargarHistoriales(idEquipamientoURL);
     } else {
       // Si entramos desde el menú, mostrar todos los historiales.
       await cargarHistoriales();
