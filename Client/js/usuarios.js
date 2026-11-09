@@ -115,10 +115,10 @@ function renderUsers(users) {
       }
 
       try {
-        let data = await api.usuarios.eliminar(id_usuario);
+        const data = await api.usuarios.eliminar(id_usuario);
 
         if (data.exito) {
-          await loadLocactions();
+          await loadUsers();
           showMessage("Usuario eliminado correctamente");
           deseleccionarFila();
         } else {
@@ -208,11 +208,24 @@ btnAdd.addEventListener("click", () => {
 
   btnSave.disabled = false;
   btnCancel.disabled = false;
+
+  nameField.value = "";
   nameField.disabled = false;
+
+  surnameField.value = "";
   surnameField.disabled = false;
+
+  usernameField.value = "";
   usernameField.disabled = false;
+
+  passwordField.value = "";
   passwordField.disabled = false;
+
+  oldPasswordField.value = "";
+
+  confirmPasswordField.value = "";
   confirmPasswordField.disabled = false;
+
   roleSelect.disabled = false;
 
   if (selectedUserTable) {
@@ -268,7 +281,7 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.crear(newInfo);
 
         if (data.exito) {
-          await loadLocactions();
+          await loadUsers();
           showMessage(data.mensaje);
           deseleccionarFila();
         } else {
@@ -308,8 +321,8 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.actualizar(newInfo);
 
         if (data.exito) {
+          showMessage("El usuario ha sido creado correctamente.");
           await loadUsers();
-          showMessage(data.mensaje);
           deseleccionarFila();
         } else {
           showMessage(data.mensaje, true);
@@ -347,7 +360,13 @@ function seleccionarFila(selectedCb, user) {
 
   nameField.value = user.nombre;
   surnameField.value = user.apellido;
-  usernameField = user.username;
+  usernameField.value = user.username;
+
+  if (user.role == "USER") {
+    roleSelect.selectedIndex = 0;
+  } else {
+    roleSelect.selectedIndex = 1;
+  }
 }
 
 function deseleccionarFila() {
