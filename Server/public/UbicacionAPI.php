@@ -86,7 +86,7 @@ switch ($metodo) {
                 echo json_encode([
                     "mensaje" => "Ubicación creada con éxito.",
                     'status' => http_response_code(201),
-                    'exito' => false
+                    'exito' => true
                 ]);
             } else {
                 echo json_encode([
@@ -154,7 +154,7 @@ switch ($metodo) {
         try {
             if ($id !== null && (int) $id > 0 && $controller->eliminar((int) $id)) {
                 echo json_encode([
-                    "mensaje" => "Ubicación eliminada correctamente",
+                    "mensaje" => "Ubicación eliminada correctamente.",
                     'exito' => true
                 ]);
             } else {

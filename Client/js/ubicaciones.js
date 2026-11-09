@@ -92,6 +92,8 @@ function renderLocations(locations) {
 
     btnDelete.className = "btnDelete";
     btnDelete.onclick = async function () {
+      hideMessage();
+
       if (!confirm("¿Estás seguro de que deseas eliminar esta ubicacion?")) {
         return;
       }
@@ -170,6 +172,7 @@ descField.addEventListener("change", () => {
 });
 
 btnAdd.addEventListener("click", () => {
+  hideMessage();
   add = true;
 
   btnSave.disabled = false;
@@ -184,6 +187,7 @@ btnAdd.addEventListener("click", () => {
 
 btnSave.addEventListener("click", async (e) => {
   e.preventDefault();
+  hideMessage();
 
   if (!selectedLocation && !add) {
     showMessage("Por favor, selecciona una ubicacion para editar.", true);
@@ -269,6 +273,8 @@ btnCancel.addEventListener("click", () => {
 });
 
 function seleccionarFila(selectedCb, location) {
+  hideMessage();
+
   add = false;
   tbody.querySelectorAll(".checkbox").forEach((cb) => {
     if (cb !== selectedCb) {

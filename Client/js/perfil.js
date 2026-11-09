@@ -59,6 +59,8 @@ function loadUserInfo(user) {
 }
 
 btnSave.addEventListener("click", async () => {
+  hideMessage();
+
   if (!editing) {
     nameInput.disabled = false;
     surnameInput.disabled = false;
@@ -97,6 +99,8 @@ btnSave.addEventListener("click", async () => {
 });
 
 btnDelete.addEventListener("click", async () => {
+  hideMessage();
+
   if (
     !confirm(
       "¿Estás seguro de que deseas borrar tu cuenta? No podras iniciar sesion despues!",
