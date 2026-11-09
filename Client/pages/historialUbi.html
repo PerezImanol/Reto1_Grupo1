@@ -1,17 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CentroGestor - Historial de Ubicaciones</title>
-    <script>
-        const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
-        document.documentElement.dataset.tema = temaGuardado;
-    </script>
     <link rel="icon" href="../img/icon.png">
-    
+
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/historial.css">
     <link rel="stylesheet" href="../css/tema.css">
@@ -50,17 +46,18 @@
                             <th>Fecha fin</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody id="tablaHistorial">
                         <tr>
                             <td colspan="5">Cargando historiales...</td>
                         </tr>
                     </tbody>
-                </table> 
+                </table>
             </div>
-    
+
         </section>
     </main>
 
 </body>
+
 </html>
