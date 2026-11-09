@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CentroGestor - Perfil</title>
-
+    <script>
+        const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
+        document.documentElement.dataset.tema = temaGuardado;
+    </script>
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/perfil.css">
+    <link rel="stylesheet" href="../css/tema.css">
 
     <script src="//code.jquery.com/jquery.min.js" defer></script>
     <script src="../js/api.js" defer></script>

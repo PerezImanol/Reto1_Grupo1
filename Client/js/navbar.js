@@ -22,6 +22,8 @@ window.cargarNavbar = function (selector = "#navbar-placeholder") {
 
       marcarPaginaActiva();
       configurarVistaPrevia();
+      configurarMenuPerfil();
+      configurarTema();
       cargarVistaPrevia();
       resolve(contenedor);
     });
@@ -214,4 +216,72 @@ function formatearEstadoPreview(estado) {
     REALIZADA: "Realizada"
   };
   return nombres[valor] || "Sin estado";
+}
+// ==============================
+// MENÚ DEL PERFIL
+// ==============================
+
+function configurarMenuPerfil() {
+    const boton = document.getElementById("btnPerfil");
+    const menu = document.getElementById("menuPerfil");
+    const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+
+    boton.addEventListener("click", () => {
+        const abrir = menu.hidden;
+
+        menu.hidden = !abrir;
+        boton.setAttribute("aria-expanded", String(abrir));
+    });
+
+    document.addEventListener("click", (evento) => {
+        if (!evento.target.closest(".perfil-contenedor")) {
+            menu.hidden = true;
+            boton.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    document.addEventListener("keydown", (evento) => {
+        if (evento.key === "Escape" && !menu.hidden) {
+            menu.hidden = true;
+            boton.setAttribute("aria-expanded", "false");
+            boton.focus();
+        }
+    });
+
+    btnCerrarSesion.addEventListener("click", async () => {
+        try {
+            await auth.logout();
+            window.location.href = "./login.html";
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+            alert("No se pudo cerrar la sesión.");
+        }
+    });
+}
+
+// ==============================
+// MODO OSCURO / CLARO
+// ==============================
+
+function configurarTema() {
+    const botonTema = document.getElementById("btnTema");
+    const textoTema = document.getElementById("textoTema");
+
+    function actualizarTema() {
+        const temaOscuro = document.documentElement.dataset.tema === "oscuro";
+
+        textoTema.textContent = temaOscuro ? "Modo claro" : "Modo oscuro";
+    }
+
+    actualizarTema();
+
+    botonTema.addEventListener("click", () => {
+        const temaOscuro = document.documentElement.dataset.tema !== "oscuro";
+
+        document.documentElement.dataset.tema = temaOscuro ? "oscuro" : "claro";
+
+        localStorage.setItem("temaCentroGestor", temaOscuro ? "oscuro" : "claro");
+
+        actualizarTema();
+    });
 }

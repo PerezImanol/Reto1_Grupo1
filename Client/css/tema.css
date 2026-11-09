@@ -1,0 +1,337 @@
+/* ==============================
+   MODO OSCURO
+   Solo se aplica cuando está activado
+============================== */
+
+:root[data-tema="oscuro"] body {
+    background-color: #20291d;
+    color: #e8eddf;
+}
+
+/* Textos */
+
+:root[data-tema="oscuro"] h1,
+:root[data-tema="oscuro"] h2,
+:root[data-tema="oscuro"] h3,
+:root[data-tema="oscuro"] p,
+:root[data-tema="oscuro"] label {
+    color: #e8eddf;
+}
+
+/* Contenedores */
+
+:root[data-tema="oscuro"] .tabla-contenedor,
+:root[data-tema="oscuro"] .formulario,
+:root[data-tema="oscuro"] .form-contenedor {
+    background-color: #2b3527;
+    border-color: #4b5843;
+}
+
+/* Tablas */
+
+:root[data-tema="oscuro"] tbody {
+    background-color: #2b3527;
+}
+
+:root[data-tema="oscuro"] td {
+    color: #e8eddf;
+    border-color: #4b5843;
+}
+
+:root[data-tema="oscuro"] tbody tr:hover {
+    background-color: #3b4934;
+}
+
+/* Campos */
+
+:root[data-tema="oscuro"] input,
+:root[data-tema="oscuro"] select,
+:root[data-tema="oscuro"] textarea {
+    background-color: #2b3527;
+    color: #e8eddf;
+    border-color: #59663b;
+}
+
+:root[data-tema="oscuro"] input::placeholder,
+:root[data-tema="oscuro"] textarea::placeholder {
+    color: #c0c5b7;
+}
+
+/* ==============================
+   NOTIFICACIONES - MODO OSCURO
+============================== */
+
+:root[data-tema="oscuro"] .pagina-notificaciones {
+    color: #e8eddf;
+}
+
+/* Encabezado */
+
+:root[data-tema="oscuro"] .etiqueta-pagina {
+    color: #c0cba9;
+}
+
+:root[data-tema="oscuro"] .descripcion-pagina {
+    color: #c0c5b7;
+}
+
+:root[data-tema="oscuro"] .total-notificaciones {
+    background: #3b4934;
+    color: #e8eddf;
+}
+
+/* Filtros */
+
+:root[data-tema="oscuro"] .controles-notificaciones {
+    background: #2b3527;
+    border-color: #4b5843;
+}
+
+:root[data-tema="oscuro"] .control-notificaciones label,
+:root[data-tema="oscuro"] .control-estado-notificacion label {
+    color: #c0c5b7;
+}
+
+:root[data-tema="oscuro"] .control-notificaciones select {
+    background: #20291d;
+    color: #e8eddf;
+    border-color: #59663b;
+}
+
+/* Mensajes */
+
+:root[data-tema="oscuro"] .mensaje-almacenamiento {
+    color: #f0c477;
+}
+
+:root[data-tema="oscuro"] .mensaje-pagina-notificaciones {
+    background: #34452f;
+    border-color: #596f4e;
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .mensaje-pagina-notificaciones.mensaje-error {
+    background: #492f29;
+    border-color: #805044;
+    color: #ffd6c9;
+}
+
+/* Tarjetas */
+
+:root[data-tema="oscuro"] .tarjeta-notificacion {
+    background: #2b3527;
+    border-color: #4b5843;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
+
+:root[data-tema="oscuro"] .titulo-notificacion h2 {
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .id-notificacion,
+:root[data-tema="oscuro"] .contenido-notificacion time,
+:root[data-tema="oscuro"] .metadatos-notificacion {
+    color: #b8c0ac;
+}
+
+:root[data-tema="oscuro"] .contenido-notificacion > p {
+    color: #d0d7c7;
+}
+
+/* Estados */
+
+:root[data-tema="oscuro"] .estado-pendiente {
+    background: #594522;
+    color: #ffe0a0;
+}
+
+:root[data-tema="oscuro"] .estado-en-proceso {
+    background: #29445e;
+    color: #c5e0ff;
+}
+
+:root[data-tema="oscuro"] .estado-realizada {
+    background: #304b30;
+    color: #c9e9bd;
+}
+
+/* Sin notificaciones */
+
+:root[data-tema="oscuro"] .sin-notificaciones {
+    border-color: #59663b;
+    color: #c0c5b7;
+}
+/* ==================================================
+   EQUIPAMIENTOS - MODO OSCURO
+   ================================================== */
+
+/* Formulario */
+
+:root[data-tema="oscuro"] #formEquipamiento {
+    background-color: #2b3527;
+    border-color: #4b5843;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Título y etiquetas */
+
+:root[data-tema="oscuro"] #tituloFormulario,
+:root[data-tema="oscuro"] .campos-formulario label {
+    color: #e8eddf;
+}
+
+/* Campos */
+
+:root[data-tema="oscuro"] .campos-formulario input,
+:root[data-tema="oscuro"] .campos-formulario select {
+    background-color: #20291d;
+    border-color: #59663b;
+    color: #e8eddf;
+}
+
+/* Campo de ubicación de solo lectura */
+
+:root[data-tema="oscuro"] .campos-formulario input[readonly] {
+    background-color: #3b4934;
+    color: #c0c5b7;
+}
+
+/* Efecto al seleccionar un campo */
+
+:root[data-tema="oscuro"] .campos-formulario input:focus,
+:root[data-tema="oscuro"] .campos-formulario select:focus {
+    border-color: #a5bd82;
+    box-shadow: 0 0 0 3px rgba(165, 189, 130, 0.15);
+}
+
+/* Botones del formulario */
+
+:root[data-tema="oscuro"] .botones-formulario {
+    border-color: #4b5843;
+}
+
+:root[data-tema="oscuro"] .botones-formulario .boton-cancelar {
+    background-color: #3b4934;
+    border-color: #59663b;
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .botones-formulario .boton-cancelar:hover {
+    background-color: #4b5b40;
+}
+
+/* Mensajes */
+
+:root[data-tema="oscuro"] .mensaje-pagina-equipamientos {
+    background-color: #34452f;
+    border-color: #596f4e;
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .mensaje-pagina-equipamientos.mensaje-error {
+    background-color: #492f29;
+    border-color: #805044;
+    color: #ffd6c9;
+}
+
+/* Modal de confirmación */
+
+:root[data-tema="oscuro"] .contenido-modal {
+    background-color: #2b3527;
+}
+
+:root[data-tema="oscuro"] .contenido-modal p {
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] #btnCancelarBorrado {
+    background-color: #3b4934;
+    color: #e8eddf;
+}
+/* ==================================================
+   PERFIL - MODO OSCURO
+   ================================================== */
+
+/* Títulos y descripción */
+
+:root[data-tema="oscuro"] main h1 {
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .info p {
+    color: #c0c5b7;
+}
+
+/* Tarjeta del formulario */
+
+:root[data-tema="oscuro"] .layout {
+    background-color: #2b3527;
+    border-color: #4b5843;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-tema="oscuro"] .layout:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Etiquetas */
+
+:root[data-tema="oscuro"] .layout label {
+    color: #e8eddf;
+}
+
+/* Campos */
+
+:root[data-tema="oscuro"] .borderInput {
+    background-color: #20291d;
+    border-color: #596f4e;
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .borderInput:focus {
+    border-color: #a5bd82;
+    box-shadow: 0 0 0 3px rgba(165, 189, 130, 0.18);
+}
+
+:root[data-tema="oscuro"] .borderInput:disabled,
+:root[data-tema="oscuro"] .borderInput[readonly] {
+    background-color: #3b4934;
+    color: #b8c0ac;
+}
+
+/* Botón editar */
+
+:root[data-tema="oscuro"] #btnSave {
+    background-color: #596f4e;
+    color: #ffffff;
+}
+
+:root[data-tema="oscuro"] #btnSave:hover:not(:disabled) {
+    background-color: #6d865d;
+}
+
+/* Botón borrar cuenta */
+
+:root[data-tema="oscuro"] #btnDelete {
+    background-color: #492f29;
+    border-color: #805044;
+    color: #ffd6c9;
+}
+
+:root[data-tema="oscuro"] #btnDelete:hover:not(:disabled) {
+    background-color: #603b32;
+}
+
+/* Mensajes */
+
+:root[data-tema="oscuro"] .messageDefault {
+    background-color: #34452f;
+    border-color: #596f4e;
+    color: #e8eddf;
+}
+
+:root[data-tema="oscuro"] .messageDefault.error {
+    background-color: #492f29;
+    border-color: #805044;
+    color: #ffd6c9;
+}

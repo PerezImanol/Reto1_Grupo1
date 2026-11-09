@@ -1,4 +1,8 @@
 <header class="menu">
+    <script>
+        const temaGuardado = localStorage.getItem("temaCentroGestor") || "claro";
+        document.documentElement.dataset.tema = temaGuardado;
+    </script>
     <a href="./equipamientos.html" class="logo">
         <img src="../img/icon.png" alt="Logo" />
         <span>CentroGestor</span>
@@ -54,13 +58,33 @@
             </section>
         </div>
 
-        <a href="./perfil.html" class="perfil">
-            <img src="../img/usuario.png" alt="Imagen de perfil" class="avatar" />
-            <span class="datos-perfil">
-                <strong id="nombrePerfil">Cargando...</strong>
-                <small id="rolPerfil">Administración</small>
-            </span>
-            <img src="../img/flecha.png" alt="Abrir perfil" class="flecha" />
-        </a>
+        <div class="perfil-contenedor">
+            <button type="button" class="perfil" id="btnPerfil"
+                aria-expanded="false" aria-controls="menuPerfil">
+                <img src="../img/usuario.png" alt="" class="avatar" />
+
+                <span class="datos-perfil">
+                    <strong id="nombrePerfil">Cargando...</strong>
+                    <small id="rolPerfil">Administración</small>
+                </span>
+
+                <img src="../img/flecha.png" alt="" class="flecha" />
+            </button>
+
+            <div class="menu-perfil" id="menuPerfil" hidden>
+                <a href="./perfil.html" class="opcion-perfil">
+                    <span>Editar perfil</span>
+                </a>
+
+                <button type="button" class="opcion-perfil" id="btnTema">
+                    <span id="textoTema">Modo oscuro</span>
+                </button>
+
+                <button type="button" class="opcion-perfil opcion-cerrar-sesion"
+                    id="btnCerrarSesion">
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </div>
     </div>
 </header>

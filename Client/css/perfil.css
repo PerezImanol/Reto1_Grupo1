@@ -1,91 +1,196 @@
-:root {
-  --fondo-menu: #fffbea;
-  --verde-oscuro: #293820;
-  --verde-texto: #59663b;
-  --borde-menu: #e5a04e;
+/* ==================================================
+   1. CONTENIDO PRINCIPAL
+   ================================================== */
+
+main {
+    box-sizing: border-box;
+    padding: 30px 40px 50px;
 }
 
-* {
-  background: var(--fondo-menu);
-}
-
-h1 {
-  margin: 15px;
+main h1 {
+    margin: 0 0 8px;
+    color: var(--verde-oscuro);
+    font-size: 30px;
+    font-weight: 700;
 }
 
 .info {
-  margin: 0 16px;
+    margin: 0 0 28px;
 }
 
+.info p {
+    margin: 0;
+    color: var(--verde-texto);
+    font-size: 16px;
+}
+
+
+/* ==================================================
+   2. FORMULARIO DEL PERFIL
+   ================================================== */
+
 #position {
-  display: flex;
-  justify-content: center;
-  margin-top: 3%;
+    display: flex;
+    justify-content: center;
+    margin: 25px auto;
 }
 
 .layout {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  margin: 0 15px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  border-radius: 5px;
-  padding: 10px 16px;
-  width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 650px;
+    padding: 32px 36px;
+    border: 1px solid #e5ddc9;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(41, 56, 32, 0.09);
+    transition: box-shadow 0.2s ease;
 }
 
 .layout:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 7px 22px rgba(41, 56, 32, 0.14);
 }
+
+
+/* Etiquetas */
+
+.layout label {
+    margin-top: 8px;
+    color: var(--verde-oscuro);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* Campos */
 
 .borderInput {
-  border: 1px solid var(--borde-menu);
-  border-radius: 5px;
-  padding: 5px 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
+    border: 1px solid #d8dccb;
+    border-radius: 7px;
+    background-color: #fff;
+    color: var(--verde-oscuro);
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-button {
-  cursor: pointer;
-  border-radius: 5px;
-  white-space: nowrap;
+.borderInput:focus {
+    border-color: var(--verde-texto);
+    box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.13);
 }
 
-button:disabled {
-  cursor: default;
+.borderInput:disabled,
+.borderInput[readonly] {
+    background-color: #f1f2eb;
+    color: #777b68;
+    cursor: default;
 }
+
+
+/* ==================================================
+   3. BOTONES
+   ================================================== */
+
+.layout button {
+    width: 100%;
+    min-height: 45px;
+    margin-top: 12px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.layout button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.layout button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Editar datos */
 
 #btnSave {
-  background: var(--verde-texto);
-  color: var(--fondo-menu);
-  border: solid var(--verde-texto);
-  padding: 10px 0;
+    margin-top: 22px;
+    background-color: var(--verde-oscuro);
+    color: #fffbea;
 }
+
+#btnSave:hover:not(:disabled) {
+    background-color: var(--verde-texto);
+}
+
+
+/* Borrar cuenta */
 
 #btnDelete {
-  background: red;
-  color: var(--fondo-menu);
-  border: solid red;
-  padding: 10px 0;
+    margin-top: 0;
+    border: 1px solid #c75b4a;
+    background-color: #fff;
+    color: #b34535;
 }
 
+#btnDelete:hover:not(:disabled) {
+    background-color: #fff1ed;
+}
+
+
+/* ==================================================
+   4. MENSAJES
+   ================================================== */
+
 .messageDefault {
-  margin: 10px 20px;
-  padding: 12px 14px;
-  border: 1px solid #d8e4cf;
-  border-radius: 6px;
-  background: #f3f8ef;
-  color: var(--verde-oscuro);
-  font-size: 13px;
-  line-height: 1.5;
+    max-width: 650px;
+    margin: 15px auto;
+    padding: 13px 16px;
+    border: 1px solid #c8d9bd;
+    border-radius: 8px;
+    background-color: #f1f7ed;
+    color: var(--verde-oscuro);
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .messageDefault[hidden] {
-  display: none;
+    display: none;
 }
 
 .messageDefault.error {
-  border-color: #e6c6b8;
-  background: #fff5f0;
-  color: #8c3928;
+    border-color: #e6c6b8;
+    background-color: #fff5f0;
+    color: #8c3928;
+}
+
+
+/* ==================================================
+   5. ADAPTACIÓN A PANTALLAS PEQUEÑAS
+   ================================================== */
+
+@media (max-width: 700px) {
+    main {
+        padding: 25px 18px 35px;
+    }
+
+    main h1 {
+        font-size: 25px;
+    }
+
+    .layout {
+        padding: 24px 20px;
+    }
 }
