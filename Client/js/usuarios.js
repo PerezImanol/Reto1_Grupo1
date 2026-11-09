@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   roleSelect.disabled = true;
   btnSave.disabled = true;
   btnCancel.disabled = true;
+
+  //Because broswer auto-fill sucks
+  usernameField.value = "";
+  passwordField.value = "";
 });
 
 async function getAllUsers() {

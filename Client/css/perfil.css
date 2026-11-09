@@ -2,195 +2,202 @@
    1. CONTENIDO PRINCIPAL
    ================================================== */
 
+:root {
+  --fondo-menu: #fffbea;
+  --verde-oscuro: #293820;
+  --verde-texto: #59663b;
+  --borde-menu: #e5a04e;
+}
+
+body {
+  background: var(--fondo-menu);
+}
+
 main {
-    box-sizing: border-box;
-    padding: 30px 40px 50px;
+  box-sizing: border-box;
+  padding: 30px 40px 50px;
 }
 
 main h1 {
-    margin: 0 0 8px;
-    color: var(--verde-oscuro);
-    font-size: 30px;
-    font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--verde-oscuro);
+  font-size: 30px;
+  font-weight: 700;
 }
 
 .info {
-    margin: 0 0 28px;
+  margin: 0 0 28px;
 }
 
 .info p {
-    margin: 0;
-    color: var(--verde-texto);
-    font-size: 16px;
+  margin: 0;
+  color: var(--verde-texto);
+  font-size: 16px;
 }
-
 
 /* ==================================================
    2. FORMULARIO DEL PERFIL
    ================================================== */
 
 #position {
-    display: flex;
-    justify-content: center;
-    margin: 25px auto;
+  display: flex;
+  justify-content: center;
+  margin: 25px auto;
 }
 
 .layout {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 650px;
-    padding: 32px 36px;
-    border: 1px solid #e5ddc9;
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(41, 56, 32, 0.09);
-    transition: box-shadow 0.2s ease;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 650px;
+  padding: 32px 36px;
+  border: 1px solid #e5ddc9;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(41, 56, 32, 0.09);
+  transition: box-shadow 0.2s ease;
 }
 
 .layout:hover {
-    box-shadow: 0 7px 22px rgba(41, 56, 32, 0.14);
+  box-shadow: 0 7px 22px rgba(41, 56, 32, 0.14);
 }
-
 
 /* Etiquetas */
 
 .layout label {
-    margin-top: 8px;
-    color: var(--verde-oscuro);
-    font-size: 15px;
-    font-weight: 600;
+  margin-top: 8px;
+  color: var(--verde-oscuro);
+  font-size: 15px;
+  font-weight: 600;
 }
-
 
 /* Campos */
 
 .borderInput {
-    box-sizing: border-box;
-    width: 100%;
-    height: 46px;
-    padding: 0 13px;
-    border: 1px solid #d8dccb;
-    border-radius: 7px;
-    background-color: #fff;
-    color: var(--verde-oscuro);
-    font-family: inherit;
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d8dccb;
+  border-radius: 7px;
+  background-color: #fff;
+  color: var(--verde-oscuro);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .borderInput:focus {
-    border-color: var(--verde-texto);
-    box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.13);
+  border-color: var(--verde-texto);
+  box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.13);
 }
 
 .borderInput:disabled,
 .borderInput[readonly] {
-    background-color: #f1f2eb;
-    color: #777b68;
-    cursor: default;
+  background-color: #f1f2eb;
+  color: #777b68;
+  cursor: default;
 }
-
 
 /* ==================================================
    3. BOTONES
    ================================================== */
 
 .layout button {
-    width: 100%;
-    min-height: 45px;
-    margin-top: 12px;
-    padding: 11px 18px;
-    border: none;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+  width: 100%;
+  min-height: 45px;
+  margin-top: 12px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
 }
 
 .layout button:hover:not(:disabled) {
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .layout button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
-
 
 /* Editar datos */
 
 #btnSave {
-    margin-top: 22px;
-    background-color: var(--verde-oscuro);
-    color: #fffbea;
+  margin-top: 22px;
+  background-color: var(--verde-oscuro);
+  color: var(--fondo-menu);
 }
 
 #btnSave:hover:not(:disabled) {
-    background-color: var(--verde-texto);
+  background-color: var(--verde-texto);
 }
-
 
 /* Borrar cuenta */
 
 #btnDelete {
-    margin-top: 0;
-    border: 1px solid #c75b4a;
-    background-color: #fff;
-    color: #b34535;
+  margin-top: 0;
+  border: 1px solid #c75b4a;
+  background-color: #fff;
+  color: #b34535;
 }
 
 #btnDelete:hover:not(:disabled) {
-    background-color: #fff1ed;
+  background-color: #fff1ed;
 }
-
 
 /* ==================================================
    4. MENSAJES
    ================================================== */
 
 .messageDefault {
-    max-width: 650px;
-    margin: 15px auto;
-    padding: 13px 16px;
-    border: 1px solid #c8d9bd;
-    border-radius: 8px;
-    background-color: #f1f7ed;
-    color: var(--verde-oscuro);
-    font-size: 14px;
-    line-height: 1.5;
+  max-width: 650px;
+  margin: 15px auto;
+  padding: 13px 16px;
+  border: 1px solid #c8d9bd;
+  border-radius: 8px;
+  background-color: #f1f7ed;
+  color: var(--verde-oscuro);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .messageDefault[hidden] {
-    display: none;
+  display: none;
 }
 
 .messageDefault.error {
-    border-color: #e6c6b8;
-    background-color: #fff5f0;
-    color: #8c3928;
+  border-color: #e6c6b8;
+  background-color: #fff5f0;
+  color: #8c3928;
 }
-
 
 /* ==================================================
    5. ADAPTACIÓN A PANTALLAS PEQUEÑAS
    ================================================== */
 
 @media (max-width: 700px) {
-    main {
-        padding: 25px 18px 35px;
-    }
+  main {
+    padding: 25px 18px 35px;
+  }
 
-    main h1 {
-        font-size: 25px;
-    }
+  main h1 {
+    font-size: 25px;
+  }
 
-    .layout {
-        padding: 24px 20px;
-    }
+  .layout {
+    padding: 24px 20px;
+  }
 }
