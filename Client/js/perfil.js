@@ -23,18 +23,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function getUser() {
-  if (userId) {
-    const data = await api.usuarios.obtenerPorId(userId);
+  const sesion = await auth.obtenerSesion();
 
-    if (data.exito) {
-      return data.result || null;
-    }
+  if (!sesion || !sesion.usuario) {
+    //Propagacion de error para manejar despues.
+    throw new Error(
+      "No hay sesion encontrada. Inicia de sesion de nuevo para poder ver tu perfil.",
+    );
   }
 
-  //Propagacion de error para manejar despues.
-  throw new Error(
-    "Falta el ID del usuario. Inicia de sesion de nuevo para poder ver tu perfil.",
-  );
+  const data = sesion.usuario;
+
+  return data || null;
 }
 
 async function loadUser() {

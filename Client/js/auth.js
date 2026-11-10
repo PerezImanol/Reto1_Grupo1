@@ -21,7 +21,6 @@ const auth = {
   // Cierra la sesion y redirige al usuario al login
   async logout() {
     await api.logout();
-    localStorage.removeItem("user_id");
     window.location.href = "login.html";
   },
 
