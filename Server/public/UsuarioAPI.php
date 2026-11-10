@@ -42,7 +42,7 @@ http://localhost/Server/public/UsuarioAPI.php?id=8
 
 require_once("../controller/UsuarioController.php");
 
-
+//Setup de headers
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -54,9 +54,11 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 ini_set('display_errors', 0);
 
+//Setup de controlador y metodo.
 $controller = new UsuarioController();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
+//Metodo para validar el rol.
 function obtenerRol(?string $strRol): Rol
 {
     return match (strtoupper($strRol ?? '')) {
@@ -66,14 +68,19 @@ function obtenerRol(?string $strRol): Rol
     };
 }
 
+//Maneja los metodos disponibles.
 switch ($metodo) {
     case 'GET':
+        // Si recibimos un ID, buscamos un usuario, y si no, mostramos todas.
         try {
             if (isset($_GET['id'])) {
                 $resultado = $controller->buscarPorId((int) $_GET['id']);
             } else {
                 $resultado = $controller->getAllUsers();
             }
+
+            //No esta estandarizado el JSON!!! Necesita estandarizacion!!!
+            //Devuelve el resultado.
             http_response_code(200);
             echo json_encode($resultado);
         } catch (\Throwable $th) {
@@ -86,8 +93,10 @@ switch ($metodo) {
         exit;
 
     case 'POST':
+        // Leemos los datos JSON enviados en el cuerpo de la petición.
         $datos = json_decode(file_get_contents('php://input'), true);
 
+        //Si los datos no son un array, se invalida la peticion.
         if (!is_array($datos)) {
             echo json_encode([
                 "mensaje" => "JSON inválido.",
@@ -97,6 +106,7 @@ switch ($metodo) {
             exit;
         }
 
+        //Intenta la insercion.
         try {
             $rol = obtenerRol($datos['role'] ?? null);
             $exito = $controller->insertar(new Usuario(
@@ -131,8 +141,10 @@ switch ($metodo) {
         exit;
 
     case 'PUT':
+        // Leemos los datos JSON enviados en el cuerpo de la petición.
         $datos = json_decode(file_get_contents('php://input'), true);
 
+        //Si los datos no son un array, se invalida la peticion.
         if (!is_array($datos)) {
             echo json_encode([
                 "mensaje" => "JSON inválido.",
@@ -146,7 +158,7 @@ switch ($metodo) {
         if ($id <= 0) {
             echo json_encode([
                 "mensaje" => "ID de usuario inválido.",
-                "status" => http_response_code(400),
+                "status" => http_response_code(404),
                 "exito" => false
             ]);
             exit;
@@ -154,14 +166,17 @@ switch ($metodo) {
 
         try {
             $rol = obtenerRol($datos['role'] ?? null);
-            // Cambiar contraseña
             if (isset($datos['password']) && isset($datos['newPassword'])) {
+                //Seccion si hay contraseñas introducidas
 
+                //"Inicia sesion" para validar contraseña
+                //Podria necesitar ser cambiado por posibles problemas...
                 $passCheck = $controller->login(
                     $datos['username'] ?? '',
                     $datos['password']
                 );
 
+                //Si falla el login, error.
                 if (!$passCheck) {
                     echo json_encode([
                         "status" => http_response_code(400),
@@ -171,6 +186,7 @@ switch ($metodo) {
                     exit;
                 }
 
+                //Sino, modifica la contraseña junto al resto.
                 $exito = $controller->actualizar_password(new Usuario(
                     $id,
                     $datos['nombre'] ?? '',
@@ -180,7 +196,7 @@ switch ($metodo) {
                     $rol
                 ));
             } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
-                // Si solo se envía una de las dos contraseñas, hay un error
+                // Si solo se envía una de las dos contraseñas, salta error.
                 echo json_encode([
                     "status" => http_response_code(400),
                     "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva.",
@@ -188,7 +204,7 @@ switch ($metodo) {
                 ]);
                 exit;
             } else {
-                // Editar los datos sin cambiar la contraseña
+                // Edita los datos sin cambiar la contraseña.
                 $exito = $controller->actualizar(new Usuario(
                     $id,
                     $datos['nombre'] ?? '',
@@ -224,6 +240,7 @@ switch ($metodo) {
     case 'DELETE':
         $id = $_GET['id'] ?? null;
 
+        //Intenta borrar el usuario.
         try {
             if ($id && $controller->eliminar((int) $id)) {
                 echo json_encode([
@@ -232,8 +249,8 @@ switch ($metodo) {
                 ]);
             } else {
                 echo json_encode([
-                    "status" => http_response_code(400),
-                    "mensaje" => "ID inválido o no se pudo eliminar el usuario.",
+                    "mensaje" => "No se ha encontrado un usuario con la ID proveida.",
+                    "status" => http_response_code(404),
                     "exito" => false
                 ]);
             }
@@ -247,6 +264,7 @@ switch ($metodo) {
         exit;
 
     default:
+        // Indicamos que el método HTTP utilizado no está permitido.
         echo json_encode([
             "mensaje" => "Método no permitido",
             'status' => http_response_code(405),

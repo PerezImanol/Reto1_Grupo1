@@ -1,3 +1,4 @@
+//Variables de objetos HTML
 const nameInput = document.getElementById("name");
 const surnameInput = document.getElementById("surname");
 const usernameInput = document.getElementById("username");
@@ -6,33 +7,38 @@ const btnSave = document.getElementById("btnSave");
 const btnDelete = document.getElementById("btnDelete");
 const message = document.getElementById("message");
 
+//Variables de uso general (y carga de userID)
 let userId = JSON.parse(localStorage.getItem("user_id"));
 let user = null;
 let editing = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
+  //Carga el usuario y deshabilita los campos
+  await loadUser();
+
   nameInput.disabled = true;
   surnameInput.disabled = true;
   usernameInput.disabled = true;
   roleInput.disabled = true;
-
-  await loadUser();
 });
 
 async function getUser() {
-  let data = null;
   if (userId) {
-    data = await api.usuarios.obtenerPorId(userId);
-  } else {
-    throw new Error(
-      "Falta el ID del usuario. Inicia de sesion de nuevo para poder ver tu perfil.",
-    );
+    const data = await api.usuarios.obtenerPorId(userId);
+
+    if (data.exito) {
+      return data.result || null;
+    }
   }
 
-  return data;
+  //Propagacion de error para manejar despues.
+  throw new Error(
+    "Falta el ID del usuario. Inicia de sesion de nuevo para poder ver tu perfil.",
+  );
 }
 
 async function loadUser() {
+  //Recoge el usuario o el error.
   try {
     user = await getUser();
   } catch (e) {
@@ -40,24 +46,29 @@ async function loadUser() {
     user = null;
   }
 
+  //Llama al siguiente metodo.
   loadUserInfo(user);
 }
 
+//Metodo para cargar el usuario en la tabla.
 function loadUserInfo(user) {
+  //Si no hay usuario, no sirve de nada el metodo.
   if (!user) return;
 
+  //Info del usuario
   const { nombre, apellido, username, role } = user;
   nameInput.value = nombre ?? "";
   surnameInput.value = apellido ?? "";
   usernameInput.value = username ?? "";
   roleInput.value = role ?? "";
 
+  //Si es admin, no se puede borrar su cuenta aqui.
   if (role === "ADMIN") {
     btnDelete.disabled = true;
   }
-  console.log(user);
 }
 
+//Habilitacion de campos o metodo para modificar
 btnSave.addEventListener("click", async () => {
   hideMessage();
 
@@ -67,9 +78,11 @@ btnSave.addEventListener("click", async () => {
     editing = true;
     btnSave.textContent = "Guardar cambios";
   } else {
+    //Validacion de campos por si acaso.
     if (!nameInput.value || !surnameInput.value) {
       showMessage("Por favor, rellena los campos.", true);
     } else {
+      //Preparacion de info
       let newInfo = {
         id: user.id_usuario,
         nombre: nameInput.value,
@@ -78,6 +91,7 @@ btnSave.addEventListener("click", async () => {
         role: user.role,
       };
 
+      //Intento de actualizacion
       try {
         const data = await api.usuarios.actualizar(newInfo);
 
@@ -98,6 +112,7 @@ btnSave.addEventListener("click", async () => {
   }
 });
 
+//Metodo para borrarse a si mismo
 btnDelete.addEventListener("click", async () => {
   hideMessage();
 
@@ -122,12 +137,14 @@ btnDelete.addEventListener("click", async () => {
   }
 });
 
+//Metodo para mostrar mensajes
 function showMessage(texto, esError = false) {
   message.textContent = texto;
   message.classList.toggle("error", esError);
   message.hidden = false;
 }
 
+//Metodo para esconder el mensaje activo
 function hideMessage() {
   message.hidden = true;
   message.textContent = "";

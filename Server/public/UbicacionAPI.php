@@ -22,6 +22,7 @@ http://localhost/Server/public/UbicacionAPI.php?id=12
 
 require_once("../controller/UbicacionController.php");
 
+//Setup de headers
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -29,18 +30,14 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 ini_set('display_errors', 0);
 
-// Respondemos a las peticiones previas del navegador sin ejecutar ninguna operación.
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
-}
-
+//Setup de controlador y metodo.
 $controller = new UbicacionController();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
+//Maneja los metodos disponibles.
 switch ($metodo) {
     case 'GET':
-        // Si recibimos un ID, buscamos una ubicación; si no, mostramos todas.
+        // Si recibimos un ID, buscamos una ubicación, y si no, mostramos todas.
         try {
             if (isset($_GET['id'])) {
                 $resultado = $controller->buscarPorId((int) $_GET['id']);
@@ -48,6 +45,7 @@ switch ($metodo) {
                 $resultado = $controller->listar();
             }
 
+            //Devielve el resultado.
             echo json_encode([
                 'result' => $resultado,
                 'status' => http_response_code(200),
@@ -63,10 +61,10 @@ switch ($metodo) {
         exit;
 
     case 'POST':
-
         // Leemos los datos JSON enviados en el cuerpo de la petición.
         $datos = json_decode(file_get_contents('php://input'), true);
 
+        //Si los datos no son un array, se invalida la peticion.
         if (!is_array($datos)) {
             echo json_encode([
                 "mensaje" => "JSON inválido.",
@@ -76,6 +74,7 @@ switch ($metodo) {
             exit;
         }
 
+        //Intenta la insercion.
         try {
             $exito = $controller->insertar(
                 $datos['nombre'] ?? '',
@@ -105,9 +104,10 @@ switch ($metodo) {
         exit;
 
     case 'PUT':
-
+        // Leemos los datos JSON enviados en el cuerpo de la petición.
         $datos = json_decode(file_get_contents('php://input'), true);
 
+        //Si los datos no son un array, se invalida la peticion.
         if (!is_array($datos)) {
             echo json_encode([
                 "mensaje" => "JSON inválido.",
@@ -148,9 +148,9 @@ switch ($metodo) {
         exit;
 
     case 'DELETE':
-        // El ID de la ubicación que queremos eliminar se recibe en la URL.
         $id = $_GET['id'] ?? $_GET['id_ubicacion'] ?? null;
 
+        //Intenta borrar la ubicacion.
         try {
             if ($id !== null && (int) $id > 0 && $controller->eliminar((int) $id)) {
                 echo json_encode([
@@ -159,8 +159,8 @@ switch ($metodo) {
                 ]);
             } else {
                 echo json_encode([
-                    "mensaje" => "ID inválido o no se pudo eliminar.",
-                    'status' => http_response_code(400),
+                    "mensaje" => "No se ha encontrado una ubicacion con la ID proveida.",
+                    'status' => http_response_code(404),
                     'exito' => false
                 ]);
             }
