@@ -15,7 +15,7 @@ const tbody = document.getElementById("tableLocations");
 const message = document.getElementById("message");
 
 //Variables de uso general (y carga de userID)
-let userId = JSON.parse(localStorage.getItem("user_id"));
+let userId = null;
 let add = false;
 let ALL_USERS = [];
 let selectedUser = null;
@@ -43,9 +43,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getAllUsers() {
   //Llama al metodo para obtener los usuarios y las pasa, o error.
   const data = await api.usuarios.obtenerTodos();
+  const sesion = await auth.obtenerSesion();
+
+  if (!sesion || !sesion.usuario) {
+    window.location.href = "../pages/login.html";
+    return;
+  }
+
+  userId = sesion.usuario.id_usuario;
 
   if (data.exito) {
-    return data || [];
+    return data.result || [];
   }
 
   //Propagacion de error para manejar despues.

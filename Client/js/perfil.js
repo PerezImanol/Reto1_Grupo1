@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getUser() {
   const sesion = await auth.obtenerSesion();
 
-  if (!sesion || !sesion.usuario) {
+  if (!sesion || !sesion.usuario || !sesion.exito) {
     //Propagacion de error para manejar despues.
     throw new Error(
       "No hay sesion encontrada. Inicia de sesion de nuevo para poder ver tu perfil.",

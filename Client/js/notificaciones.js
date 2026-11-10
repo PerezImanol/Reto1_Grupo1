@@ -21,8 +21,9 @@ async function obtenerNotificaciones(usuario) {
   const esAdmin = auth.esAdministrador(usuario);
 
   if (esAdmin) {
-    const usuarios = await api.usuarios.obtenerTodos();
-    if (!Array.isArray(usuarios)) {
+    const data = await api.usuarios.obtenerTodos();
+    const usuarios = data.result;
+    if (!data.exito) {
       throw new Error(
         "La respuesta del servidor no contiene una lista de usuarios.",
       );
@@ -30,10 +31,12 @@ async function obtenerNotificaciones(usuario) {
 
     const notificacionesPorUsuario = await Promise.all(
       usuarios.map(async (creador) => {
-        const lista = await api.notificaciones.obtenerPorUsuario(
+        const data = await api.notificaciones.obtenerPorUsuario(
           creador.id_usuario,
         );
-        if (!Array.isArray(lista)) {
+        const lista = data.result;
+
+        if (!Array.isArray(lista) || !data.exito) {
           throw new Error(
             `No se pudieron cargar las notificaciones del usuario ${creador.id_usuario}.`,
           );
@@ -47,8 +50,9 @@ async function obtenerNotificaciones(usuario) {
     );
     resultado = notificacionesPorUsuario.flat();
   } else {
-    resultado = await api.notificaciones.obtenerPorUsuario(usuario.id_usuario);
-    if (!Array.isArray(resultado)) {
+    const data = await api.notificaciones.obtenerPorUsuario(usuario.id_usuario);
+    resultado = data.result;
+    if (!Array.isArray(resultado) || !data.exito) {
       throw new Error(
         "La respuesta del servidor no contiene una lista de notificaciones.",
       );
@@ -78,7 +82,7 @@ async function cargarNotificaciones() {
     await window.navbarReady;
     const usuario = await auth.requiereSesion();
 
-    if (!usuario) {
+    if (!data.exito || !usuario) {
       return;
     }
 

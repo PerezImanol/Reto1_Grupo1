@@ -33,19 +33,11 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 ini_set('display_errors', 0);
 
-// Respondemos a las peticiones previas del navegador sin ejecutar ninguna operación.
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
-}
-
 $controller = new HistoricoUbicacionesController();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
 switch ($metodo) {
-
     case 'GET':
-
         // Buscar un histórico concreto por su ID.
         if (isset($_GET['id'])) {
             $resultado = $controller->buscarPorId((int) $_GET['id']);
@@ -61,19 +53,22 @@ switch ($metodo) {
             $resultado = $controller->listar();
         }
 
-        echo json_encode($resultado);
+        echo json_encode([
+            'result' => $resultado,
+            'status' => http_response_code(200),
+            'exito' => true
+        ]);
         exit;
 
-    
     case 'POST':
         // Leemos los datos JSON enviados en el cuerpo de la petición.
         $datos = json_decode(file_get_contents('php://input'), true);
 
         if (!is_array($datos)) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "JSON inválido"
+                "mensaje" => "JSON inválido",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -86,12 +81,11 @@ switch ($metodo) {
             $fechaFin = !empty($datos['fecha_fin'])
                 ? new DateTime($datos['fecha_fin'])
                 : null;
-
         } catch (Exception $e) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "Formato de fecha inválido"
+                "mensaje" => "Formato de fecha inválido",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -104,31 +98,28 @@ switch ($metodo) {
         );
 
         if ($exito) {
-            http_response_code(201);
             echo json_encode([
-                "status" => "success",
-                "mensaje" => "Histórico de ubicación creado con éxito"
+                "mensaje" => "Histórico de ubicación creado con éxito",
+                'status' => http_response_code(201),
+                'exito' => true
             ]);
         } else {
-            http_response_code(500);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "No se pudo insertar el histórico en la base de datos"
+                "mensaje" => "No se pudo insertar el histórico en la base de datos",
+                'status' => http_response_code(500),
+                'exito' => false
             ]);
         }
-
         exit;
 
-
-    
     case 'PUT':
         $datos = json_decode(file_get_contents('php://input'), true);
 
         if (!is_array($datos)) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "JSON inválido"
+                "mensaje" => "JSON inválido",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -144,10 +135,10 @@ switch ($metodo) {
             $idUbicacion <= 0 ||
             empty($datos['fecha_inicio'])
         ) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "Faltan datos obligatorios o algún ID no es válido"
+                "mensaje" => "Faltan datos obligatorios o algún ID no es válido",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -159,10 +150,10 @@ switch ($metodo) {
                 ? new DateTime($datos['fecha_fin'])
                 : null;
         } catch (Exception $e) {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "Formato de fecha inválido"
+                "mensaje" => "Formato de fecha inválido",
+                'status' => http_response_code(400),
+                'exito' => false
             ]);
             exit;
         }
@@ -177,19 +168,18 @@ switch ($metodo) {
 
         if ($exito) {
             echo json_encode([
-                "status" => "success",
-                "mensaje" => "Histórico de ubicación actualizado correctamente"
+                "mensaje" => "Histórico de ubicación actualizado correctamente",
+                'status' => http_response_code(200),
+                'exito' => true
             ]);
         } else {
-            http_response_code(500);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "No se pudo actualizar el histórico en la base de datos"
+                "mensaje" => "No se pudo actualizar el histórico en la base de datos",
+                'status' => http_response_code(500),
+                'exito' => false
             ]);
         }
-
         exit;
-
 
     case 'DELETE':
         // El ID del registro que queremos eliminar se recibe en la URL.
@@ -201,24 +191,24 @@ switch ($metodo) {
             $controller->eliminar((int) $id)
         ) {
             echo json_encode([
-                "status" => "success",
-                "mensaje" => "Histórico de ubicación eliminado correctamente"
+                "mensaje" => "Histórico de ubicación eliminado correctamente",
+                'exito' => true
             ]);
         } else {
-            http_response_code(400);
             echo json_encode([
-                "status" => "error",
-                "mensaje" => "ID inválido o no se pudo eliminar el histórico"
+                "mensaje" => "ID inválido",
+                'status' => http_response_code(404),
+                'exito' => false
             ]);
         }
         exit;
 
     default:
         // Indicamos que el método HTTP utilizado no está permitido.
-
-        http_response_code(405);
         echo json_encode([
-            "mensaje" => "Método no permitido"
+            "mensaje" => "Método no permitido",
+            'status' => http_response_code(405),
+            'exito' => false
         ]);
         exit;
 }

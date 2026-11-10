@@ -69,10 +69,11 @@ async function cargarHistoriales(idEquipamiento = null) {
     ocultarMensaje();
 
     if (idEquipamiento) {
-      listaHistoriales =
-        await api.historico.obtenerPorEquipamiento(idEquipamiento);
+      const data = await api.historico.obtenerPorEquipamiento(idEquipamiento);
+      listaHistoriales = data.result;
     } else {
-      listaHistoriales = await api.historico.obtenerTodos();
+      const data = await api.historico.obtenerTodos();
+      listaHistoriales = data.result;
     }
 
     mostrarHistoriales();

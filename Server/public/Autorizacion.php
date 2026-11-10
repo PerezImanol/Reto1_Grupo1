@@ -7,10 +7,10 @@ if (session_status() === PHP_SESSION_NONE) {
 function requiereSesion(): void
 {
     if (!isset($_SESSION["id_usuario"], $_SESSION["role"])) {
-        http_response_code(401);
         echo json_encode([
-            "status" => "error",
-            "mensaje" => "Debes iniciar sesión."
+            "mensaje" => "Debes iniciar sesión.",
+            'status' => http_response_code(401),
+            'exito' => false
         ]);
         exit;
     }
@@ -21,10 +21,10 @@ function requiereAdmin(): void
     requiereSesion();
 
     if ($_SESSION["role"] !== "ADMIN") {
-        http_response_code(403);
         echo json_encode([
-            "status" => "error",
-            "mensaje" => "No tienes permisos para realizar esta operación."
+            "mensaje" => "No tienes permisos para realizar esta operación.",
+            'status' => http_response_code(403),
+            'exito' => false
         ]);
         exit;
     }
@@ -33,6 +33,5 @@ function requiereAdmin(): void
 function obtenerIdUsuarioSesion(): int
 {
     requiereSesion();
-
     return (int) $_SESSION["id_usuario"];
 }

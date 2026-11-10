@@ -104,7 +104,7 @@ async function cargarVistaPrevia() {
   try {
     const sesion = await auth.obtenerSesion();
     const usuario = sesion?.usuario;
-    if (!usuario) {
+    if (!usuario || !sesion.exito) {
       resumen.textContent = "Sin sesión";
       actualizarContadorNotificaciones(0, contador);
       if (!menu.hidden) {

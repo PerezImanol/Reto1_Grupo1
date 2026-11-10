@@ -28,7 +28,7 @@ const auth = {
   async requiereSesion() {
     const sesion = await this.obtenerSesion();
 
-    if (!sesion || !sesion.usuario) {
+    if (!sesion || !sesion.usuario || !sesion.exito) {
       window.location.href = "login.html";
       return null;
     }

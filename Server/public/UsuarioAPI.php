@@ -79,10 +79,12 @@ switch ($metodo) {
                 $resultado = $controller->getAllUsers();
             }
 
-            //No esta estandarizado el JSON!!! Necesita estandarizacion!!!
             //Devuelve el resultado.
-            http_response_code(200);
-            echo json_encode($resultado);
+            echo json_encode([
+                'result' => $resultado,
+                'status' => http_response_code(200),
+                'exito' => true
+            ], JSON_UNESCAPED_UNICODE);
         } catch (\Throwable $th) {
             echo json_encode([
                 'mensaje' => $th->getMessage(),
@@ -179,8 +181,8 @@ switch ($metodo) {
                 //Si falla el login, error.
                 if (!$passCheck) {
                     echo json_encode([
-                        "status" => http_response_code(400),
                         "mensaje" => "La contraseña actual es incorrecta.",
+                        "status" => http_response_code(400),
                         "exito" => false
                     ]);
                     exit;
@@ -198,7 +200,6 @@ switch ($metodo) {
             } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
                 // Si solo se envía una de las dos contraseñas, salta error.
                 echo json_encode([
-                    "status" => http_response_code(400),
                     "mensaje" => "Para cambiar la contraseña, introduce la contraseña actual y la nueva.",
                     "exito" => false
                 ]);
@@ -217,14 +218,14 @@ switch ($metodo) {
 
             if ($exito) {
                 echo json_encode([
-                    "status" => http_response_code(200),
                     "mensaje" => "Usuario actualizado con éxito.",
+                    "status" => http_response_code(200),
                     "exito" => true
                 ]);
             } else {
                 echo json_encode([
-                    "status" => http_response_code(500),
                     "mensaje" => "No se pudo actualizar el usuario.",
+                    "status" => http_response_code(500),
                     "exito" => false
                 ]);
             }
