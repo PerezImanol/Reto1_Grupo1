@@ -8,6 +8,11 @@ formulario.addEventListener("submit", async function (event) {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
 
+  if (!username || !password) {
+    mensaje.textContent = "Faltan campos necesarios.";
+    return;
+  }
+
   mensaje.textContent = "";
   boton.disabled = true;
 
@@ -31,5 +36,11 @@ formulario.addEventListener("submit", async function (event) {
     mensaje.textContent = error.message;
   } finally {
     boton.disabled = false;
+  }
+});
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    boton.click();
   }
 });
