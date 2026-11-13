@@ -97,7 +97,7 @@ btnSave.addEventListener("click", async () => {
 
         if (data.exito) {
           await loadUser();
-          showMessage(data.mensaje);
+          showMessage("Tu usuario ha sido actualizado con exito.");
           nameInput.disabled = true;
           surnameInput.disabled = true;
           editing = false;

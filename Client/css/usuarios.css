@@ -17,6 +17,11 @@
   margin: 0 20px;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 h1 {
   margin: 15px;
 }
