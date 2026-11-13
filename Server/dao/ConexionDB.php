@@ -27,8 +27,6 @@ class ConexionDB
                 "mensaje" => "Internal Server Error: Could not reach the database"
             ]);
         }
-
         exit;
-
     }
 }
