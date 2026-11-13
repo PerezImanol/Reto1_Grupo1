@@ -82,7 +82,7 @@ async function cargarNotificaciones() {
     await window.navbarReady;
     const usuario = await auth.requiereSesion();
 
-    if (!data.exito || !usuario) {
+    if (!usuario) {
       return;
     }
 

@@ -313,7 +313,6 @@ formEquipamiento.addEventListener("submit", async (evento) => {
       credentials: "same-origin",
       body: JSON.stringify(datos),
     });
-
     const textoRespuesta = await respuesta.text();
 
     let resultado;
@@ -326,7 +325,7 @@ formEquipamiento.addEventListener("submit", async (evento) => {
       );
     }
 
-    if (!respuesta.ok || resultado.status !== "success") {
+    if (!resultado.exito) {
       throw new Error(
         resultado.mensaje ||
           resultado.error ||
@@ -384,7 +383,7 @@ btnBorrar.addEventListener("click", async () => {
 
     const resultado = await respuesta.json();
 
-    if (!respuesta.ok || resultado.status !== "success") {
+    if (!resultado.exito) {
       throw new Error(
         resultado.mensaje || "No se pudo eliminar el equipamiento.",
       );

@@ -381,15 +381,17 @@ btnSave.addEventListener("click", async (e) => {
       };
 
       //Por un constraint en la base de datos, validacion de username.
-      for (let i = 0; i < ALL_USERS.length; i++) {
-        const user = ALL_USERS[i];
+      if (!selectedUser.username == newInfo.nombre) {
+        for (let i = 0; i < ALL_USERS.length; i++) {
+          const user = ALL_USERS[i];
 
-        if (user.username == newInfo.username) {
-          showMessage(
-            "No se puede usar el mismo nombre de usuario para dos usuarios.",
-            true,
-          );
-          return;
+          if (user.username == newInfo.username) {
+            showMessage(
+              "No se puede usar el mismo nombre de usuario para dos usuarios.",
+              true,
+            );
+            return;
+          }
         }
       }
 
@@ -398,7 +400,7 @@ btnSave.addEventListener("click", async (e) => {
         const data = await api.usuarios.actualizar(newInfo);
 
         if (data.exito) {
-          showMessage("El usuario ha sido creado correctamente.");
+          showMessage("El usuario ha sido actualizado correctamente.");
           await loadUsers();
           deseleccionarFila();
         } else {
@@ -456,8 +458,6 @@ function seleccionarFila(selectedCb, user) {
 
 //Metodo para deseleccionar la fila seleccionada
 function deseleccionarFila() {
-  hideMessage();
-
   tbody.querySelectorAll(".checkbox").forEach((cb) => {
     cb.checked = false;
   });

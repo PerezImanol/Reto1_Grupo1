@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", iniciarPagina);
 async function iniciarPagina() {
   try {
     // Cargar los equipamientos para rellenar el selector.
-    const equipamientos = await api.equipamientos.obtenerTodos();
+    const data = await api.equipamientos.obtenerTodos();
+    equipamientos = data.result;
 
     equipamientos.forEach((equipamiento) => {
       const opcion = document.createElement("option");
