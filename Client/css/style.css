@@ -4,3 +4,501 @@
   --verde-texto: #59663b;
   --borde-menu: #e5a04e;
 }
+
+/* EQUIPAMIENTOS */
+
+/* ==================================================
+   1. CONTENIDO PRINCIPAL
+   ================================================== */
+
+.contenido {
+  padding: 36px 40px;
+  font-size: 17px;
+}
+
+/* ==================================================
+   2. BARRA DE HERRAMIENTAS
+   ================================================== */
+
+.barra-herramientas {
+  display: flex;
+  align-items: flex-end;
+  gap: 25px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Grupos de controles */
+.grupo-busqueda,
+.grupo-categoria {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupo-busqueda {
+  flex: 1;
+  min-width: 350px;
+}
+
+.grupo-categoria {
+  width: 260px;
+}
+
+/* Etiquetas superiores */
+
+.grupo-busqueda label,
+.grupo-categoria label {
+  color: #293820;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Buscador integrado */
+
+.buscador {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid #c8cebd;
+  border-radius: 9px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.buscador:focus-within {
+  border-color: #59663b;
+  box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.12);
+}
+
+/* Selector del campo de búsqueda */
+
+.buscador select {
+  width: 155px;
+  height: 100%;
+  padding: 0 12px;
+  border: none;
+  outline: none;
+  background-color: #f4f5ef;
+  color: #293820;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Separador entre selector y texto */
+
+.separador-buscador {
+  width: 1px;
+  height: 27px;
+  background-color: #d8dccb;
+}
+
+/* Texto de búsqueda */
+
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 14px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.buscador input::placeholder {
+  color: #858879;
+}
+
+/* Botón de búsqueda */
+
+.buscador .boton-icono {
+  width: 50px;
+  height: 50px;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+/* Filtro independiente de categoría */
+
+.filtro-categoria {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid #c8cebd;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.filtro-categoria select {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #293820;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.filtro-categoria:focus-within {
+  border-color: #59663b;
+  box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.12);
+}
+
+.filtro-categoria img {
+  display: block;
+  width: 50px;
+  height: 50px;
+  padding: 6px;
+  border-radius: 7px;
+  background-color: #293820;
+  object-fit: contain;
+}
+
+/* Botones de acciones */
+
+.acciones-equipamientos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botones con imágenes */
+
+.boton-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  padding: 8px;
+  border: none;
+  border-radius: 9px;
+  background-color: #293820;
+  cursor: pointer;
+}
+
+.boton-icono img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.boton-icono:hover {
+  background-color: #465538;
+}
+
+/* Botón de borrar deshabilitado */
+
+.boton-borrar:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ==================================================
+   3. TABLA DE EQUIPAMIENTOS
+   ================================================== */
+/* Fila seleccionada */
+
+#tablaEquipamientos tr.fila-seleccionada {
+  background-color: #e5a04e;
+  color: white;
+}
+
+#tablaEquipamientos tr.fila-seleccionada:hover {
+  background-color: #724a36;
+}
+
+/* Checkbox de selección */
+
+.checkbox-fila {
+  width: 17px;
+  height: 17px;
+  accent-color: #493023;
+  cursor: pointer;
+}
+
+/* Mensaje cuando la tabla está vacía */
+
+.tabla-vacia {
+  padding: 42px 20px;
+  color: #777b68;
+  text-align: center;
+  font-size: 17px;
+}
+
+/* Ordenación de columnas */
+
+.flechas-ordenar {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+th.columna-ordenada {
+  border-bottom: 3px solid #e5a04e;
+}
+
+/* ==================================================
+   4. NOTIFICACIONES DE LA PÁGINA
+   ================================================== */
+
+.mensaje-pagina-equipamientos {
+  margin: 15px 0;
+  padding: 12px 16px;
+  border: 1px solid #c8d9bd;
+  border-radius: 8px;
+  background-color: #f1f7ed;
+  color: #293820;
+}
+
+.mensaje-pagina-equipamientos.mensaje-error {
+  border-color: #e6c6b8;
+  background-color: #fff5f0;
+  color: #8c3928;
+}
+
+/* ==================================================
+   5. FORMULARIO DE AÑADIR Y MODIFICAR
+   ================================================== */
+
+/* Ocultar las secciones cuando corresponda */
+
+.modificar[hidden],
+#formEquipamiento[hidden],
+.mensaje-pagina-equipamientos[hidden],
+.modal-confirmacion[hidden] {
+  display: none;
+}
+
+/* Sección que contiene el formulario */
+
+.modificar {
+  margin: 0 40px 40px;
+}
+
+/* Formulario */
+
+#formEquipamiento {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  border: 1px solid #d8dccb;
+  border-radius: 12px;
+  background-color: #fffbea;
+  box-shadow: 0 4px 12px rgba(41, 56, 32, 0.08);
+}
+
+/* Título del formulario */
+
+#tituloFormulario {
+  margin: 0 0 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5a04e;
+  color: #293820;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+/* Distribución de los campos */
+
+.campos-formulario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+}
+
+/* Etiquetas */
+
+.campos-formulario label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #293820;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Campos de texto y listas desplegables */
+
+.campos-formulario input,
+.campos-formulario select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #c8cebd;
+  border-radius: 7px;
+  background-color: white;
+  color: #293820;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+/* Efecto al seleccionar un campo */
+
+.campos-formulario input:focus,
+.campos-formulario select:focus {
+  outline: none;
+  border-color: #59663b;
+  box-shadow: 0 0 0 3px rgba(89, 102, 59, 0.15);
+}
+
+/* Campo de ubicación de solo lectura */
+
+.campos-formulario input[readonly] {
+  background-color: #eeefe7;
+  color: #686d5d;
+  cursor: default;
+}
+
+/* Contenedor de los botones */
+
+.botones-formulario {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid #e5e5dc;
+}
+
+/* Estilo general de los botones */
+
+.botones-formulario .boton-accion {
+  min-width: 120px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 7px;
+  background-color: #293820;
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Botón Guardar */
+
+.botones-formulario .boton-accion:hover {
+  background-color: #59663b;
+}
+
+/* Botón Cancelar */
+
+.botones-formulario .boton-cancelar {
+  border: 1px solid #c8cebd;
+  background-color: #e5e5dc;
+  color: #293820;
+}
+
+.botones-formulario .boton-cancelar:hover {
+  background-color: #d6d8ca;
+}
+
+/* ==================================================
+   6. MODAL DE CONFIRMACIÓN DE ELIMINACIÓN
+   ================================================== */
+
+/* Fondo oscuro */
+
+.modal-confirmacion {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+/* Ventana central */
+
+.contenido-modal {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #fffbea;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Icono de eliminación */
+
+.icono-confirmacion {
+  display: block;
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 18px;
+  object-fit: contain;
+}
+
+/* Texto de confirmación */
+
+.contenido-modal p {
+  margin: 0 0 25px;
+  color: #293820;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* Botones del modal */
+
+.botones-confirmacion {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.botones-confirmacion button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+/* Botón Cancelar del modal */
+
+#btnCancelarBorrado {
+  background-color: #e5e5dc;
+  color: #293820;
+}
+
+/* Botón Eliminar del modal */
+
+#btnConfirmarBorrado {
+  background-color: #8c3928;
+  color: white;
+}
+
+/* Efecto al pasar el ratón por los botones del modal */
+
+.botones-confirmacion button:hover {
+  opacity: 0.85;
+}
