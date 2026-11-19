@@ -29,7 +29,10 @@ document.addEventListener("DOMContentLoaded", loadUsers);
 
 async function loadUsers() {
   try {
-    ALL_USERS = (await api.usuarios.obtenerTodos()) || [];
+    const data = await api.usuarios.obtenerTodos();
+    if (!data.exito)
+      throw new Error(data.mensaje || "No se pudieron cargar los usuarios.");
+    ALL_USERS = data.result || [];
     renderUsers();
   } catch (error) {
     ALL_USERS = [];
@@ -57,7 +60,11 @@ function renderUsers() {
         "No hay usuarios disponibles."
       : "No se encontraron usuarios.";
 
-    tbody.innerHTML = `<tr><td colspan="5" class="tabla-vacia">${mensaje}</td></tr>`;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="tabla-vacia">${mensaje}</td>
+      </tr>
+    `;
     return;
   }
 
@@ -241,6 +248,7 @@ function closeDelete(value) {
 
 btnCancelarBorrado.addEventListener("click", () => closeDelete(false));
 btnConfirmarBorrado.addEventListener("click", () => closeDelete(true));
+
 modal.addEventListener("click", (event) => {
   if (event.target === modal) closeDelete(false);
 });

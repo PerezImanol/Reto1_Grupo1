@@ -8,7 +8,6 @@ const btnDelete = document.getElementById("btnDelete");
 const message = document.getElementById("message");
 
 //Variables de uso general (y carga de userID)
-let userId = JSON.parse(localStorage.getItem("user_id"));
 let user = null;
 let editing = false;
 
