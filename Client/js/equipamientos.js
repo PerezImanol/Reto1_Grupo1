@@ -108,7 +108,7 @@ async function cargarEquipamientos() {
     deseleccionarFila();
   } catch (error) {
     console.error("Error al cargar los equipamientos:", error);
-    mostrarMensaje("Error al cargar los equipamientos");
+    mostrarMensaje("Error al cargar los equipamientos.", true);
   }
 }
 
