@@ -4,10 +4,10 @@ const boton = document.getElementById("loginButton");
 
 // Iniciar sesión al pulsar ENTER
 formulario.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        formulario.requestSubmit();
-    }
+  if (event.key === "Enter") {
+    event.preventDefault();
+    formulario.requestSubmit();
+  }
 });
 
 formulario.addEventListener("submit", async function (event) {

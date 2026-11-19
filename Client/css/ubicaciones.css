@@ -20,12 +20,15 @@
 h1 {
   margin: 15px;
 }
+
 .contenido h1 {
   margin-bottom: 0px;
 }
+
 .barra-herramientas {
   margin-top: 0px;
 }
+
 .info {
   margin: 0 18px;
 }
