@@ -39,7 +39,7 @@ async function cargarEquipamientos() {
     if (!Array.isArray(listaEquipamientos) || listaEquipamientos.length === 0) {
       tabla.innerHTML = `
                 <tr>
-                    <td colspan="7" class="tabla-vacia">
+                    <td colspan="8" class="tabla-vacia">
                         No hay equipamientos registrados.
                     </td>
                 </tr>
@@ -109,6 +109,15 @@ async function cargarEquipamientos() {
   } catch (error) {
     console.error("Error al cargar los equipamientos:", error);
     mostrarMensaje("Error al cargar los equipamientos.", true);
+
+    tabla.innerHTML = `
+                <tr>
+                    <td colspan="8" class="tabla-vacia">
+                        No hay equipamientos registrados.
+                    </td>
+                </tr>
+            `;
+    return;
   }
 }
 
