@@ -299,7 +299,7 @@ async function cambiarUbicacion(evento) {
       id_ubicacion_actual: ubicacionElegida.id_ubicacion,
     });
 
-    if (!respuesta || respuesta.status !== "success") {
+    if (!respuesta || !respuesta.exito) {
       throw new Error(
         respuesta?.mensaje || "No se pudo actualizar la ubicación.",
       );
