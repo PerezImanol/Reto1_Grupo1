@@ -137,7 +137,7 @@
 }
 
 .id-notificacion {
-    color: #85877e;
+    color: #293820;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -163,7 +163,7 @@
 }
 
 .contenido-notificacion time {
-    color: #85877e;
+    color: #293820;
     font-size: 12px;
 }
 
@@ -171,7 +171,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px 18px;
-    color: #85877e;
+    color: #293820;
     font-size: 12px;
 }
 

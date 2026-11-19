@@ -76,6 +76,10 @@ function renderUsers() {
     checkbox.type = "checkbox";
     checkbox.className = "checkbox-fila";
     checkbox.checked = selectedUser?.id_usuario == user.id_usuario;
+    checkbox.setAttribute(
+      "aria-label",
+      "Seleccionar usuario " + user.nombre + " " + user.apellido,
+    );
 
     checkbox.addEventListener("change", () => {
       if (checkbox.checked) selectUser(user);
