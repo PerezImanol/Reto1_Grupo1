@@ -115,6 +115,7 @@ function renderLocations(locations) {
 
     const trash = document.createElement("img");
     trash.src = "../img/trash.svg";
+    trash.alt= "icono de basura";
     trash.className = "svg";
 
     const trashSpan = document.createElement("span");

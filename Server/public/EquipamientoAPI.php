@@ -106,10 +106,16 @@ switch ($metodo) {
 
         if ($exito) {
             http_response_code(201);
-            echo json_encode(["mensaje" => "Equipamiento creado con éxito"]);
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Equipamiento creado con éxito"
+            ]);
         } else {
             http_response_code(500);
-            echo json_encode(["mensaje" => "No se pudo crear el equipamiento"]);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "No se pudo crear el equipamiento"
+            ]);
         }
 
         exit;
@@ -160,10 +166,16 @@ switch ($metodo) {
         }
 
         if ($exito) {
-            echo json_encode(["mensaje" => "Equipamiento actualizado con éxito"]);
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Equipamiento actualizado con éxito"
+            ]);
         } else {
             http_response_code(500);
-            echo json_encode(["mensaje" => "No se pudo actualizar el equipamiento"]);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "No se pudo actualizar el equipamiento"
+            ]);
         }
 
         exit;
@@ -176,10 +188,16 @@ switch ($metodo) {
         $id = (int) ($_GET['id'] ?? 0);
 
         if ($id > 0 && $controller->eliminar($id)) {
-            echo json_encode(["mensaje" => "Equipamiento eliminado correctamente"]);
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Equipamiento eliminado correctamente"
+            ]);
         } else {
             http_response_code(400);
-            echo json_encode(["mensaje" => "No se pudo eliminar el equipamiento"]);
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "No se pudo eliminar el equipamiento"
+            ]);
         }
 
         exit;

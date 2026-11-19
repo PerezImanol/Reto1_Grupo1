@@ -173,7 +173,29 @@ function crearTarjetaEquipamiento(equipamiento) {
     }
 
     campoUbicacion.append(etiquetaUbicacion, selectorUbicacion);
-    tarjeta.append(cabecera, descripcion, detalles, campoUbicacion);
+
+    // Botón para crear una notificación sobre este equipamiento
+    const btnNotificar = document.createElement('button');
+    btnNotificar.type = 'button';
+    btnNotificar.className = 'boton-notificar';
+    btnNotificar.textContent = 'Notificar avería';
+
+    btnNotificar.addEventListener('click', () => {
+        const parametros = new URLSearchParams({
+            nombre: equipamiento.nombre,
+            id: equipamiento.id_equipamiento
+        });
+
+        window.location.href = `notificacionesMovil.html?${parametros.toString()}`;
+    });
+
+    tarjeta.append(
+        cabecera,
+        descripcion,
+        detalles,
+        campoUbicacion,
+        btnNotificar
+    );
 
     return tarjeta;
 }

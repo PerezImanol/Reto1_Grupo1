@@ -7,6 +7,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const idInput = document.getElementById("idNotificacion");
     const tituloInput = document.getElementById("tituloNotificacion");
     const descripcionInput = document.getElementById("descripcionNotificacion");
+
+    // Recoger los datos del equipamiento desde la URL
+    const parametros = new URLSearchParams(window.location.search);
+
+    const nombreEquipamiento = parametros.get("nombre");
+    const idEquipamiento = parametros.get("id");
+
+    // Rellenar automaticamente el titulo
+    if (nombreEquipamiento && idEquipamiento) {
+        tituloInput.value = `${nombreEquipamiento} ID: ${idEquipamiento}`;
+    }
+
     const btnGuardar = document.getElementById("btnGuardarNotificacion");
     const btnCancelar = document.getElementById("btnCancelarEdicion");
 

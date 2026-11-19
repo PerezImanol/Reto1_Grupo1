@@ -2,6 +2,14 @@ const formulario = document.getElementById("loginForm");
 const mensaje = document.getElementById("loginMessage");
 const boton = document.getElementById("loginButton");
 
+// Iniciar sesión al pulsar ENTER
+formulario.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        formulario.requestSubmit();
+    }
+});
+
 formulario.addEventListener("submit", async function (event) {
     event.preventDefault();
 
