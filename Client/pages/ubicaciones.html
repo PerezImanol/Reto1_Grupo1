@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +9,8 @@
     <link rel="stylesheet" href="../css/style.css">
 
     <link rel="stylesheet" href="../css/menu.css">
-    <link rel="stylesheet" href="../css/ubicaciones.css">
+    <link rel="stylesheet" href="../css/equipamiento.css">
     <link rel="stylesheet" href="../css/tema.css">
-
     <script src="//code.jquery.com/jquery.min.js" defer></script>
     <script src="../js/api.js" defer></script>
     <script src="../js/auth.js" defer></script>
@@ -20,62 +18,71 @@
     <script src="../js/notificaciones.js" defer></script>
     <script src="../js/ubicaciones.js" defer></script>
 </head>
-
 <body>
     <div id="navbar-placeholder"></div>
     <main>
-        <h1>Ubicaciones</h1>
-        <section class="info">
-            <p>Consulta y edita las ubicaciones de tus equipamientos.</p>
-        </section>
-        <div class="tableView">
+        <section class="contenido">
+            <h1>Ubicaciones</h1>
+            <div class="barra-herramientas">
+                <div class="grupo-busqueda">
+                    <input
+                        type="search"
+                        id="buscarUbicacion"
+                        class="buscador"
+                        placeholder="Buscar ubicación..."
+                        aria-label="Buscar ubicación"
+                    >
+                </div>
+
+                <div class="acciones-equipamientos">
+                    <button id="btnAnadir" class="boton-icono boton-anadir"
+                            aria-label="Añadir ubicación" title="Añadir ubicación">
+                        <img src="../img/añadir.png" alt="">
+                    </button>
+
+                    <button id="btnBorrar" class="boton-icono boton-borrar"
+                            aria-label="Borrar ubicación" title="Borrar ubicación" disabled>
+                        <img src="../img/borrar.png" alt="">
+                    </button>
+                </div>
+            </div>
+            <p class="mensaje-pagina-equipamientos" id="mensajeUbicaciones" role="status" aria-live="polite" hidden></p>
             <table>
                 <thead>
                     <tr>
-                        <th id="total" colspan="3">Todas las ubicaciones</th>
-                        <th class="right"><button id="btnAdd">Añadir ubicacion</button></th>
-                    </tr>
-                    <tr>
-                        <th></th>
+                        <th class="columna-seleccion"></th>
                         <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th class="right">Acciones</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
-                <tbody id="tableLocations">
-                    <tr>
-                        <td colspan="3">Cargando ubicaciones...</td>
-                    </tr>
+                <tbody id="tablaEquipamientos">
+                    <tr><td colspan="3" class="tabla-vacia">Cargando ubicaciones...</td></tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td id="show" colspan="2">Mostrando 0 de 0 ubicaciones</td>
-                        <td></td>
-                        <td class="right">
-                            <span id="select">Selecciona una ubicacion</span>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
-        </div>
-        <p class="messageDefault" id="message" hidden></p>
+        </section>
+        <section id="seccionModificar" class="modificar" hidden>
+            <form id="formEquipamiento" hidden>
+                <h2 id="tituloFormulario">Modificar ubicación</h2>
+                <div class="campos-formulario">
+                    <label>Nombre<input type="text" name="nombre" id="name" required></label>
+                    <label>Descripción<input type="text" name="descripcion" id="desc" required></label>
+                </div>
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-accion">Guardar</button>
+                    <button type="button" id="btnCancelar" class="boton-accion boton-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </section>
     </main>
-
-    <section class="border">
-        <div class="buttons">
-            <button id="btnSave">Guardar cambios</button>
-            <button id="btnCancel">Cancelar cambios</button>
+    <div id="modalConfirmarBorrado" class="modal-confirmacion" hidden>
+        <div class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="textoConfirmacionBorrado">
+            <img src="../img/borrar.png" alt="" class="icono-confirmacion">
+            <p id="textoConfirmacionBorrado">¿Seguro que quieres eliminar esta ubicación?</p>
+            <div class="botones-confirmacion">
+                <button type="button" id="btnCancelarBorrado">Cancelar</button>
+                <button type="button" id="btnConfirmarBorrado">Eliminar</button>
+            </div>
         </div>
-        <div id="text">
-            <label for="name">Nombre</label><br />
-            <input type="text" id="name" name="name" class="borderInput"><br />
-            <label for="desc">Descripcion</label><br />
-            <input type="text" id="desc" name="desc" class="borderInput">
-        </div>
-    </section>
-    <footer class="info">
-        <p>CentroGestor · Gestion de activos</p>
-    </footer>
+    </div>
 </body>
-
 </html>

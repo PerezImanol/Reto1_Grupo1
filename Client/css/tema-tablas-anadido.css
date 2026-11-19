@@ -1,0 +1,51 @@
+[data-tema="oscuro"] .tabla-contenedor,
+[data-tema="oscuro"] .modificar,
+[data-tema="oscuro"] .contenido-modal {
+    background: #2b3527;
+    color: #e8eddf;
+    border-color: #46533f;
+}
+
+[data-tema="oscuro"] .tabla-contenedor thead {
+    background: #35432f;
+    color: #e8eddf;
+}
+
+[data-tema="oscuro"] .tabla-contenedor td,
+[data-tema="oscuro"] .tabla-contenedor th {
+    color: #e8eddf;
+    border-color: #46533f;
+}
+
+[data-tema="oscuro"] .tabla-contenedor tbody tr:hover {
+    background: #35432f;
+}
+
+[data-tema="oscuro"] .tabla-contenedor tbody tr.fila-seleccionada {
+    background: #51442d;
+}
+
+[data-tema="oscuro"] .descripcion-pagina,
+[data-tema="oscuro"] .titulo-formulario,
+[data-tema="oscuro"] .campos-formulario-admin label {
+    color: #e8eddf;
+}
+
+[data-tema="oscuro"] .campos-formulario-admin input,
+[data-tema="oscuro"] .campos-formulario-admin select,
+[data-tema="oscuro"] .grupo-filtro select {
+    background: #20291d;
+    color: #e8eddf;
+    border-color: #596b50;
+}
+
+[data-tema="oscuro"] .boton-cancelar,
+[data-tema="oscuro"] #btnCancelarBorrado {
+    background: #35432f;
+    color: #e8eddf;
+}
+
+[data-tema="oscuro"] .mensaje-pagina {
+    background: #35432f;
+    color: #e8eddf;
+}

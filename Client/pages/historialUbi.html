@@ -4,16 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>CentroGestor - Historial de Ubicaciones</title>
     <link rel="icon" href="../img/icon.png">
-
-    <link rel="stylesheet" href="../css/style.css">
-
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/equipamiento.css">
     <link rel="stylesheet" href="../css/historial.css">
     <link rel="stylesheet" href="../css/tema.css">
-
     <script src="//code.jquery.com/jquery.min.js" defer></script>
     <script src="../js/api.js" defer></script>
     <script src="../js/auth.js" defer></script>
@@ -28,38 +24,35 @@
         <section class="contenido">
             <h1>Historial de ubicaciones</h1>
             <div class="barra-herramientas">
-                <div class="filtro-columna">
-                    <select id="filtroEquipamiento">
-                        <option value="">Todos los equipamientos</option>
-                    </select>
-                    <img src="../img/filtrar.png" alt="">
+                <div class="grupo-categoria">
+                    <label for="filtroEquipamiento">Filtrar por equipamiento</label>
+                    <div class="filtro-categoria">
+                        <select id="filtroEquipamiento">
+                            <option value="">Todos los equipamientos</option>
+                        </select>
+                        <img src="../img/filtrar.png" alt="">
+                    </div>
                 </div>
             </div>
-
-            <p id="mensajeHistorial" role="status" aria-live="polite" hidden></p>
-            <div class="tabla-contenedor">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Equipamiento</th>
-                            <th>Ubicación</th>
-                            <th>Fecha inicio</th>
-                            <th>Fecha fin</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="tablaHistorial">
-                        <tr>
-                            <td colspan="5">Cargando historiales...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+            <p class="mensaje-pagina-equipamientos" id="mensajeHistorial" role="status" aria-live="polite" hidden></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipamiento</th>
+                        <th>Ubicación</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHistorial">
+                    <tr>
+                        <td colspan="5" class="tabla-vacia">Cargando historiales...</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
-
 </body>
 
 </html>

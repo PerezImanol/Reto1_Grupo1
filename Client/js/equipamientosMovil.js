@@ -199,7 +199,23 @@ function crearTarjetaEquipamiento(equipamiento) {
   }
 
   campoUbicacion.append(etiquetaUbicacion, selectorUbicacion);
-  tarjeta.append(cabecera, descripcion, detalles, campoUbicacion);
+
+  // Botón para crear una notificación sobre este equipamiento
+  const btnNotificar = document.createElement("button");
+  btnNotificar.type = "button";
+  btnNotificar.className = "boton-notificar";
+  btnNotificar.textContent = "Notificar avería";
+
+  btnNotificar.addEventListener("click", () => {
+    const parametros = new URLSearchParams({
+      nombre: equipamiento.nombre,
+      id: equipamiento.id_equipamiento,
+    });
+
+    window.location.href = `notificacionesMovil.html?${parametros.toString()}`;
+  });
+
+  tarjeta.append(cabecera, descripcion, detalles, campoUbicacion, btnNotificar);
 
   return tarjeta;
 }
@@ -251,6 +267,7 @@ async function cambiarUbicacion(evento) {
     (elemento) =>
       String(elemento.id_equipamiento) === selector.dataset.equipamientoId,
   );
+
   const ubicacionElegida = ubicaciones.find(
     (ubicacion) => String(ubicacion.id_ubicacion) === selector.value,
   );
@@ -288,16 +305,22 @@ async function cambiarUbicacion(evento) {
       );
     }
 
+    // Actualizar los datos en JavaScript
     equipamiento.id_ubicacion_actual = ubicacionElegida.id_ubicacion;
     equipamiento.nombreUbicacion = ubicacionElegida.nombre;
+
+    // Volver a mostrar las tarjetas con la nueva ubicación
     renderizarEquipamientos();
+
     mostrarMensaje(
       `Ubicación de "${equipamiento.nombre}" actualizada correctamente.`,
     );
   } catch (error) {
     console.error("Error al actualizar la ubicación del equipamiento:", error);
+
     selector.value = String(equipamiento.id_ubicacion_actual);
     selector.disabled = false;
+
     mostrarMensaje(
       error.message || "No se pudo actualizar la ubicación.",
       true,

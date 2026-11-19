@@ -275,6 +275,22 @@
     border-bottom: 2px solid #e5a04e;
 }
 
+.boton-notificar {
+    background-color: #59663b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+.boton-notificar:hover {
+    background-color: #293820;
+}
+
 @media (min-width: 600px) {
     .pagina-equipamientos {
         width: min(100% - 40px, 760px);
