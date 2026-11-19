@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CentroGestor - Usuarios</title>
     <link rel="icon" href="../img/icon.png">
     <link rel="stylesheet" href="../css/menu.css">
-    <link rel="stylesheet" href="../css/usuarios.css">
+    <link rel="stylesheet" href="../css/equipamiento.css">
     <link rel="stylesheet" href="../css/tema.css">
-
+    
     <script src="//code.jquery.com/jquery.min.js" defer></script>
     <script src="../js/api.js" defer></script>
     <script src="../js/auth.js" defer></script>
@@ -17,77 +16,78 @@
     <script src="../js/notificaciones.js" defer></script>
     <script src="../js/usuarios.js" defer></script>
 </head>
-
 <body>
     <div id="navbar-placeholder"></div>
     <main>
-        <h1>Usuarios</h1>
-        <section class="info">
-            <p>Consulta y edita los usuarios.</p>
-        </section>
-        <div class="tableView">
+        <section class="contenido">
+            <h1>Usuarios</h1>
+            <div class="barra-herramientas">
+                <div class="grupo-busqueda">
+                    <input
+                        type="search"
+                        id="buscarUsuario"
+                        class="buscador"
+                        placeholder="Buscar usuario..."
+                        aria-label="Buscar usuario"
+                    >
+                </div>
+
+                <div class="acciones-equipamientos">
+                    <button id="btnAnadir" class="boton-icono boton-anadir"
+                            aria-label="Añadir usuario" title="Añadir usuario">
+                        <img src="../img/añadir.png" alt="">
+                    </button>
+
+                    <button id="btnBorrar" class="boton-icono boton-borrar"
+                            aria-label="Borrar usuario" title="Borrar usuario" disabled>
+                        <img src="../img/borrar.png" alt="">
+                    </button>
+                </div>
+            </div>
+            <p class="mensaje-pagina-equipamientos" id="mensajeUsuarios" role="status" aria-live="polite" hidden></p>
             <table>
                 <thead>
                     <tr>
-                        <th id="total" colspan="5">Todos los usuarios</th>
-                        <th class="right"><button id="btnAdd">Añadir usuario</button></th>
-                    </tr>
-                    <tr>
-                        <th></th>
+                        <th class="columna-seleccion"></th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>Nombre de Usuario</th>
+                        <th>Nombre de usuario</th>
                         <th>Rol</th>
-                        <th class="right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="tableLocations">
-                    <tr>
-                        <td colspan="5">Cargando usuarios...</td>
-                    </tr>
+                <tbody id="tablaEquipamientos">
+                    <tr><td colspan="5" class="tabla-vacia">Cargando usuarios...</td></tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td id="show" colspan="4">Mostrando 0 de 0 usuarios</td>
-                        <td></td>
-                        <td class="right">
-                            <span id="select">Selecciona un usuario</span>
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
-        </div>
-        <p class="messageDefault" id="message" hidden></p>
+        </section>
+        <section id="seccionModificar" class="modificar" hidden>
+            <form id="formEquipamiento" hidden>
+                <h2 id="tituloFormulario">Modificar usuario</h2>
+                <div class="campos-formulario">
+                    <label>Nombre<input type="text" id="name" required></label>
+                    <label>Apellidos<input type="text" id="surname" required></label>
+                    <label>Nombre de usuario<input type="text" id="username" autocomplete="off" required></label>
+                    <label>Rol<select id="role" required><option value="user">USER</option><option value="admin">ADMIN</option></select></label>
+                    <label id="oldPasswordLabel" hidden>Contraseña actual<input type="password" id="oldPassword" autocomplete="current-password"></label>
+                    <label>Contraseña nueva<input type="password" id="password" autocomplete="new-password" required></label>
+                    <label>Confirmar contraseña<input type="password" id="passwordConfirm" autocomplete="new-password" required></label>
+                </div>
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-accion">Guardar</button>
+                    <button type="button" id="btnCancelar" class="boton-accion boton-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </section>
     </main>
-
-    <section class="border">
-        <div class="buttons">
-            <button id="btnSave">Guardar cambios</button>
-            <button id="btnCancel">Cancelar cambios</button>
+    <div id="modalConfirmarBorrado" class="modal-confirmacion" hidden>
+        <div class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="textoConfirmacionBorrado">
+            <img src="../img/borrar.png" alt="" class="icono-confirmacion">
+            <p id="textoConfirmacionBorrado">¿Seguro que quieres eliminar este usuario? No podrá iniciar sesión.</p>
+            <div class="botones-confirmacion">
+                <button type="button" id="btnCancelarBorrado">Cancelar</button>
+                <button type="button" id="btnConfirmarBorrado">Eliminar</button>
+            </div>
         </div>
-        <div id="text">
-            <label for="name">Nombre</label><br />
-            <input type="text" id="name" name="name" class="borderInput"><br />
-            <label for="surname">Apellido</label><br />
-            <input type="text" id="surname" name="surname" class="borderInput"><br />
-            <label for="username">Nombre de usuario</label><br />
-            <input type="text" id="username" name="username" class="borderInput"><br />
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" class="borderInput">
-            <label for="oldPassword" id="oldPasswordLabel" hidden>Contraseña actual</label>
-            <input type="password" id="oldPassword" name="oldPassword" class="borderInput" hidden>
-            <label for="passwordConfirm">Confirmar contraseña</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" class="borderInput">
-            <label for="role">Rol</label>
-            <select name="role" id="role" class="borderInput">
-                <option value="user">USER</option>
-                <option value="admin">ADMIN</option>
-            </select>
-        </div>
-    </section>
-    <footer class="info">
-        <p>CentroGestor · Gestion de activos</p>
-    </footer>
+    </div>
 </body>
-
 </html>

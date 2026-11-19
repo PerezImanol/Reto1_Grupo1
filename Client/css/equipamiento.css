@@ -499,6 +499,7 @@ th.columna-ordenada {
     height: 55px;
     margin: 0 auto 18px;
     object-fit: contain;
+    background-color: #293820;
 }
 
 
@@ -550,4 +551,12 @@ th.columna-ordenada {
 
 .botones-confirmacion button:hover {
     opacity: 0.85;
+}
+
+
+/* Controlar la visibilidad del formulario */
+#seccionModificar[hidden],
+#formEquipamiento[hidden],
+#oldPasswordLabel[hidden] {
+    display: none !important;
 }

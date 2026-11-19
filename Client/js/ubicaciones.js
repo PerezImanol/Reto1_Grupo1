@@ -1,326 +1,202 @@
 const nameField = document.getElementById("name");
 const descField = document.getElementById("desc");
-const btnAdd = document.getElementById("btnAdd");
-const btnSave = document.getElementById("btnSave");
-const btnCancel = document.getElementById("btnCancel");
-const selectedLocationTable = document.getElementById("select");
-const tbody = document.getElementById("tableLocations");
-const message = document.getElementById("message");
+const btnAnadir = document.getElementById("btnAnadir");
+const btnBorrar = document.getElementById("btnBorrar");
+const btnCancelar = document.getElementById("btnCancelar");
+const form = document.getElementById("formEquipamiento");
+const sectionForm = document.getElementById("seccionModificar");
+const titleForm = document.getElementById("tituloFormulario");
+const tbody = document.getElementById("tablaEquipamientos");
+const message = document.getElementById("mensajeUbicaciones");
+const modal = document.getElementById("modalConfirmarBorrado");
+const btnCancelarBorrado = document.getElementById("btnCancelarBorrado");
+const btnConfirmarBorrado = document.getElementById("btnConfirmarBorrado");
+const buscarUbicacion = document.getElementById("buscarUbicacion");
 
-let add = false;
 let ALL_LOCATIONS = [];
 let selectedLocation = null;
+let adding = false;
+let resolveDelete = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadLocactions();
+document.addEventListener("DOMContentLoaded", loadLocations);
 
-  nameField.disabled = true;
-  descField.disabled = true;
-  btnSave.disabled = true;
-  btnCancel.disabled = true;
-});
-
-async function getAllLocations() {
-  const data = await api.ubicaciones.obtenerTodos();
-
-  if (data.exito) {
-    return data.result || [];
-  }
-
-  throw new Error(data.mensaje);
+async function loadLocations() {
+    try {
+        const data = await api.ubicaciones.obtenerTodos();
+        if (!data.exito) throw new Error(data.mensaje || "No se pudieron cargar las ubicaciones.");
+        ALL_LOCATIONS = data.result || [];
+        renderLocations();
+    } catch (error) {
+        ALL_LOCATIONS = [];
+        renderLocations();
+        showMessage("Error al cargar las ubicaciones: " + error.message, true);
+    }
 }
 
-async function loadLocactions() {
-  try {
-    ALL_LOCATIONS = await getAllLocations();
-  } catch (e) {
-    showMessage("Error obteniendo ubicaciones: " + e, true);
-    ALL_LOCATIONS = [];
-  }
+function renderLocations() {
+    tbody.innerHTML = "";
 
-  renderLocations(ALL_LOCATIONS);
-}
+    const texto = buscarUbicacion.value.trim().toLowerCase();
 
-function renderLocations(locations) {
-  const showLocations = document.getElementById("show");
-  let count = 0;
+    const ubicacionesFiltradas = ALL_LOCATIONS.filter(location =>
+        (location.nombre || "").toLowerCase().includes(texto) ||
+        (location.descripcion || "").toLowerCase().includes(texto)
+    );
 
-  if (!tbody) return;
+    if (ubicacionesFiltradas.length === 0) {
+        const mensaje = ALL_LOCATIONS.length === 0
+            ? "No hay ubicaciones disponibles."
+            : "No se encontraron ubicaciones.";
 
-  tbody.innerHTML = "";
-
-  if (!Array.isArray(locations) || locations.length === 0) {
-    tbody.innerHTML = `
-    <tr>
-      <td class="emptyRow" colspan="3">No hay ubicaciones disponibles</td>
-    </tr>
-    `;
-
-    if (showLocations) {
-      showLocations.textContent = "Mostrando 0 de 0 ubicaciones";
-    }
-    if (selectedLocationTable) {
-      selectedLocationTable.textContent = "Selecciona una ubicacion";
-    }
-    return;
-  }
-
-  locations.forEach((location) => {
-    const row = document.createElement("tr");
-    const cbTd = document.createElement("td");
-    const nameTd = document.createElement("td");
-    const descTd = document.createElement("td");
-    const deleteTd = document.createElement("td");
-    const btnDelete = document.createElement("button");
-
-    const checkBox = document.createElement("input");
-    checkBox.type = "checkbox";
-    checkBox.className = "checkbox";
-    cbTd.addEventListener("change", () => {
-      if (checkBox.checked) {
-        seleccionarFila(checkBox, location);
-      } else {
-        deseleccionarFila();
-      }
-    });
-
-    cbTd.appendChild(checkBox);
-
-    const { id_ubicacion, nombre, descripcion } = location;
-    nameTd.textContent = nombre ?? "";
-    descTd.textContent = descripcion ?? "";
-
-    btnDelete.className = "btnDelete";
-    btnDelete.onclick = async function () {
-      hideMessage();
-
-      if (!confirm("¿Estás seguro de que deseas eliminar esta ubicacion?")) {
+        tbody.innerHTML = `<tr><td colspan="3" class="tabla-vacia">${mensaje}</td></tr>`;
         return;
-      }
+    }
 
-      try {
-        let data = await api.ubicaciones.eliminar(id_ubicacion);
+    ubicacionesFiltradas.forEach(location => {
+        const row = document.createElement("tr");
+        const checkCell = document.createElement("td");
+        const checkbox = document.createElement("input");
 
-        if (data.exito) {
-          await loadLocactions();
-          showMessage("Ubicacion eliminada correctamente");
-          deseleccionarFila();
-        } else {
-          showMessage(data.mensaje || "Error al eliminar la ubicacion", true);
-        }
-      } catch (e) {
-        showMessage("Error de servidor: " + e, true);
-      }
-    };
+        checkbox.type = "checkbox";
+        checkbox.className = "checkbox-fila";
+        checkbox.checked = selectedLocation?.id_ubicacion == location.id_ubicacion;
 
-    const trash = document.createElement("img");
-    trash.src = "../img/trash.svg";
-    trash.alt= "icono de basura";
-    trash.className = "svg";
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) selectLocation(location);
+            else resetForm();
+        });
 
-    const trashSpan = document.createElement("span");
-    trashSpan.textContent = "Borrar";
+        checkCell.appendChild(checkbox);
+        row.appendChild(checkCell);
 
-    btnDelete.appendChild(trash);
-    btnDelete.appendChild(trashSpan);
-    deleteTd.appendChild(btnDelete);
+        [location.nombre, location.descripcion].forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value ?? "";
+            row.appendChild(cell);
+        });
 
-    row.appendChild(cbTd);
-    row.appendChild(nameTd);
-    row.appendChild(descTd);
-    deleteTd.className = "right";
-    row.appendChild(deleteTd);
+        if (checkbox.checked) row.classList.add("fila-seleccionada");
 
-    row.addEventListener("click", () => {
-      selectedLocation = location;
+        row.addEventListener("click", event => {
+            if (event.target !== checkbox) selectLocation(location);
+        });
 
-      if (selectedLocationTable) {
-        selectedLocationTable.textContent = nombre + " seleccionado";
-      }
-
-      checkBox.checked = true;
-      seleccionarFila(checkBox, location);
+        tbody.appendChild(row);
     });
-
-    tbody.appendChild(row);
-    count++;
-  });
-
-  if (showLocations) {
-    showLocations.textContent =
-      "Mostrando " + count + " de " + count + " ubicaciones";
-  }
 }
 
-nameField.addEventListener("change", () => {
-  if (!nameField.value || !descField.value) {
-    btnSave.disabled = true;
-  } else {
-    btnSave.disabled = false;
-    nameField.value.trim();
-    descField.value.trim();
-  }
-});
+buscarUbicacion.addEventListener("input", renderLocations);
 
-descField.addEventListener("change", () => {
-  if (!nameField.value || !descField.value) {
-    btnSave.disabled = true;
-  } else {
-    btnSave.disabled = false;
-    nameField.value.trim();
-    descField.value.trim();
-  }
-});
-
-btnAdd.addEventListener("click", () => {
-  hideMessage();
-  add = true;
-
-  btnSave.disabled = false;
-  btnCancel.disabled = false;
-  nameField.disabled = false;
-  descField.disabled = false;
-
-  if (selectedLocationTable) {
-    selectedLocationTable.textContent = "Añadiendo ubicacion";
-  }
-});
-
-btnSave.addEventListener("click", async (e) => {
-  e.preventDefault();
-  hideMessage();
-
-  if (!selectedLocation && !add) {
-    showMessage("Por favor, selecciona una ubicacion para editar.", true);
-    return;
-  }
-
-  if (add) {
-    if (!nameField.value || !descField.value) {
-      showMessage("Por favor, rellena los campos.", true);
-    } else {
-      let newInfo = {
-        nombre: nameField.value,
-        descripcion: descField.value,
-      };
-
-      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
-        const location = ALL_LOCATIONS[i];
-
-        if (location.nombre == newInfo.nombre) {
-          showMessage(
-            "No se puede usar el mismo nombre para dos ubicaciones.",
-            true,
-          );
-          return;
-        }
-      }
-
-      try {
-        const data = await api.ubicaciones.crear(newInfo);
-
-        if (data.exito) {
-          await loadLocactions();
-          showMessage(data.mensaje);
-          deseleccionarFila();
-        } else {
-          showMessage(data.mensaje, true);
-        }
-      } catch (e) {
-        showMessage("Error de servidor: " + e, true);
-      }
-    }
-  } else {
-    if (!nameField.value || !descField.value) {
-      showMessage("Por favor, rellena los campos.", true);
-    } else {
-      let newInfo = {
-        id_ubicacion: selectedLocation.id_ubicacion,
-        nombre: nameField.value,
-        descripcion: descField.value,
-      };
-
-      for (let i = 0; i < ALL_LOCATIONS.length; i++) {
-        const location = ALL_LOCATIONS[i];
-
-        if (location.nombre == newInfo.nombre) {
-          showMessage(
-            "No se puede usar el mismo nombre para dos ubicaciones.",
-            true,
-          );
-          return;
-        }
-      }
-
-      try {
-        const data = await api.ubicaciones.actualizar(newInfo);
-
-        if (data.exito) {
-          await loadLocactions();
-          showMessage(data.mensaje);
-          deseleccionarFila();
-        } else {
-          showMessage(data.mensaje, true);
-        }
-      } catch (e) {
-        showMessage("Error de servidor: " + e, true);
-      }
-    }
-  }
-});
-
-btnCancel.addEventListener("click", () => {
-  deseleccionarFila();
-});
-
-function seleccionarFila(selectedCb, location) {
-  hideMessage();
-
-  add = false;
-  tbody.querySelectorAll(".checkbox").forEach((cb) => {
-    if (cb !== selectedCb) {
-      cb.checked = false;
-    }
-  });
-
-  selectedLocation = location;
-  btnSave.disabled = false;
-  btnCancel.disabled = false;
-  nameField.disabled = false;
-  descField.disabled = false;
-
-  nameField.value = location.nombre;
-  descField.value = location.descripcion;
+function selectLocation(location) {
+    selectedLocation = location;
+    adding = false;
+    hideMessage();
+    nameField.value = location.nombre || "";
+    descField.value = location.descripcion || "";
+    titleForm.textContent = "Modificar ubicación";
+    btnBorrar.disabled = false;
+    showForm();
+    renderLocations();
 }
 
-function deseleccionarFila() {
-  tbody.querySelectorAll(".checkbox").forEach((cb) => {
-    cb.checked = false;
-  });
-
-  selectedLocation = null;
-  if (selectedLocationTable) {
-    selectedLocationTable.textContent = "Selecciona una ubicacion";
-  }
-
-  // Deshabilitar el botón de borrar
-  btnSave.disabled = true;
-  btnCancel.disabled = true;
-
-  nameField.value = "";
-  descField.value = "";
-  nameField.disabled = true;
-  descField.disabled = true;
+function showForm() {
+    sectionForm.hidden = false;
+    form.hidden = false;
+    window.setTimeout(() => sectionForm.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
 }
 
-function showMessage(texto, esError = false) {
-  message.textContent = texto;
-  message.classList.toggle("error", esError);
-  message.hidden = false;
+function resetForm() {
+    selectedLocation = null;
+    adding = false;
+    form.reset();
+    sectionForm.hidden = true;
+    form.hidden = true;
+    btnBorrar.disabled = true;
+    renderLocations();
+}
+
+btnAnadir.addEventListener("click", () => {
+    selectedLocation = null;
+    adding = true;
+    hideMessage();
+    form.reset();
+    titleForm.textContent = "Añadir ubicación";
+    btnBorrar.disabled = true;
+    showForm();
+    renderLocations();
+    nameField.focus();
+});
+
+btnCancelar.addEventListener("click", resetForm);
+
+form.addEventListener("submit", async event => {
+    event.preventDefault();
+    hideMessage();
+
+    const nombre = nameField.value.trim();
+    const descripcion = descField.value.trim();
+    if (!nombre || !descripcion) return showMessage("Rellena todos los campos.", true);
+
+    const duplicada = ALL_LOCATIONS.some(location =>
+        location.nombre.trim().toLowerCase() === nombre.toLowerCase() &&
+        location.id_ubicacion != selectedLocation?.id_ubicacion
+    );
+    if (duplicada) return showMessage("Ya existe una ubicación con ese nombre.", true);
+
+    const wasAdding = adding;
+    const info = { nombre, descripcion };
+
+    try {
+        const result = wasAdding
+            ? await api.ubicaciones.crear(info)
+            : await api.ubicaciones.actualizar({ ...info, id_ubicacion: selectedLocation.id_ubicacion });
+
+        if (!result.exito) throw new Error(result.mensaje || "No se pudieron guardar los cambios.");
+        resetForm();
+        await loadLocations();
+        showMessage(result.mensaje || (wasAdding ? "Ubicación añadida correctamente." : "Ubicación modificada correctamente."));
+    } catch (error) {
+        showMessage("Error al guardar: " + error.message, true);
+    }
+});
+
+btnBorrar.addEventListener("click", async () => {
+    if (!selectedLocation || !(await confirmDelete())) return;
+
+    try {
+        const result = await api.ubicaciones.eliminar(selectedLocation.id_ubicacion);
+        if (!result.exito) throw new Error(result.mensaje || "No se pudo eliminar la ubicación.");
+        resetForm();
+        await loadLocations();
+        showMessage(result.mensaje || "Ubicación eliminada correctamente.");
+    } catch (error) {
+        showMessage("Error al eliminar: " + error.message, true);
+    }
+});
+
+function confirmDelete() {
+    modal.hidden = false;
+    return new Promise(resolve => { resolveDelete = resolve; });
+}
+
+function closeDelete(value) {
+    modal.hidden = true;
+    if (resolveDelete) resolveDelete(value);
+    resolveDelete = null;
+}
+
+btnCancelarBorrado.addEventListener("click", () => closeDelete(false));
+btnConfirmarBorrado.addEventListener("click", () => closeDelete(true));
+modal.addEventListener("click", event => { if (event.target === modal) closeDelete(false); });
+
+function showMessage(text, error = false) {
+    message.textContent = text;
+    message.classList.toggle("mensaje-error", error);
+    message.hidden = false;
 }
 
 function hideMessage() {
-  message.hidden = true;
-  message.textContent = "";
-  message.classList.remove("error");
+    message.hidden = true;
+    message.textContent = "";
+    message.classList.remove("mensaje-error");
 }
