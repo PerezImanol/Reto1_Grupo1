@@ -1,327 +1,329 @@
 .contenido {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 36px 40px;
-    color: #293820;
-    font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 36px 40px;
+  color: #293820;
+  font-family: Arial, sans-serif;
 }
 
 .contenido h1 {
-    margin: 0 0 18px;
-    color: #293820;
-    font-size: 30px;
+  margin: 0 0 18px;
+  color: #293820;
+  font-size: 30px;
 }
 
 .descripcion-pagina {
-    margin: 0 0 26px;
-    color: #59663b;
+  margin: 0 0 26px;
+  color: #59663b;
 }
 
 .barra-herramientas {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 22px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
 }
 
 .grupo-filtro {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .grupo-filtro select {
-    min-width: 230px;
-    padding: 12px 14px;
-    border: 1px solid #d8dccd;
-    border-radius: 8px;
-    background: #fff;
-    color: #293820;
-    font-size: 15px;
+  min-width: 230px;
+  padding: 12px 14px;
+  border: 1px solid #d8dccd;
+  border-radius: 8px;
+  background: #fff;
+  color: #293820;
+  font-size: 15px;
 }
 
 .acciones-tabla {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
 }
 
 .boton-icono {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 46px;
-    padding: 9px;
-    border: 0;
-    border-radius: 8px;
-    background: #293820;
-    cursor: pointer;
-    transition: background .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 46px;
+  padding: 9px;
+  border: 0;
+  border-radius: 8px;
+  background: #293820;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .boton-icono:hover {
-    background: #59663b;
+  background: #59663b;
 }
 
 .boton-icono img {
-    width: 25px;
-    height: 25px;
-    object-fit: contain;
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
 }
 
 .boton-borrar:disabled {
-    opacity: .4;
-    cursor: not-allowed;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .tabla-contenedor {
-    width: 100%;
-    overflow-x: auto;
-    background: #fff;
-    border: 1px solid #e0e2d8;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(41,56,32,.07);
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #e0e2d8;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(41, 56, 32, 0.07);
 }
 
 .tabla-contenedor table {
-    width: 100%;
-    min-width: 650px;
-    border-collapse: collapse;
-    text-align: left;
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+  text-align: left;
 }
 
 .tabla-contenedor thead {
-    background: #fffbea;
-    color: #293820;
+  background: #fffbea;
+  color: #293820;
 }
 
 .tabla-contenedor th {
-    padding: 18px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    white-space: nowrap;
+  padding: 18px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .tabla-contenedor td {
-    padding: 17px 20px;
-    border-bottom: 1px solid #e9eadf;
-    color: #3d4935;
-    font-size: 14px;
+  padding: 17px 20px;
+  border-bottom: 1px solid #e9eadf;
+  color: #3d4935;
+  font-size: 14px;
 }
 
 .tabla-contenedor tbody tr {
-    transition: background .2s;
+  transition: background 0.2s;
 }
 
 .tabla-contenedor tbody tr:hover {
-    background: #f5f6ed;
+  background: #f5f6ed;
 }
 
 .tabla-contenedor tbody tr.fila-seleccionada {
-    background: #fff0d9;
+  background: #fff0d9;
 }
 
 .tabla-contenedor tbody tr.fila-seleccionada:hover {
-    background: #ffe8c5;
+  background: #ffe8c5;
 }
 
 .tabla-contenedor tbody tr:last-child td {
-    border-bottom: 0;
+  border-bottom: 0;
 }
 
 .columna-seleccion {
-    width: 45px;
+  width: 45px;
 }
 
 .checkbox-fila {
-    width: 17px;
-    height: 17px;
-    accent-color: #59663b;
-    cursor: pointer;
+  width: 17px;
+  height: 17px;
+  accent-color: #59663b;
+  cursor: pointer;
 }
 
 .tabla-vacia {
-    padding: 30px 20px !important;
-    color: #777d6e !important;
-    text-align: center;
+  padding: 30px 20px !important;
+  color: #777d6e !important;
+  text-align: center;
 }
 
 .mensaje-pagina {
-    margin: 0 0 18px;
-    padding: 12px 16px;
-    border-radius: 7px;
-    background: #e8eedf;
-    color: #293820;
-    font-size: 14px;
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border-radius: 7px;
+  background: #e8eedf;
+  color: #293820;
+  font-size: 14px;
 }
 
 .mensaje-pagina.error {
-    background: #f8e1dc;
-    color: #a12d20;
+  background: #f8e1dc;
+  color: #a12d20;
 }
 
 .mensaje-pagina[hidden],
 .modificar[hidden],
 .formulario-admin[hidden],
 .modal-confirmacion[hidden] {
-    display: none !important;
+  display: none !important;
 }
 
 .modificar {
-    margin: 28px 40px 40px;
-    padding: 26px 30px;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 3px 12px rgba(41,56,32,.10);
+  margin: 28px 40px 40px;
+  padding: 26px 30px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(41, 56, 32, 0.1);
 }
 
 .formulario-admin {
-    width: 100%;
+  width: 100%;
 }
 
 .titulo-formulario {
-    margin: 0 0 24px;
-    color: #293820;
-    font-size: 23px;
+  margin: 0 0 24px;
+  color: #293820;
+  font-size: 23px;
 }
 
 .campos-formulario-admin {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 20px 24px;
 }
 
 .campos-formulario-admin label {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    color: #293820;
-    font-size: 14px;
-    font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #293820;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .campos-formulario-admin input,
 .campos-formulario-admin select {
-    width: 100%;
-    min-height: 43px;
-    padding: 10px 12px;
-    border: 1px solid #cfd5c6;
-    border-radius: 7px;
-    background: #fff;
-    color: #293820;
-    font: 15px Arial, sans-serif;
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+  border: 1px solid #cfd5c6;
+  border-radius: 7px;
+  background: #fff;
+  color: #293820;
+  font:
+    15px Arial,
+    sans-serif;
 }
 
 .campos-formulario-admin input:focus,
 .campos-formulario-admin select:focus {
-    outline: 2px solid #e5a04e;
-    border-color: #e5a04e;
+  outline: 2px solid #e5a04e;
+  border-color: #e5a04e;
 }
 
 .campos-formulario-admin input:disabled,
 .campos-formulario-admin select:disabled {
-    background: #f1f2ed;
-    color: #777;
+  background: #f1f2ed;
+  color: #777;
 }
 
 .botones-formulario {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 26px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 26px;
 }
 
 .boton-accion {
-    min-width: 125px;
-    padding: 12px 22px;
-    border: 0;
-    border-radius: 7px;
-    background: #59663b;
-    color: #fffbea;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+  min-width: 125px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 7px;
+  background: #59663b;
+  color: #fffbea;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .boton-accion:hover {
-    background: #293820;
+  background: #293820;
 }
 
 .boton-cancelar {
-    border: 1px solid #e5a04e;
-    background: #fffbea;
-    color: #293820;
+  border: 1px solid #e5a04e;
+  background: #fffbea;
+  color: #293820;
 }
 
 .boton-cancelar:hover {
-    background: #f8edcf;
+  background: #f8edcf;
 }
 
 .boton-accion:disabled {
-    opacity: .45;
-    cursor: not-allowed;
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .modal-confirmacion {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0,0,0,.48);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.48);
 }
 
 .contenido-modal {
-    width: 100%;
-    max-width: 430px;
-    padding: 30px;
-    border-radius: 12px;
-    background: #fffbea;
-    color: #293820;
-    text-align: center;
-    box-shadow: 0 10px 35px rgba(0,0,0,.25);
+  width: 100%;
+  max-width: 430px;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fffbea;
+  color: #293820;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
 }
 
 .icono-confirmacion {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    background-color: #293820;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  background-color: #293820;
 }
 
 .contenido-modal p {
-    margin: 18px 0 25px;
-    font-size: 16px;
-    line-height: 1.5;
+  margin: 18px 0 25px;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .botones-confirmacion {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .botones-confirmacion button {
-    min-width: 110px;
-    padding: 11px 18px;
-    border: 0;
-    border-radius: 7px;
-    cursor: pointer;
+  min-width: 110px;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
 }
 
 #btnCancelarBorrado {
-    background: #e9eadf;
-    color: #293820;
+  background: #e9eadf;
+  color: #293820;
 }
 
 #btnConfirmarBorrado {
-    background: #a12d20;
-    color: white;
+  background: #a12d20;
+  color: white;
 }
 
 /* ==============================
@@ -329,30 +331,29 @@
 ============================== */
 
 @media (max-width: 700px) {
+  .contenido {
+    padding: 25px 16px;
+  }
 
-    .contenido {
-        padding: 25px 16px;
-    }
+  .modificar {
+    margin: 22px 16px;
+    padding: 22px 18px;
+  }
 
-    .modificar {
-        margin: 22px 16px;
-        padding: 22px 18px;
-    }
+  .campos-formulario-admin {
+    grid-template-columns: 1fr;
+  }
 
-    .campos-formulario-admin {
-        grid-template-columns: 1fr;
-    }
+  .barra-herramientas {
+    align-items: stretch;
+  }
 
-    .barra-herramientas {
-        align-items: stretch;
-    }
+  .grupo-filtro {
+    width: 100%;
+  }
 
-    .grupo-filtro {
-        width: 100%;
-    }
-
-    .grupo-filtro select {
-        width: 100%;
-        min-width: 0;
-    }
+  .grupo-filtro select {
+    width: 100%;
+    min-width: 0;
+  }
 }

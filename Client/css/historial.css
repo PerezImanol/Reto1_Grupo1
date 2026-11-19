@@ -2,11 +2,11 @@
    La tabla reutiliza directamente equipamiento.css. */
 
 #mensajeHistorial[hidden] {
-    display: none;
+  display: none;
 }
 
 #mensajeHistorial.mensaje-error {
-    border-color: #e6c6b8;
-    background-color: #fff5f0;
-    color: #8c3928;
+  border-color: #e6c6b8;
+  background-color: #fff5f0;
+  color: #8c3928;
 }

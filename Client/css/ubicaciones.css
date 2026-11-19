@@ -17,19 +17,14 @@
   margin: 0 20px;
 }
 
-:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 h1 {
   margin: 15px;
 }
 .contenido h1 {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 .barra-herramientas {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 .info {
   margin: 0 18px;
@@ -37,8 +32,6 @@ h1 {
 
 .tableView {
   margin: 20px;
-  overflow-x: auto;
-  white-space: nowrap;
 }
 
 table,
@@ -72,6 +65,7 @@ th {
 }
 
 button {
+  cursor: pointer;
   border-radius: 5px;
   white-space: nowrap;
 }
@@ -80,6 +74,10 @@ button {
   display: flex;
   flex-direction: column;
   margin: 10px 12px;
+}
+
+button:disabled {
+  cursor: default;
 }
 
 #btnSave {
