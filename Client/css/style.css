@@ -16,6 +16,11 @@
   font-size: 17px;
 }
 
+table {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 /* ==================================================
    2. BARRA DE HERRAMIENTAS
    ================================================== */
@@ -501,4 +506,10 @@ th.columna-ordenada {
 
 .botones-confirmacion button:hover {
   opacity: 0.85;
+}
+
+@media (max-width: 360px) {
+  .buscador {
+    width: 85%;
+  }
 }

@@ -32,6 +32,8 @@ h1 {
 
 .tableView {
   margin: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 table,
