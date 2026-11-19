@@ -1,0 +1,154 @@
+:root {
+  --fondo-menu: #fffbea;
+  --verde-oscuro: #293820;
+  --verde-texto: #59663b;
+  --borde-menu: #e5a04e;
+}
+
+* {
+  background: var(--fondo-menu);
+}
+
+.border {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid var(--borde-menu);
+  border-radius: 5px;
+  margin: 0 20px;
+}
+
+h1 {
+  margin: 15px;
+}
+
+.contenido h1 {
+  margin-bottom: 0px;
+}
+
+.barra-herramientas {
+  margin-top: 0px;
+}
+
+.info {
+  margin: 0 18px;
+}
+
+.tableView {
+  margin: 20px;
+}
+
+table,
+tr {
+  border: 1px solid var(--borde-menu);
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.right {
+  text-align: right;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  padding: 10px;
+}
+
+.checkbox {
+  cursor: pointer;
+}
+
+.borderInput {
+  border: 1px solid var(--borde-menu);
+  border-radius: 2px;
+  padding: 5px 0;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 12px;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+#btnSave {
+  background: var(--verde-texto);
+  color: var(--fondo-menu);
+  border: solid var(--verde-texto);
+  padding: 10px 25px;
+  width: 16em;
+}
+
+#btnCancel {
+  background-color: var(--fondo-menu);
+  color: var(--borde-menu);
+  border: solid var(--borde-menu);
+  padding: 10px 25px;
+  margin-top: 20px;
+}
+
+#btnAdd {
+  background: var(--verde-texto);
+  color: var(--fondo-menu);
+  border: 2px solid var(--verde-texto);
+  padding: 10px 25px;
+}
+
+.btnDelete {
+  border: none;
+  color: red;
+  padding: 0;
+  margin: 0;
+  width: 10em;
+}
+
+.svg {
+  width: 10%;
+  height: auto;
+}
+
+#text {
+  display: flex;
+  flex-direction: column;
+  width: 84%;
+  padding-right: 10px;
+  justify-content: space-evenly;
+  margin: 10px 0;
+}
+
+input {
+  margin: 5px 0;
+}
+
+.messageDefault {
+  margin: 10px 20px;
+  padding: 12px 14px;
+  border: 1px solid #d8e4cf;
+  border-radius: 6px;
+  background: #f3f8ef;
+  color: var(--verde-oscuro);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.messageDefault[hidden] {
+  display: none;
+}
+
+.messageDefault.error {
+  border-color: #e6c6b8;
+  background: #fff5f0;
+  color: #8c3928;
+}

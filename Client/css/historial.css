@@ -1,0 +1,12 @@
+/* Estilos propios del filtro y los mensajes del historial.
+   La tabla reutiliza directamente equipamiento.css. */
+
+#mensajeHistorial[hidden] {
+  display: none;
+}
+
+#mensajeHistorial.mensaje-error {
+  border-color: #e6c6b8;
+  background-color: #fff5f0;
+  color: #8c3928;
+}

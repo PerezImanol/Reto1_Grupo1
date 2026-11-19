@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CentroGestor - Equipamiento</title>
+    <link rel="icon" href="../img/icon.png">
+
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/equipamiento.css">
+    <link rel="stylesheet" href="../css/tema.css">
+
+    <script src="//code.jquery.com/jquery.min.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/navbar.js" defer></script>
+    <script src="../js/notificaciones.js" defer></script>
+    <script src="../js/equipamientos.js" defer></script>
+
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <main>
+        <section class="contenido">
+            <h1>Equipamientos</h1>
+            <div class="barra-herramientas">
+                <div class="grupo-busqueda">
+                    <label for="columnaFiltro">Buscar por</label>
+
+                    <div class="buscador">
+                        <select id="columnaFiltro" aria-label="Buscar por">
+                            <option value="nombre">Nombre</option>
+                            <option value="descripcion">Descripción</option>
+                            <option value="marca">Marca</option>
+                            <option value="modelo">Modelo</option>
+                            <option value="categoria">Categoría</option>
+                            <option value="nombreUbicacion">Ubicación actual</option>
+                        </select>
+
+                        <span class="separador-buscador"></span>
+
+                        <input type="text" id="search" name="search" placeholder="Escribe para buscar...">
+
+                        <button id="btnBuscar" class="boton-icono" aria-label="Buscar">
+                            <img src="../img/buscar.png" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grupo-categoria">
+                    <label for="filtroCategoria">Filtrar por categoría</label>
+
+                    <div class="filtro-categoria">
+                        <select id="filtroCategoria" aria-label="Filtrar por categoría">
+                            <option value="">Todas las categorías</option>
+                            <option value="PORTATIL">Portátil</option>
+                            <option value="SOBREMESA">Sobremesa</option>
+                            <option value="PERIFERICO">Periférico</option>
+                            <option value="AUDIOVISUAL">Audiovisual</option>
+                            <option value="OTROS">Otros</option>
+                        </select>
+                        <img src="../img/filtrar.png" alt="">
+                    </div>
+                </div>
+
+                <div class="acciones-equipamientos">
+                    <button id="btnAnadir" class="boton-icono boton-anadir" aria-label="Añadir equipamiento">
+                        <img src="../img/añadir.png" alt="">
+                    </button>
+
+                    <button id="btnBorrar" class="boton-icono boton-borrar" aria-label="Borrar equipamiento" disabled>
+                        <img src="../img/borrar.png" alt="">
+                    </button>
+                </div>
+
+            </div>
+
+            <p class="mensaje-pagina-equipamientos" id="mensajeEquipamientos" role="status" aria-live="polite" hidden>
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="columna-seleccion"></th>
+                        <th>Nombre <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('nombre', this)" alt="Ordenar por nombre"></th>
+                        <th>Descripción <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('descripcion', this)" alt="Ordenar por descripción"></th>
+                        <th>Marca <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('marca', this)" alt="Ordenar por marca"></th>
+                        <th>Modelo <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('modelo', this)" alt="Ordenar por modelo"></th>
+                        <th>Categoría <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('categoria', this)" alt="Ordenar por categoría"></th>
+                        <th>
+                            Ubicación actual
+                            <img src="../img/flechas_ordenar.png" class="flechas-ordenar"
+                                onclick="ordenarTabla('nombreUbicacion', this)" alt="Ordenar por ubicación">
+                        </th>
+                        <th>Historial Ubicación</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEquipamientos">
+                    <tr>
+                        <td colspan="8">Cargando equipamientos...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <section id="seccionModificar" class="modificar" hidden>
+
+            <form id="formEquipamiento" hidden>
+
+                <h2 id="tituloFormulario">Modificar equipamiento</h2>
+                <div class="campos-formulario">
+                    <label>
+                        Nombre
+                        <input type="text" name="nombre" required>
+                    </label>
+
+                    <label>
+                        Descripción
+                        <input type="text" name="descripcion" required>
+                    </label>
+
+                    <label>
+                        Marca
+                        <input type="text" name="marca" required>
+                    </label>
+
+                    <label>
+                        Modelo
+                        <input type="text" name="modelo" required>
+                    </label>
+
+                    <label>
+                        Categoría
+                        <select name="categoria" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="PORTATIL">Portátil</option>
+                            <option value="SOBREMESA">Sobremesa</option>
+                            <option value="PERIFERICO">Periférico</option>
+                            <option value="AUDIOVISUAL">Audiovisual</option>
+                            <option value="OTROS">Otros</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Ubicación actual
+                        <input type="text" name="nombreUbicacion" readonly>
+                    </label>
+
+                </div>
+
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-accion">
+                        Guardar
+                    </button>
+
+                    <button type="button" id="btnCancelar" class="boton-accion boton-cancelar">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+
+        </section>
+    </main>
+    <!-- Ventana de confirmación para eliminar -->
+    <div id="modalConfirmarBorrado" class="modal-confirmacion" hidden>
+        <div class="contenido-modal" role="dialog" aria-modal="true" aria-labelledby="textoConfirmacionBorrado">
+
+            <img src="../img/borrar.png" alt="" class="icono-confirmacion">
+
+            <p id="textoConfirmacionBorrado">
+                Seguro que quieres eliminar este equipamiento?
+            </p>
+
+            <div class="botones-confirmacion">
+                <button type="button" id="btnCancelarBorrado">
+                    Cancelar
+                </button>
+
+                <button type="button" id="btnConfirmarBorrado">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
