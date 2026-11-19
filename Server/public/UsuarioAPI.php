@@ -197,6 +197,15 @@ switch ($metodo) {
                     $datos['newPassword'],
                     $rol
                 ));
+
+                $exito = $controller->actualizar(new Usuario(
+                    $id,
+                    $datos['nombre'] ?? '',
+                    $datos['apellido'] ?? '',
+                    $datos['username'] ?? '',
+                    '',
+                    $rol
+                ));
             } elseif (isset($datos['password']) || isset($datos['newPassword'])) {
                 // Si solo se envía una de las dos contraseñas, salta error.
                 echo json_encode([
