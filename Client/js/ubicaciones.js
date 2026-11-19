@@ -60,6 +60,7 @@ function renderLocations() {
         checkbox.type = "checkbox";
         checkbox.className = "checkbox-fila";
         checkbox.checked = selectedLocation?.id_ubicacion == location.id_ubicacion;
+        checkbox.setAttribute("aria-label", "Seleccionar ubicación " + location.nombre);
 
         checkbox.addEventListener("change", () => {
             if (checkbox.checked) selectLocation(location);

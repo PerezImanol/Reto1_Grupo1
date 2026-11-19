@@ -6,7 +6,6 @@ const btnSave = document.getElementById("btnSave");
 const btnDelete = document.getElementById("btnDelete");
 const message = document.getElementById("message");
 
-let userId = JSON.parse(localStorage.getItem("user_id"));
 let user = null;
 let editing = false;
 
@@ -21,15 +20,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function getUser() {
   let data = null;
-  if (userId) {
-    data = await api.usuarios.obtenerPorId(userId);
-  } else {
-    throw new Error(
-      "Falta el ID del usuario. Inicia de sesion de nuevo para poder ver tu perfil.",
-    );
-  }
+  data = await auth.obtenerSesion();
 
-  return data;
+  return data.usuario;
 }
 
 async function loadUser() {
